@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-messaging-server" name="Plugin Commands: Messaging Server">
+    <description>
+      The messaging-server plugin contributes CLI commands to the application framework to be used for manipulating messages in a server context.
+    </description>
+  </group>
+  <command cli="plugin messaging-server message" functionName="message" group="plugin-messaging-server">
+    <description>
+      Set the message used by the message plugin.
+    </description>
+    <arg name="message" type="OCTET_STRING" description="The message to set" />
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server append" functionName="append" group="plugin-messaging-server">
+    <description>
+      Append an additional string to the message contained in the message plugin
+    </description>
+    <arg name="message" type="OCTET_STRING" description="the string to append to the current message" />
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server id" functionName="id" group="plugin-messaging-server">
+    <description>
+      Set the message id for the message contained in the messaging plugin
+    </description>
+    <arg name="messageId" type="INT32U" description="message id" />
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server time" functionName="time" group="plugin-messaging-server">
+    <description>
+    </description>
+    <arg name="time" type="INT32U" description="start time" />
+    <arg name="duration" type="INT16U" description="duration" />
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server relative-time" functionName="relativeTime" group="plugin-messaging-server">
+    <description>
+      Set the relative time on the message
+    </description>
+    <arg name="time" type="INT32U" description="number of minutes to add to the message time above the current time" />
+    <arg name="duration" type="INT32U" description="duration in minutes for the message to be valid" />
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server tramsmission normal" functionName="transmission" group="plugin-messaging-server">
+    <description>
+      normal transmission
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server transmission ipan" functionName="transmission" group="plugin-messaging-server">
+    <description>
+      Set the messages message control bit mask to EMBER_ZCL_MESSAGING_CONTROL_TRANSMISSION_NORMAL_AND_ANONYMOUS.
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server transmission both" functionName="transmission" group="plugin-messaging-server">
+    <description>
+      Set the messages  
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server low" functionName="importance" group="plugin-messaging-server">
+    <description>
+      Set the message importance to low
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server medium" functionName="importance" group="plugin-messaging-server">
+    <description>
+      Set the message importance to medium
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server high" functionName="importance" group="plugin-messaging-server">
+    <description>
+      Set the message importance to high
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server critical" functionName="importance" group="plugin-messaging-server">
+    <description>
+      Set the message importance to critical
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server confirm not" functionName="confirm" group="plugin-messaging-server">
+    <description>
+      Set the message confirmation to not used
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server confirm req" functionName="confirm" group="plugin-messaging-server">
+    <description>
+      Set message confirmation to required
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server valid" functionName="valid" group="plugin-messaging-server">
+    <description>
+      Set the message validity to valid
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server invalid" functionName="valid" group="plugin-messaging-server">
+    <description>
+      Set the message validity to invalid
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server display" functionName="display" group="plugin-messaging-server">
+    <description>
+      Display the message
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server cancel" functionName="cancel" group="plugin-messaging-server">
+    <description>
+      Cancel the message
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-server print" functionName="print" group="plugin-messaging-server">
+    <description>
+      Print the message info.
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+</cli>

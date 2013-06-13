@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="COLOR_CONTROL_IS_COLOR_SUPPORTED" name="Is Color Supported" returnType="boolean">
+    <description>
+      This function will be called to determine whether a color is supported by a device. The color will be specified by hue and saturation.
+    </description>
+    <arg name="hue"        type="int8u"/>
+    <arg name="saturation" type="int8u"/>
+    <codeForStub>
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

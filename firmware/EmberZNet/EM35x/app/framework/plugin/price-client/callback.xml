@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="PRICE_STARTED" name="Price Started" returnType="void">
+    <description> 
+      This function is called by the Price client plugin whenever a price starts.
+    </description>
+    <arg name="price" type="EmberAfPluginPriceClientPrice *" description="The price that has started." />
+    <codeForStub />
+  </function>
+  <function id="PRICE_EXPIRED" name="Price Expired" returnType="void">
+    <description> 
+      This function is called by the Price client plugin whenever a price expires.
+    </description>
+    <arg name="price" type="EmberAfPluginPriceClientPrice *" description="The price that has expired." />
+    <codeForStub />
+  </function>
+</callback>

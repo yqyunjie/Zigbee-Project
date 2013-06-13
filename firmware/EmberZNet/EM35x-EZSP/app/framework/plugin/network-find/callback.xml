@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="NETWORK_FIND_FINISHED" name="Finished" returnType="void">
+    <description>
+      This callback is fired when the network-find plugin is finished with the forming or joining process.  The result of the operation will be returned in the status parameter.
+    </description>
+    <arg name="status" type="EmberStatus"/>
+    <codeForStub>
+    </codeForStub>
+  </function>
+  <function id="GET_RADIO_POWER_FOR_CHANNEL" name="Get Radio Power For Channel" returnType="int8s">
+    <description>
+      This callback is called by the framework when it is setting the radio power during the discovery process. The framework will set the radio power depending on what is returned by this callback.
+    </description>
+    <arg name="channel" type="int8u" />
+    <codeForStub>
+      return EMBER_AF_PLUGIN_NETWORK_FIND_RADIO_TX_POWER;
+    </codeForStub>
+  </function>
+  <function id="JOIN" name="Join" returnType="boolean">
+    <description>
+      This callback is called by the plugin when a joinable network has been found.  If the application returns TRUE, the plugin will attempt to join the network.  Otherwise, the plugin will ignore the network and continue searching.  Applications can use this callback to implement a network blacklist.
+    </description>
+    <arg name="networkFound" type="EmberZigbeeNetwork *" />
+    <arg name="lqi"          type="int8u" />
+    <arg name="rssi"         type="int8s" />
+    <codeForStub>
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

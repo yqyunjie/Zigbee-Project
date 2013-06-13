@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="TUNNELING_SERVER_IS_PROTOCOL_SUPPORTED" name="Is Protocol Supported" returnType="boolean">
+    <description> 
+      This function is called by the Tunneling server plugin whenever a Request Tunnel command is received.  The application should return TRUE if the protocol is supported and FALSE otherwise.
+    </description>
+    <arg name="protocolId"       type="int8u"  description="The identifier of the metering communication protocol for which the tunnel is requested." />
+    <arg name="manufacturerCode" type="int16u" description="The manufacturer code for manufacturer-defined protocols or 0xFFFF in unused." />
+    <codeForStub>
+      return FALSE;
+    </codeForStub>
+  </function>
+  <function id="TUNNELING_SERVER_TUNNEL_OPENED" name="Tunnel Opened" returnType="void">
+    <description> 
+      This function is called by the Tunneling server plugin whenever a tunnel is opened.  Clients may open tunnels by sending a Request Tunnel command.
+    </description>
+    <arg name="tunnelId"                    type="int16u"  description="The identifier of the tunnel that has been opened." />
+    <arg name="protocolId"                  type="int8u"   description="The identifier of the metering communication protocol for the tunnel." />
+    <arg name="manufacturerCode"            type="int16u"  description="The manufacturer code for manufacturer-defined protocols or 0xFFFF in unused." />
+    <arg name="flowControlSupport"          type="boolean" description="TRUE is flow control support is requested or FALSE if it is not." />
+    <arg name="maximumIncomingTransferSize" type="int16u"  description="The maximum incoming transfer size of the client." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_SERVER_DATA_RECEIVED" name="Data Received" returnType="void">
+    <description> 
+      This function is called by the Tunneling server plugin whenever data is received from a client through a tunnel.
+    </description>
+    <arg name="tunnelId" type="int16u"  description="The identifier of the tunnel through which the data was received." />
+    <arg name="data"     type="int8u *" description="Buffer containing the raw octets of the data." />
+    <arg name="dataLen"  type="int16u"  description="The length in octets of the data." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_SERVER_DATA_ERROR" name="Data Error" returnType="void">
+    <description> 
+      This function is called by the Tunneling server plugin whenever a data error occurs on a tunnel.  Errors occur if a device attempts to send data on tunnel that is no longer active or if the tunneling does not belong to the device.
+    </description>
+    <arg name="tunnelId"           type="int16u"                             description="The identifier of the tunnel on which this data error occurred." />
+    <arg name="transferDataStatus" type="EmberAfTunnelingTransferDataStatus" description="The error that occurred." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_SERVER_TUNNEL_CLOSED" name="Tunnel Closed" returnType="void">
+    <description> 
+      This function is called by the Tunneling server plugin whenever a tunnel is closed.  Clients may close tunnels by sending a Close Tunnel command.  The server can preemptively close inactive tunnels after a timeout.
+    </description>
+    <arg name="tunnelId"        type="int16u"  description="The identifier of the tunnel that has been closed." />
+    <arg name="clientInitiated" type="boolean" description="TRUE if the client initiated the closing of the tunnel or FALSE if the server closed the tunnel due to inactivity." />
+    <codeForStub />
+  </function>
+</callback>

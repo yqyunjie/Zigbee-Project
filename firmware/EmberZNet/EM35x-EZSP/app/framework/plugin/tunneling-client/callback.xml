@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="TUNNELING_CLIENT_TUNNEL_OPENED" name="Tunnel Opened" returnType="void">
+    <description> 
+      This function is called by the Tunneling client plugin whenever a tunnel is opened.  Clients may open tunnels by sending a Request Tunnel command.
+    </description>
+    <arg name="tunnelIndex"                 type="int8u"                              description="The index of the tunnel that has been opened." />
+    <arg name="tunnelStatus"                type="EmberAfPluginTunnelingClientStatus" description="The status of the request." />
+    <arg name="maximumIncomingTransferSize" type="int16u"                             description="The maximum incoming transfer size of the server." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_CLIENT_DATA_RECEIVED" name="Data Received" returnType="void">
+    <description> 
+      This function is called by the Tunneling client plugin whenever data is received from a server through a tunnel.
+    </description>
+    <arg name="tunnelIndex" type="int8u"   description="The index of the tunnel through which the data was received." />
+    <arg name="data"        type="int8u *" description="Buffer containing the raw octets of the data." />
+    <arg name="dataLen"     type="int16u"  description="The length in octets of the data." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_CLIENT_DATA_ERROR" name="Data Error" returnType="void">
+    <description> 
+      This function is called by the Tunneling client plugin whenever a data error occurs on a tunnel.  Errors occur if a device attempts to send data on tunnel that is no longer active or if the tunneling does not belong to the device.
+    </description>
+    <arg name="tunnelIndex"        type="int8u"                              description="The index of the tunnel on which this data error occurred." />
+    <arg name="transferDataStatus" type="EmberAfTunnelingTransferDataStatus" description="The error that occurred." />
+    <codeForStub />
+  </function>
+  <function id="TUNNELING_CLIENT_TUNNEL_CLOSED" name="Tunnel Closed" returnType="void">
+    <description> 
+      This function is called by the Tunneling client plugin whenever a server sends a notification that it preemptively closed an inactive tunnel.  Servers are not required to notify clients of tunnel closures, so applications cannot rely on this callback being called for all tunnels.
+    </description>
+    <arg name="tunnelIndex" type="int8u" description="The index of the tunnel that has been closed." />
+    <codeForStub />
+  </function>
+</callback>

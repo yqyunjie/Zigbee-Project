@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-ota-server" name="Plugin Commands: OTA Server">
+    <description>
+      The OTA Server plugin provides Over-the-air commands for upgrading firmware and
+      downloading specific files on the server side.
+    </description>
+  </group>
+  <command cli="plugin ota-server notify" functionName="otaImageNotifyCommand" group="plugin-ota-server">
+    <description>
+      sends an OTA Image Notify message to the specified destination indicating a new version of an image is available for download. All fields in the CLI command must be specified. However if the payload type is less than 3, those values will be ignored and not included in   the message.
+    </description>
+    <arg name="destination" type="INT16U" description="The node ID (can be a broadcast address) to which this OTA Notify message should be sent" />
+    <arg name="endpoint" type="INT8U" description="Target endpoint for the OTA Notify message (only really meaningful for non-broadcast target destination)." />
+    <arg name="payloadType" type="INT8U" description="Used to specify which parameters you want included in the OTA Notify cluster command payload (0 = jitter value only; 1 = jitter and manufacturer id; 2 = jitter, mfr id, and device id; 3 = jitter, mfr id, device id, and     firmware version)" />
+    <arg name="jitter" type="INT8U" description="Corresponds to QueryJitter parameter in the OTA Upgrade cluster specification. The parameter indicates whether the client receiving Image Notify Command should send in Query Next Image Request command or not." />
+    <arg name="manuf-id" type="INT16U" description="Manufacturer ID for the image being advertised (should match the mfr ID in the OTA file's header)" />
+    <arg name="imageTypeId" type="INT16U" description="Image type ID for the image being advertised (should match the image type ID from the OTA file's header)" />
+    <arg name="version" type="INT16U" description="Firmware version of the image being advertised (should match the version from the OTA file's header)" />
+  </command>
+  <command cli="plugin ota-server upgrade" functionName="otaSendUpgradeCommand" group="plugin-ota-server">
+    <description>
+      Instruct a device to upgrade now.
+    </description>
+    <arg name="nodeId" type="INT16U" description="device id for the image" />
+    <arg name="endpoint" type="INT8U" description="software version for the image" />
+  </command>
+  <command cli="plugin ota-server policy print" functionName="emAfOtaServerPolicyPrint" group="plugin-ota-server">
+    <description>
+      Prints the polices used by the OTA Server Policy Plugin
+    </description>
+  </command>
+  <command cli="plugin ota-server policyquery" functionName="setPolicy" group="plugin-ota-server">
+    <description>
+      Sets the policy used by the OTA Server Policy Plugin when it receives a query request from the client.
+    </description>
+    <arg name="policyValue" type="INT8U" description="0: Upgrade if server has newer (default), 1: Downgrade if server has older, 2:
+      Reinstall if server has same, 3: No next version (no next image is available for download)" />
+  </command>
+  <command cli="plugin ota-server policyupgrade" functionName="setPolicy" group="plugin-ota-server">
+    <description>
+      Sets the policy used by the OTA Server Policy Plugin when it receives an upgrade end request
+    </description>
+    <arg name="policyValue" type="INT8U" description="0: Upgrade Now (default), 1: Upgrade in 2
+      minutes, 2: Ask me later to upgrade, 3: Abort Upgrade (send default response)" />
+  </command>
+  <command cli="plugin ota-server policypage-req-miss" functionName="setPolicy"
+    group="plugin-ota-server">
+    <description>
+    </description>
+  </command>
+  <command cli="plugin ota-server policypage-req-sup"
+    functionName="setPolicy"
+    group="plugin-ota-server">
+    <description>
+    </description>
+  </command>
+</cli>

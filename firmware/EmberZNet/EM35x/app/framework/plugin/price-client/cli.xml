@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-price-client" name="Plugin Commands: Price Client">
+    <description>
+      The identify plugin contributes a CLI command to the application framework to be used for printing information related to identification. 
+    </description>
+  </group>
+  <command cli="plugin price-client print" functionName="print" group="plugin-price-client">
+    <description>
+      Print the price info for the provided endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The relevant endpoint" />
+  </command>
+</cli>

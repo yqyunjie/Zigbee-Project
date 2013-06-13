@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="REPORTING_CONFIGURED" name="Configured" returnType="EmberAfStatus">
+    <description>
+      This callback is called by the Reporting plugin whenever a reporting entry is configured, including when entries are deleted or updated.  The application can use this callback for scheduling readings or measurements based on the minimum and maximum reporting interval for the entry.  The application should return EMBER_ZCL_STATUS_SUCCESS if it can support the configuration or an error status otherwise.  Note: attribute reporting is required for many clusters and attributes, so rejecting a reporting configuration may violate ZigBee specifications.
+    </description>
+    <arg name="entry" type="const EmberAfPluginReportingEntry *" />
+    <codeForStub>
+      return EMBER_ZCL_STATUS_SUCCESS;
+    </codeForStub>
+  </function>
+</callback>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="ZLL_COMMISSIONING_INITIAL_SECURITY_STATE" name="Initial Security State" returnType="void">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to determine the initial security state to be used by the device.  The application must populate the ::EmberZllInitialSecurityState structure with a configuration appropriate for the network being formed, joined, or started.  Once the device forms, joins, or starts a network, the same security configuration will remain in place until the device leaves the network.
+    </description>
+    <arg name="securityState" type="EmberZllInitialSecurityState *" description="The security configuration to be populated by the application and ultimately set in the stack." />
+    <codeForStub />
+  </function>
+  <function id="ZLL_COMMISSIONING_TOUCH_LINK_COMPLETE" name="Touch Link Complete" returnType="void">
+    <description> 
+      This function is called by the ZLL Commissioning plugin when touch linking completes.
+    </description>
+    <arg name="networkInfo"                  type="const EmberZllNetwork *"           description="The ZigBee and ZLL-specific information about the network and target." />
+    <arg name="deviceInformationRecordCount" type="int8u"                             description="The number of sub-device information records for the target." />
+    <arg name="deviceInformationRecordList"  type="const EmberZllDeviceInfoRecord *"  description="The list of sub-device information records for the target." />
+    <codeForStub />
+  </function>
+  <function id="ZLL_COMMISSIONING_TOUCH_LINK_FAILED" name="Touch Link Failed" returnType="void">
+    <description> 
+      This function is called by the ZLL Commissioning plugin if touch linking fails.
+    </description>
+    <arg name="status" type="EmberAfZllCommissioningStatus" description="The reason the touch link failed." />
+    <codeForStub />
+  </function>
+  <function id="ZLL_COMMISSIONING_GROUP_IDENTIFIER_COUNT" name="Group Identifier Count" returnType="int8u">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to determine the number of group identifiers in use by a specific endpoint on the device.  The total number of group identifiers on the device, which are shared by all endpoints, is defined by ::EMBER_ZLL_GROUP_ADDRESSES.
+    </description>
+    <arg name="endpoint" type="int8u" description="The endpoint for which the group identifier count is requested." />
+    <codeForStub>
+      return 0x00;
+    </codeForStub>
+  </function>
+  <function id="ZLL_COMMISSIONING_GROUP_IDENTIFIER" name="Group Identifier" returnType="boolean">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to obtain information about the group identifiers in use by a specific endpoint on the device.  The application should populate the record with information about the group identifier and return TRUE.  If no information is available for the given endpoint and index, the application should return FALSE.
+    </description>
+    <arg name="endpoint" type="int8u"                                                 description="The endpoint for which the group identifier is requested." />
+    <arg name="index"    type="int8u"                                                 description="The index of the group on the endpoint." />
+    <arg name="record"   type="EmberAfPluginZllCommissioningGroupInformationRecord *" description="The group information record." />
+    <codeForStub>
+      return FALSE;
+    </codeForStub>
+  </function>
+  <function id="ZLL_COMMISSIONING_ENDPOINT_INFORMATION_COUNT" name="Endpoint Information Count" returnType="int8u">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to determine the number of remote endpoints controlled by a specific endpoint on the local device.
+    </description>
+    <arg name="endpoint" type="int8u" description="The local endpoint for which the remote endpoint information count is requested." />
+    <codeForStub>
+      return 0x00;
+    </codeForStub>
+  </function>
+  <function id="ZLL_COMMISSIONING_ENDPOINT_INFORMATION" name="Endpoint Information" returnType="boolean">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to obtain information about the remote endpoints controlled by a specific endpoint on the local device.  The application should populate the record with information about the remote endpoint and return TRUE.  If no information is available for the given endpoint and index, the application should return FALSE.
+    </description>
+    <arg name="endpoint" type="int8u"                                                    description="The local endpoint for which the remote endpoint information is requested." />
+    <arg name="index"    type="int8u"                                                    description="The index of the remote endpoint information on the local endpoint." />
+    <arg name="record"   type="EmberAfPluginZllCommissioningEndpointInformationRecord *" description="The endpoint information record." />
+    <codeForStub>
+      return FALSE;
+    </codeForStub>
+  </function>
+  <function id="ZLL_COMMISSIONING_IDENTIFY" name="Identify" returnType="void">
+    <description> 
+      This function is called by the ZLL Commissioning plugin to notify the application that it should take an action to identify itself.  This typically occurs when an Identify Request is received via inter-PAN messaging.
+    </description>
+    <arg name="duration" type="int16u" description="If the duration is zero, the device should exit identify mode.  If the duration is 0xFFFF, the device should remain in identify mode for the default time.  Otherwise, the duration specifies the length of time in seconds that the device should remain in identify mode." />
+    <codeForStub />
+  </function>
+  <function id="ZLL_COMMISSIONING_RESET_TO_FACTORY_NEW" name="Reset To Factory New" returnType="void">
+    <description>
+      This function is called by the ZLL Commissioning plugin when a request to reset to factory new is received.  The plugin will leave the network, reset attributes managed by the framework to their default values, and clear the group and scene tables.  The application should preform any other necessary reset-related operations in this callback, including resetting any externally-stored attributes.
+    </description>
+    <codeForStub />
+  </function>
+  <function id="JOIN" name="Join" returnType="boolean">
+    <description>
+      This callback is called by the ZLL Commissioning plugin when a joinable network has been found.  If the application returns TRUE, the plugin will attempt to join the network.  Otherwise, the plugin will ignore the network and continue searching.  Applications can use this callback to implement a network blacklist.  Note that this callback is not called during touch linking.
+    </description>
+    <arg name="networkFound" type="EmberZigbeeNetwork *" />
+    <arg name="lqi"          type="int8u" />
+    <arg name="rssi"         type="int8s" />
+    <codeForStub>
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

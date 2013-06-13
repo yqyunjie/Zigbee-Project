@@ -1,0 +1,260 @@
+#ISD App Configuration:3.1
+# ISD version: 1.0.0
+#  Output directory which is used as a root for all generated
+#  files. The actual files relative to that directory are
+#  defined by individual file name.
+GenerationDirectory:__SAMPLE_APPLICATION__
+
+#  Identified of a stack descriptor used for this
+#  configuration. This should not be changed manually, unless
+#  you really know what you are doing.
+ConfiguratorID:auto-EM35X
+
+#  Unique identifier for this device. This string should be in
+#  a form of a C identifier, as it will be used in both
+#  generated variable, macros, as well as file names. You
+#  should generally not use characters which are not valid
+#  characters in a C identifier here.
+DeviceName:SeSampleEsi
+
+#  Type of the endpoint. Each endpoint implement one endpoint
+#  type. There can be one or more endpoint types, regardless of
+#  number of actual endpoints.
+EndpointType:Primary,1280
+
+#  The ZCL device that this particular endpoint is
+#  implementing.
+DeviceType:Primary,SE-ESP
+
+#  Network configuration.  Each endpoint belongs to a single
+#  network configuration.  There can be one or more network
+#  configurations.
+Network:*Primary,ZA_COORDINATOR,SE_TEST
+
+#  Points to the real ECC library that you wish to link
+#  against.
+RealECCPath:
+
+#  A path, relative to the root of the stack which indicates
+#  where to find a custom token header. This file will be
+#  included in the frameworks main token header located at
+#  app/framework/util/tokens.h
+TokenPath:
+
+#  Lists the channels that this application will be configured
+#  to use.
+Channels:11
+
+#  Definitions of individual endpoints. For each endpoint the
+#  endpoint number (1-254) is listed, as well as the endpoint
+#  type that this endpoint will serve.
+ConfiguredEndpoints:*1&-1&-1&0&Primary&Primary
+
+#  A single specification version for each profile defining the
+#  max version of the spec supported by this configuration.
+SpecVersions:
+
+#  In case of a network coprocessor, this lists a host
+#  processor used.
+Host:unknown
+
+#  Ember network processor targeted for this application.
+Platform:em357
+
+#  Enable callbacks.
+Callbacks:STACK_STATUS:MAIN_TICK
+
+#  Any customer-specific general purpose custom events.
+CustomEvents:priceEvent,priceEventChange
+
+#  If bindings are enabled then this is the maximum number of
+#  supported bindings.
+NumberOfBindings:2
+
+#  The size of the stack address table which will be used by
+#  the stack to maintain IEEE to ZigBee short id mappings.
+AddressTableSize:2
+
+#  The size of the portion of the address table used by the
+#  trust center as an address cache. The total size of the
+#  address table will be equal to this value plus the size of
+#  the address table set in the AddressTableSize.
+TrustCenterCacheSize:2
+
+#  Maximum number of supported reported attributes.
+ReportTableSize:5
+
+#  The mode of the link key handling on a trust center.
+LinkKeyMode:2
+
+#  If not using multiple endpoint support, this value contains
+#  the default endpoint. With multiple endpoint support, this
+#  number is ignored.
+Endpoint:10
+
+#  Version of this device.
+DeviceVersion:0
+
+#  Master endpoint which contains global information.
+DefaultDestinationEndpoint:10
+
+#  Profile Id used for the application.
+ProfileId:-1
+
+#  Device Id used for the application.
+DeviceId:-1
+
+#  The largest size for a fragment buffer.
+FragmentationMaxSize:255
+
+#  Size of the table for source routing.
+SourceRouteTableSize:7
+
+#  Default response policy.
+DefaultResponsePolicy:0
+
+#  Bootloader configuration.
+Bootloader:2
+
+#  The level of debugging supported.
+DebugLevel:1
+
+#  Configuration of command-line interface.
+CLIMode:2
+
+#  If key switching is enabled, this value describes the kind
+#  of switch type that the application does.
+KeySwitchType:0
+
+#  If key switch is time based, then this value contains the
+#  number of secconds between switches.
+KeySwitchInterval:604800
+
+#  The type of key generation, random or ping-pong.
+KeyGenerationType:0
+
+#  Configuration of heartbeat.
+HeartbeatLed:2
+
+#  Configuration of first application button.
+FirstButton:1
+
+#  Configuration of second application button.
+SecondButton:2
+
+#  If this option is set to true, standard reporting is
+#  enabled.
+EnableStandardReporting:false
+
+#  If the device needs to perform inter-PAN sends, then this
+#  option should be enabled.
+EnableInterPanSend:false
+
+#  If the device needs to perform inter-PAN receives, then this
+#  option should be enabled.
+EnableInterPanReceive:false
+
+#  Enable serial commands for ZDO.
+EnableZdoSerialCommands:false
+
+#  Enable this option if you wish to enable device bindings.
+EnableBindings:true
+
+#  Turn this option on, if end-device binding is enabled.
+EnableEndDeviceBind:false
+
+#  Enables the statistics receiving.
+EnableReceiveStatistics:false
+
+#  If true, then command discovery commands are supported.
+SupportCommandDiscovery:false
+
+#  Selects whether application will use real ECC library.
+UseRealECC:false
+
+#  Enable preconfigured keys for security.
+PreconfiguredKeyEnabled:false
+
+#  Enable network key.
+NetworkKeyEnabled:false
+
+#  If this option is turned on, then appBuilder will
+#  automatically generate the files, immediatelly upon saving
+#  the ISC file.
+AutoGenerate:false
+
+#  Enable key switching.
+EnableKeySwitch:false
+
+#  Use this setting to turn on fragmentation.
+FragmentationEnable:false
+
+#  Enables concentrator support
+EnableConcentrator:true
+
+#  If true, then this concentrator is low ram, otherwise high
+#  ram
+LowRamConcentrator:true
+
+#  If this option is set to true, then MFG_INSTALL_CODE token
+#  is used for setting the security install code.
+UseSeInstallCodes:false
+
+#  If this option is turned on, then the code will enable the
+#  checking of the attributes.
+EnableAttributeRangeChecking:false
+
+#  Enable application handling of supported Zigbee Device
+#  Object messages.
+ReceiveSupportedZdoRequests:false
+
+#  Enable application handling of unsupported Zigbee Device
+#  Object messages.
+HandleUnsupportedZdoRequests:false
+
+#  Enable application handling of Zigbee Device Object requests
+#  related to endpoints.
+HandleEndpointZdoRequests:false
+
+#  Enable application handling of Zigbee Device Object requests
+#  related to bindings.
+HandleBindingZdoRequests:false
+
+#  Use token for TX power mode.
+TxPowerModeUseToken:true
+
+#  Enable boost power mode.
+BoostMode:false
+
+#  Enable the alternate transmitter output.
+AlternatePowerMode:false
+
+#  Actual preconfigured key, if it is enabled.
+PreconfiguredKey:56777777777777777777777777777777
+
+#  Actual network key.
+NetworkKey:12333333333333333333333333333333
+
+#  Actual second network key.
+NetworkKey2:ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+# Setup configurations
+{setupId:serial
+em357=0,true,*,*,*,fifo,128,*1,true,115200,*,*,fifo,128
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+}
+{setupId:boardHeader
+}
+{setupId:additionalFiles
+}
+{setupId:macros
+}
+{setupId:halOptions
+}
+#  List of plugins that the configuration uses
+AppPlugins:concentrator,identify,identify-feedback,network-find,key-establishment,messaging-server,partner-link-key-exchange,price-server,smart-energy-registration,time-server,button-joining
+

@@ -1,0 +1,1487 @@
+<?xml version="1.0"?>
+<configurator>
+  <!-- These extensions are based on the additions in 115474r09.  See bugs
+       12693 (optional fields in commands) and 13487 (BITMAP56 data types).
+  -->
+
+  <!-- ON/OFF EXTENSIONS -->
+  <clusterExtension code="0x0006">
+    <attribute side="server" code="0x0001" define="MAX_ON_DURATION"        type="INT16U" min="0x0000" max="0xFFFF" default="0xFFFF" writable="false" optional="true" introducedIn="ha-1.2-11-5474-57">max on duration</attribute>
+    <attribute side="server" code="0x0002" define="CURRENT_ON_DURATION"    type="INT16U" min="0x0000" max="0xFFFF" default="0x0000" writable="true"  optional="true" introducedIn="ha-1.2-11-5474-57">current on duration</attribute>
+	<command source="client" code="0x03" name="OnWithDuration" optional="true">
+      <description>
+        The On with Duration command is the only means to enable an On with an associated duration. It is accepted only by a device that implements the attributes and command, has a MaxOnDuration attribute set to a value greater than 0x0000, and has the On/Off attribute currently set to Off.
+      </description>
+      <arg name="onDuration" type="INT16U" />
+    </command>
+  </clusterExtension>
+
+  <!-- LEVEL CONTROL -->
+  <clusterExtension code="0x0008">
+    <attribute side="server" code="0x0012" define="ON_TRANSITION_TIME"  type="INT16U" min="0x0000" max="0xFFFE" writable="true" optional="true" introducedIn="ha-1.2-11-5474-15">on transition time</attribute>
+    <attribute side="server" code="0x0013" define="OFF_TRANSITION_TIME" type="INT16U" min="0x0000" max="0xFFFE" writable="true" optional="true" introducedIn="ha-1.2-11-5474-15">off transition time</attribute>
+    <attribute side="server" code="0x0014" define="DEFAULT_MOVE_RATE"   type="INT16U" min="0x0000" max="0xFFFE" writable="true" optional="true" introducedIn="ha-1.2-11-5474-15">default move rate</attribute>
+  </clusterExtension>
+
+
+  <!-- POWER PROFILE -->
+  <bitmap name="EnergyFormatting" type="BITMAP8">
+    <field name="NumberOfDigitsToTheRightOfTheDecimalPoint" mask="0x07" />
+    <field name="NumberOfDigitsToTheLeftOfTheDecimalPoint"  mask="0x78" />
+    <field name="SuppressLeadingZeros"                      mask="0x80" />
+  </bitmap>
+  <struct name="ScheduledPhase">
+    <item name="energyPhaseId" type="INT8U"  />
+    <item name="scheduledTime" type="INT16U" />
+  </struct>
+  <struct name="TransferredPhase">
+    <item name="energyPhaseId"      type="INT8U"  />
+    <item name="macroPhaseId"       type="INT8U"  />
+    <item name="expectedDuration"   type="INT16U" />
+    <item name="peakPower"          type="INT16U" />
+    <item name="energy"             type="INT16U" />
+    <item name="maxActivationDelay" type="INT16U" />
+  </struct>
+  <struct name="PowerProfileRecord">
+    <item name="powerProfileId"    type="INT8U" />
+    <item name="energyPhaseId"     type="INT8U" />
+    <item name="powerProfileState" type="ENUM8" />
+  </struct>
+  <enum name="PowerProfileState" type="ENUM8">
+    <item name="PowerProfileWaitingToStart" value="0x01" />
+    <item name="PowerProfileStarted"        value="0x02" />
+    <item name="EnergyPhaseRunning"         value="0x03" />
+    <item name="EnergyPhaseEnded"           value="0x04" />
+    <item name="EnergyPhaseWaitingToStart"  value="0x05" />
+    <item name="EnergyPhaseStarted"         value="0x06" />
+    <item name="PowerProfileEnded"          value="0x07" />
+    <item name="ProfileReadyForScheduling"  value="0x08" />
+    <item name="PowerProfileScheduled"      value="0x09" />
+  </enum>
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Power Profile</name>
+    <domain>General</domain>
+    <description>This cluster provides an interface for transferring power profile information from a device (e.g. Whitegood) to a controller (e.g. the Home Gateway).  The Power Profile transferred can be solicited by client side (request command) or can be notified directly from the device (server side).</description>
+    <code>0x001A</code>
+    <define>POWER_PROFILE_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="TOTAL_PROFILE_NUM"   type="INT8U"   min="0x01" max="0xFE" writable="false"                optional="false">total profile num</attribute>
+    <attribute side="server" code="0x0001" define="MULTIPLE_SCHEDULING" type="BOOLEAN" min="0x00" max="0x01" writable="false" default="0x00" optional="false">multiple scheduling</attribute>
+    <attribute side="server" code="0x0002" define="ENERGY_FORMATTING"   type="BITMAP8" min="0x00" max="0xFF" writable="false" default="0x01" optional="false">energy formatting</attribute>
+    <attribute side="server" code="0x0003" define="ENERGY_REMOTE"       type="BOOLEAN" min="0x00" max="0x01" writable="false" default="0x00" optional="false">energy remote</attribute>
+	<attribute side="server" code="0x0004" define="SCHEDULE_MODE"       type="BITMAP8" min="0x00" max="0xFF" writable="true"  default="0x00" optional="false">schedule mode</attribute>
+	<command source="client" code="0x00" name="PowerProfileRequest" optional="false">
+      <description>
+        The PowerProfileRequest Command is generated by a device supporting the client side of the Power Profile cluster in order to request the Power Profile of a server device.
+      </description>
+      <arg name="powerProfileId" type="INT8U" />
+    </command>
+    <command source="client" code="0x01" name="PowerProfileStateRequest" optional="false">
+      <description>
+        The PowerProfileStateRequest Command is generated in order to retrieve the identifiers of current Power Profiles.
+      </description>
+    </command>
+    <command source="client" code="0x02" name="GetPowerProfilePriceResponse" optional="false">
+      <description>
+        The GetPowerProfilePriceResponse command allows a device (client) to communicate the cost associated to the selected Power Profile to another device (server) requesting it.
+      </description>
+      <arg name="powerProfileId"     type="INT8U"  />
+      <arg name="currency"           type="INT16U" />
+      <arg name="price"              type="INT32U" />
+      <arg name="priceTrailingDigit" type="INT8U"  />
+    </command>
+    <command source="client" code="0x03" name="GetOverallSchedulePriceResponse" optional="false">
+      <description>
+        The GetOverallSchedulePriceResponse command allows a device (client) to communicate the overall cost associated to all Power Profiles scheduled to another device (server) requesting it.
+      </description>
+      <arg name="currency"           type="INT16U" />
+      <arg name="price"              type="INT32U" />
+      <arg name="priceTrailingDigit" type="INT8U"  />
+    </command>
+    <command source="client" code="0x04" name="EnergyPhasesScheduleNotification" optional="false">
+      <description>
+        The EnergyPhasesScheduleNotification Command is generated by a device supporting the client side of the Power Profile cluster in order to schedule the start of the selected Power Profile and its phases.
+      </description>
+      <arg name="powerProfileId"       type="INT8U"                       />
+      <arg name="numOfScheduledPhases" type="INT8U"                       />
+      <arg name="scheduledPhases"      type="ScheduledPhase" array="true" />
+    </command>
+    <command source="client" code="0x05" name="EnergyPhasesScheduleResponse" optional="false">
+      <description>
+        This command is generated by the client side of Power Profile cluster as a reply to the EnergyPhasesScheduleRequest command.
+      </description>
+      <arg name="powerProfileId"       type="INT8U"                       />
+      <arg name="numOfScheduledPhases" type="INT8U"                       />
+      <arg name="scheduledPhases"      type="ScheduledPhase" array="true" />
+    </command>
+    <command source="client" code="0x06" name="PowerProfileScheduleConstraintsRequest" optional="false">
+      <description>
+        The PowerProfileScheduleConstraintsRequest Command is generated by a device supporting the client side of the Power Profile cluster in order to request the constraints -if set- of Power Profile of a client device, in order to set the proper boundaries for the scheduling when calculating the schedules.
+      </description>
+      <arg name="powerProfileId" type="INT8U" />
+    </command>
+    <command source="client" code="0x07" name="EnergyPhasesScheduleStateRequest" optional="false">
+      <description>
+        The EnergyPhasesScheduleStateRequest  Command is generated by a device supporting the client side of the Power Profile cluster to check the states of the scheduling of a power profile, which is supported in the device implementing the server side of Power Profile cluster.
+      </description>
+      <arg name="powerProfileId" type="INT8U" />
+    </command>
+    <command source="client" code="0x08" name="GetPowerProfilePriceExtendedResponse" optional="false">
+      <description>
+        The Get Power Profile Price Extended Response command allows a device (client) to communicate the cost associated to all Power Profiles scheduled to another device (server) requesting it according to the specific options contained in the Get Power Profile Price Extended Response.
+      </description>
+    </command>
+    <command source="server" code="0x00" name="PowerProfileNotification" optional="false">
+      <description>
+        The PowerProfileNotification Command is generated by a device supporting the server side of the Power Profile cluster in order to send the information of the specific parameters (such as Peak power and others) belonging to each phase.
+      </description>
+      <arg name="totalProfileNum"        type="INT8U"                         />
+      <arg name="powerProfileId"         type="INT8U"                         />
+      <arg name="numOfTransferredPhases" type="INT8U"                         />
+      <arg name="transferredPhases"      type="TransferredPhase" array="true" />
+    </command>
+    <command source="server" code="0x01" name="PowerProfileResponse" optional="false">
+      <description>
+        This command is generated by the server side of Power Profile cluster as a reply to the PowerProfileRequest command.
+      </description>
+      <arg name="totalProfileNum"        type="INT8U"                         />
+      <arg name="powerProfileId"         type="INT8U"                         />
+      <arg name="numOfTransferredPhases" type="INT8U"                         />
+      <arg name="transferredPhases"      type="TransferredPhase" array="true" />
+    </command>
+    <command source="server" code="0x02" name="PowerProfileStateResponse" optional="false">
+      <description>
+        The PowerProfileStateResponse command allows a device (server) to communicate its current Power Profile(s) to another device (client) that previously requested them.
+      </description>
+      <arg name="powerProfileCount"   type="INT8U"                           />
+      <arg name="powerProfileRecords" type="PowerProfileRecord" array="true" />
+    </command>
+    <command source="server" code="0x03" name="GetPowerProfilePrice" optional="true">
+      <description>
+        The GetPowerProfilePrice Command is generated by the server (e.g. White goods) in order to retrieve the cost associated to a specific Power profile.
+      </description>
+      <arg name="powerProfileId" type="INT8U" />
+    </command>
+    <command source="server" code="0x04" name="PowerProfilesStateNotification" optional="false">
+      <description>
+        The PowerProfileStateNotification Command is generated by the server (e.g. White goods) in order to update the state of the power profile and the current energy phase.
+      </description>
+      <arg name="powerProfileCount"   type="INT8U"                           />
+      <arg name="powerProfileRecords" type="PowerProfileRecord" array="true" />
+    </command>
+    <command source="server" code="0x05" name="GetOverallSchedulePrice" optional="true">
+      <description>
+        The GetOverallSchedulePrice Command is generated by the server (e.g. White goods) in order to retrieve the overall cost associated to all the Power Profiles scheduled by the scheduler (the device supporting the Power Profile cluster client side) for the next 24 hours.
+      </description>
+    </command>
+    <command source="server" code="0x06" name="EnergyPhasesScheduleRequest" optional="false">
+      <description>
+        The EnergyPhasesScheduleRequest Command is generated by the server (e.g. White goods) in order to retrieve from the scheduler (e.g. Home Gateway) the schedule (if available) associated to the specific Power Profile carried in the payload.
+      </description>
+      <arg name="powerProfileId" type="INT8U" />
+    </command>
+    <command source="server" code="0x07" name="EnergyPhasesScheduleStateResponse" optional="false">
+      <description>
+        The EnergyPhasesScheduleStateResponse Command is generated by the server (e.g. White goods) in order to reply to a EnergyPhasesScheduleStateRequest command about the scheduling states that are set in the server side.
+      </description>
+      <arg name="powerProfileId"       type="INT8U"                       />
+      <arg name="numOfScheduledPhases" type="INT8U"                       />
+      <arg name="scheduledPhases"      type="ScheduledPhase" array="true" />
+    </command>
+    <command source="server" code="0x08" name="EnergyPhasesScheduleStateNotification" optional="false">
+      <description>
+        The EnergyPhasesScheduleStateNotification Command is generated by the server (e.g. White goods) in order to notify (un-solicited command) a client side about the scheduling states that are set in the server side.
+      </description>
+      <arg name="powerProfileId"       type="INT8U"                       />
+      <arg name="numOfScheduledPhases" type="INT8U"                       />
+      <arg name="scheduledPhases"      type="ScheduledPhase" array="true" />
+    </command>
+    <command source="server" code="0x09" name="PowerProfileScheduleConstraintsNotification" optional="false">
+      <description>
+        The PowerProfileScheduleConstraintsNotification Command is generated by a device supporting the server side of the Power Profile cluster to notify the client side of this cluster about the imposed constraints and let the scheduler (i.e. the entity supporting the Power Profile cluster client side) to set the proper boundaries for the scheduling.
+      </description>
+      <arg name="powerProfileId" type="INT8U"  />
+      <arg name="startAfter"     type="INT16U" />
+      <arg name="stopBefore"     type="INT16U" />
+    </command>
+    <command source="server" code="0x0A" name="PowerProfileScheduleConstraintsResponse" optional="false">
+      <description>
+        The PowerProfileScheduleConstraintsResponse Command is generated by a device supporting the server side of the Power Profile cluster to reply to a client side of this cluster which sent a PowerProfileScheduleConstraintsRequest.
+      </description>
+      <arg name="powerProfileId" type="INT8U"  />
+      <arg name="startAfter"     type="INT16U" />
+      <arg name="stopBefore"     type="INT16U" />
+    </command>
+	<command source="server" code="0x0B" name="GetPowerProfilePriceExtended" optional="true">
+      <description>
+        The Get Power Profile Price Extended command is generated by the server (e.g., White Goods) in order to retrieve the cost associated to a specific Power profile considering specific conditions described in the option field (e.g., a specific time).
+      </description>
+      <arg name="options" 				type="BITMAP8" />
+      <arg name="powerProfileId"    	type="INT8U"   />
+      <arg name="powerProfileStartTime" type="INT16U"  />
+    </command>
+  </cluster>
+
+  <!-- APPLIANCE CONTROL -->
+  <enum name="ApplianceStatus" type="ENUM8">
+    <item name="Off"                      value="0x01" />
+    <item name="StandBy"                  value="0x02" />
+    <item name="Programmed"               value="0x03" />
+    <item name="ProgrammedWaitingToStart" value="0x04" />
+    <item name="Running"                  value="0x05" />
+    <item name="Pause"                    value="0x06" />
+    <item name="EndProgrammed"            value="0x07" />
+    <item name="Failure"                  value="0x08" />
+    <item name="ProgrammeInterrupted"     value="0x09" />
+    <item name="Idle"                     value="0x0A" />
+    <item name="RinseHold"                value="0x0B" />
+    <item name="Service"                  value="0x0C" />
+    <item name="Superfreezing"            value="0x0D" />
+    <item name="Supercooling"             value="0x0E" />
+    <item name="Superheating"             value="0x0F" />
+  </enum>
+  <bitmap name="RemoteEnableFlagsAndDeviceStatus2" type="BITMAP8">
+    <field name="RemoteEnableFlags"      mask="0x0F" />
+    <field name="DeviceStatus2Structure" mask="0xF0" />
+  </bitmap>
+  <enum name="RemoteEnableFlags" type="ENUM8">
+    <item name="Disabled"                      value="0x00" />
+    <item name="TemporarilyLockedDisabled"     value="0x07" />
+    <item name="EnabledRemoteControl"          value="0x0F" />
+    <item name="EnabledRemoteAndEnergyControl" value="0x01" />
+  </enum>
+  <enum name="DeviceStatus2Structure" type="ENUM8">
+    <item name="IrisSymptomCode" value="0x20" />
+  </enum>
+  <bitmap name="StartTime" type="BITMAP16">
+    <field name="Minutes"      mask="0x003F" />
+    <field name="TimeEncoding" mask="0x00C0" />
+    <field name="Hours"        mask="0xFF00" />
+  </bitmap>
+  <enum name="TimeEncoding" type="ENUM8">
+    <item name="Relative" value="0x00" />
+    <item name="Absolute" value="0x40" />
+  </enum>
+  <enum name="CommandIdentification" type="ENUM8">
+    <item name="Start"                value="0x01" />
+    <item name="Stop"                 value="0x02" />
+    <item name="Pause"                value="0x03" />
+    <item name="StartSuperfreezing"   value="0x04" />
+    <item name="StopSuperfreezing"    value="0x05" />
+    <item name="StartSupercooling"    value="0x06" />
+    <item name="StopSupercooling"     value="0x07" />
+    <item name="DisableGas"           value="0x08" />
+    <item name="EnableGas"            value="0x09" />
+    <item name="EnableEnergyControl"  value="0x0A" />
+    <item name="DisableEnergyControl" value="0x0B" />
+  </enum>
+  <enum name="WarningEvent" type="ENUM8">
+    <item name="Warning1OverallPowerAboveAvailablePowerLevel"                                      value="0x00" />
+    <item name="Warning2OverallPowerAbovePowerThresholdLevel"                                      value="0x01" />
+    <item name="Warning3OverallPowerBackBelowTheAvailablePowerLevel"                               value="0x02" />
+    <item name="Warning4OverallPowerBackBelowThePowerThresholdLevel"                               value="0x03" />
+    <item name="Warning5OverallPowerWillBePotentiallyAboveAvailablePowerLevelIfTheApplianceStarts" value="0x04" />
+  </enum>
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Appliance Control</name>
+    <domain>General</domain>
+    <description>This cluster provides an interface to remotely control and to program household appliances.</description>
+    <code>0x001B</code>
+    <define>APPLIANCE_CONTROL_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="START_TIME"          type="INT16U" min="0x0000"   max="0xFFFF"   writable="false" default="0x0000"   optional="false">start time</attribute>
+    <attribute side="server" code="0x0001" define="FINISH_TIME"         type="INT16U" min="0x0000"   max="0xFFFF"   writable="false" default="0x0000"   optional="false">finish time</attribute>
+    <attribute side="server" code="0x0002" define="REMAINING_TIME"      type="INT16U" min="0x0000"   max="0xFFFF"   writable="false" default="0x0000"   optional="true" >remaining time</attribute>
+    <command source="client" code="0x00" name="ExecutionOfACommand" optional="false">
+      <description>
+        This basic message is used to remotely control and to program household appliances.
+      </description>
+      <arg name="commandId" type="CommandIdentification" />
+    </command>
+    <command source="client" code="0x01" name="SignalState" optional="false">
+      <description>
+        This basic message is used to retrieve Household Appliances status.
+      </description>
+    </command>
+    <command source="client" code="0x02" name="WriteFunctions" optional="true">
+      <description>
+        This basic message is used to set appliance functions, i.e. information regarding the execution of an appliance cycle.  Condition parameters such as start time or finish time information could be provided through this command.
+      </description>
+      <arg name="functionId"       type="INT16U"             />
+      <arg name="functionDataType" type="ENUM8"              />
+      <arg name="functionData"     type="INT8U" array="true" />
+    </command>
+    <command source="client" code="0x03" name="OverloadPauseResume" optional="true">
+      <description>
+        This command shall be used to resume the normal behavior of a household appliance being in pause mode after receiving a Overload Pause command.
+      </description>
+    </command>
+    <command source="client" code="0x04" name="OverloadPause" optional="true">
+      <description>
+        This command shall be used to pause the household appliance as a consequence of an imminent overload event.
+      </description>
+    </command>
+    <command source="client" code="0x05" name="OverloadWarning" optional="true">
+      <description>
+        This basic message is used to send warnings the household appliance as a consequence of a possible overload event, or the notification of the end of the warning state.
+      </description>
+      <arg name="warningEvent" type="WarningEvent" />
+    </command>
+    <command source="server" code="0x00" name="SignalStateResponse" optional="false">
+      <description>
+        This command shall be used to return household appliance status, according to Appliance Status Values and Remote Enable Flags Values.
+      </description>
+      <arg name="applianceStatus"                   type="ApplianceStatus"                   />
+      <arg name="remoteEnableFlagsAndDeviceStatus2" type="RemoteEnableFlagsAndDeviceStatus2" />
+      <arg name="applianceStatus2"                  type="INT24U"                            /> <!-- optional -->
+    </command>
+    <command source="server" code="0x01" name="SignalStateNotification" optional="false">
+      <description>
+        This command shall be used to return household appliance status, automatically when appliance status changes.
+      </description>
+      <arg name="applianceStatus"                   type="ApplianceStatus"                   />
+      <arg name="remoteEnableFlagsAndDeviceStatus2" type="RemoteEnableFlagsAndDeviceStatus2" />
+      <arg name="applianceStatus2"                  type="INT24U"                            /> <!-- optional -->
+    </command>
+  </cluster>
+
+  <!-- POLL CONTROL -->
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Poll Control</name>
+    <domain>General</domain>
+    <description>This cluster provides a mechanism for the management of an end device's MAC Data Poll rate.  For the purposes of this cluster, the term "poll" always refers to the sending of a MAC Data Poll from the end device to the end device's parent.</description>
+    <code>0x0020</code>
+    <define>POLL_CONTROL_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="CHECK_IN_INTERVAL"      type="INT32U" min="0x00000000" max="0x006E0000" writable="true"  default="0x00003840" optional="false">check-in interval</attribute>
+    <attribute side="server" code="0x0001" define="LONG_POLL_INTERVAL"     type="INT32U" min="0x00000004" max="0x006E0000" writable="false" default="0x00000014" optional="false">long poll interval</attribute>
+    <attribute side="server" code="0x0002" define="SHORT_POLL_INTERVAL"    type="INT16U" min="0x0001"     max="0xFFFF"     writable="false" default="0x0002"     optional="false">short poll interval</attribute>
+    <attribute side="server" code="0x0003" define="FAST_POLL_TIMEOUT"      type="INT16U" min="0x0001"     max="0xFFFF"     writable="true"  default="0x0028"     optional="false">fast poll timeout</attribute>
+    <attribute side="server" code="0x0004" define="CHECK_IN_INTERVAL_MIN"  type="INT32U"                                   writable="false" default="0x00000000" optional="true" >check in interval min</attribute>
+    <attribute side="server" code="0x0005" define="LONG_POLL_INTERVAL_MIN" type="INT32U"                                   writable="false" default="0x00000000" optional="true" >long poll interval min</attribute>
+    <attribute side="server" code="0x0006" define="FAST_POLL_TIMEOUT_MAX"  type="INT16U"                                   writable="false" default="0x0000"     optional="true" >fast poll timeout max</attribute>
+    <command source="server" code="0x00" name="CheckIn" optional="false">
+      <description>
+        The Poll Control Cluster server sends out a Check-in command to the devices to which it is paired based on the server's Check-in Interval attribute.
+      </description>
+    </command>
+    <command source="client" code="0x00" name="CheckInResponse" optional="false">
+      <description>
+        The Check-in Response is sent in response to the receipt of a Check-in command.
+      </description>
+      <arg name="startFastPolling" type="BOOLEAN" />
+      <arg name="fastPollTimeout"  type="INT16U"  />
+    </command>
+    <command source="client" code="0x01" name="FastPollStop" optional="false">
+      <description>
+        The Fast Poll Stop command is used to stop the fast poll mode initiated by the Check-in response.
+      </description>
+    </command>
+    <command source="client" code="0x02" name="SetLongPollInterval" optional="true">
+      <description>
+        The Set Long Poll Interval command is used to set the read only Long Poll Interval Attribute.
+      </description>
+      <arg name="newLongPollInterval" type="INT32U" />
+    </command>
+    <command source="client" code="0x03" name="SetShortPollInterval" optional="true">
+      <description>
+        The Set Short Poll Interval command is used to set the read only Short Poll Interval Attribute.
+      </description>
+      <arg name="newShortPollInterval" type="INT16U" />
+    </command>
+  </cluster>
+
+  <!-- DOOR LOCK -->
+  <enum name="DoorLockState" type="ENUM8">
+    <item name="NotFullyLocked" value="0x00" />
+    <item name="Locked"         value="0x01" />
+    <item name="Unlocked"       value="0x02" />
+  </enum>
+  <enum name="DoorLockSoundVolume" type="ENUM8">
+    <item name="Silent" value="0x00" />
+    <item name="Low"    value="0x01" />
+    <item name="High"   value="0x02" />
+  </enum>
+  <enum name="DoorLockType" type="ENUM8">
+    <item name="DeadBolt"       value="0x00" />
+    <item name="Magnetic"       value="0x01" />
+    <item name="Mortise"        value="0x02" />
+    <item name="Rim"            value="0x03" />
+    <item name="Latch Bolt"     value="0x04" />
+    <item name="Cylindrical"    value="0x05" />
+    <item name="Tubular"        value="0x06" />
+    <item name="Interconnected" value="0x07" />
+    <item name="DeadLatch"      value="0x08" />
+    <item name="Other"          value="0x09" />
+  </enum>
+  <enum name="DoorState" type="ENUM8">
+    <item name="Open"             value="0x00" />
+    <item name="Closed"           value="0x01" />
+    <item name="ErrorJammed"      value="0x02" />
+    <item name="ErrorForcedOpen"  value="0x03" />
+    <item name="ErrorUnspecified" value="0x04" />
+  </enum>
+  <enum name="DoorLockOperatingMode" type="ENUM8">
+    <item name="NormalMode"           value="0x00" />
+    <item name="VacationMode"         value="0x01" />
+    <item name="PrivacyMode"          value="0x02" />
+    <item name="NoRfLockOrUnlock"     value="0x03" />
+    <item name="LocalProgrammingMode" value="0x04" />
+    <item name="PassageMode         "          value="0x05" />
+  </enum>
+  <enum name="DoorLockSecurityLevel" type="ENUM8">
+    <item name="NetworkSecurity" value="0x00" />
+    <item name="ApsSecurity"     value="0x01" />
+  </enum>
+  <enum name="DoorLockUserStatus" type="ENUM8">
+    <item name="Available"        value="0x00" />
+    <item name="OccupiedEnabled"  value="0x01" />
+    <item name="OccupiedDisabled" value="0x03" />
+    <item name="NotSupported"     value="0xFF" />
+  </enum>
+  <enum name="DoorLockUserType" type="ENUM8">
+    <item name="Unrestricted"     value="0x00" />
+    <item name="OneTimeUser"      value="0x01" />
+    <item name="UserWithSchedule" value="0x02" />
+    <item name="MasterUser"       value="0x03" />
+    <item name="NotSupported"     value="0xFF" />
+  </enum>
+  <enum name="DoorLockDayOfWeek" type="ENUM8">
+    <item name="Sunday"    value="0x00" />
+    <item name="Monday"    value="0x01" />
+    <item name="Tuesday"   value="0x02" />
+    <item name="Wednesday" value="0x03" />
+    <item name="Thursday"  value="0x04" />
+    <item name="Friday"    value="0x05" />
+    <item name="Saturday"  value="0x06" />
+  </enum>
+  <enum name="DoorLockEventType" type="ENUM8">
+    <item name="Operation"   value="0x00" />
+    <item name="Programming" value="0x01" />
+    <item name="Alarm"       value="0x02" />
+  </enum>
+  <enum name="DoorLockEventSource" type="ENUM8">
+    <item name="Keypad"        value="0x00" />
+    <item name="Rf"            value="0x01" />
+    <item name="Manual"        value="0x02" />
+    <item name="Rfid"          value="0x03" />
+    <item name="Indeterminate" value="0xFF" />
+  </enum>
+  <enum name="DoorLockSetPinOrIdStatus" type="ENUM8">
+    <item name="Success"            value="0x00" />
+    <item name="GeneralFailure"     value="0x01" />
+    <item name="MemoryFull"         value="0x02" />
+    <item name="DuplicateCodeError" value="0x03" />
+  </enum>
+  <enum name="DoorLockOperationEventCode" type="ENUM8">
+    <item name="UnknownOrMfgSpecific"  value="0x00" />
+    <item name="Lock"                  value="0x01" />
+    <item name="Unlock"                value="0x02" />
+    <item name="LockInvalidPinOrId"    value="0x03" />
+    <item name="LockInvalidSchedule"   value="0x04" />
+    <item name="UnlockInvalidPinOrId"  value="0x05" />
+    <item name="UnlockInvalidSchedule" value="0x06" />
+    <item name="OneTouchLock"          value="0x07" />
+    <item name="KeyLock"               value="0x08" />
+    <item name="KeyUnlock"             value="0x09" />
+    <item name="AutoLock"              value="0x0A" />
+    <item name="ScheduleLock"          value="0x0B" />
+    <item name="ScheduleUnlock"        value="0x0C" />
+    <item name="ManualLock"            value="0x0D" />
+    <item name="ManualUnlock"          value="0x0E" />
+  </enum>
+  <enum name="DoorLockProgrammingEventCode" type="ENUM8">
+    <item name="UnknownOrMfgSpecific" value="0x00" />
+    <item name="MasterCodeChanged"    value="0x01" />
+    <item name="PinAdded"             value="0x02" />
+    <item name="PinDeleted"           value="0x03" />
+    <item name="PinChanged"           value="0x04" />
+    <item name="IdAdded"              value="0x05" />
+    <item name="IdDeleted"            value="0x06" />
+  </enum>
+  <clusterExtension code="0x0101" introducedIn="ha-1.2-11-5474-43">
+    <attribute side="server" code="0x0010" define="NUM_LOCK_RECORDS_SUPPORTED"                      type="INT16U"      min="0x0000" max="0xFFFF"            writable="false" default="0x0000" optional="true" introducedIn="ha-1.2-11-5474-43">num lock records supported</attribute>
+    <attribute side="server" code="0x0011" define="NUM_TOTAL_USERS_SUPPORTED"                       type="INT16U"      min="0x0000" max="0xFFFF"            writable="false" default="0x0000" optional="true" introducedIn="ha-1.2-11-5474-43">num total users supported</attribute>
+    <attribute side="server" code="0x0012" define="NUM_PIN_USERS_SUPPORTED"                         type="INT16U"      min="0x0000" max="0xFFFF"            writable="false" default="0x0000" optional="true" introducedIn="ha-1.2-11-5474-43">num PIN users supported</attribute>
+    <attribute side="server" code="0x0013" define="NUM_RFID_USERS_SUPPORTED"                        type="INT16U"      min="0x0000" max="0xFFFF"            writable="false" default="0x0000" optional="true" introducedIn="ha-1.2-11-5474-43">num RFID users supported</attribute>
+    <attribute side="server" code="0x0014" define="NUM_WEEKDAY_SCHEDULES_SUPPORTED_PER_USER"        type="INT8U"       min="0x0000" max="0xFF"              writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">num weekday schedules supported per user</attribute>
+    <attribute side="server" code="0x0015" define="NUM_YEARDAY_SCHEDULES_SUPPORTED_PER_USER"        type="INT8U"       min="0x0000" max="0xFF"              writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">num yearday schedules supported per user</attribute>
+    <attribute side="server" code="0x0016" define="NUM_HOLIDAY_SCHEDULES_SUPPORTED_PER_USER"        type="INT8U"       min="0x0000" max="0xFF"              writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">num holiday schedules supported per user</attribute>
+    <attribute side="server" code="0x0017" define="MAX_PIN_LENGTH"                                  type="INT8U"       min="0x00"   max="0xFF"              writable="false" default="0x08"   optional="true" introducedIn="ha-1.2-11-5474-43">max pin length</attribute>
+    <attribute side="server" code="0x0018" define="MIN_PIN_LENGTH"                                  type="INT8U"       min="0x00"   max="0xFF"              writable="false" default="0x04"   optional="true" introducedIn="ha-1.2-11-5474-43">min pin length</attribute>
+    <attribute side="server" code="0x0019" define="MAX_RFID_CODE_LENGTH"                            type="INT8U"       min="0x00"   max="0xFF"              writable="false" default="0x14"   optional="true" introducedIn="ha-1.2-11-5474-43">max rfid code length</attribute>
+    <attribute side="server" code="0x001A" define="MIN_RFID_CODE_LENGTH"                            type="INT8U"       min="0x00"   max="0xFF"              writable="false" default="0x08"   optional="true" introducedIn="ha-1.2-11-5474-43">min rfid code length</attribute>
+    <attribute side="server" code="0x0020" define="ENABLE_LOGGING"                                  type="BOOLEAN"     min="0x00"   max="0x01"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">enable logging</attribute>
+    <attribute side="server" code="0x0021" define="LANGUAGE"                                        type="CHAR_STRING"                           length="2" writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">language</attribute>
+    <attribute side="server" code="0x0022" define="LED_SETTINGS"                                    type="INT8U"       min="0x00"   max="0xFF"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">led settings</attribute>
+    <attribute side="server" code="0x0023" define="AUTO_RELOCK_TIME"                                type="INT32U"      min="0x00"   max="0xFFFFFFFF"        writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">auto relock time</attribute>
+    <attribute side="server" code="0x0024" define="SOUND_VOLUME"                                    type="INT8U"       min="0x00"   max="0xFF"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">sound volume</attribute>
+    <attribute side="server" code="0x0025" define="OPERATING_MODE"                                  type="ENUM8"       min="0x00"   max="0x05"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">operating mode</attribute>
+    <attribute side="server" code="0x0026" define="SUPPORTED_OPERATING_MODES"                       type="BITMAP16"    min="0x0000" max="0xFFFF"            writable="false" default="0x01"   optional="true" introducedIn="ha-1.2-11-5474-43">supported operating modes</attribute>
+    <attribute side="server" code="0x0027" define="DEFAULT_CONFIGURATION_REGISTER"                  type="BITMAP16"    min="0x0000" max="0xFFFF"            writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">default configuration register</attribute>
+    <attribute side="server" code="0x0028" define="ENABLE_LOCAL_PROGRAMMING"                        type="BOOLEAN"     min="0x00" max="0x01"                writable="true"  default="0x01"   optional="true" introducedIn="ha-1.2-11-5474-43">enable local programming</attribute>
+    <attribute side="server" code="0x0029" define="ENABLE_ONE_TOUCH_LOCKING" type="BOOLEAN" writable="true" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">enable one touch locking</attribute>
+    <attribute side="server" code="0x002A" define="ENABLE_INSIDE_STATUS_LED" type="BOOLEAN" writable="true" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">enable inside status led</attribute>
+    <attribute side="server" code="0x002B" define="ENABLE_PRIVACY_MODE_BUTTON" type="BOOLEAN" writable="true" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">enable privacy mode button</attribute>
+    <attribute side="server" code="0x0030" define="WRONG_CODE_ENTRY_LIMIT"                          type="INT8U"       min="0x00"   max="0xFF"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">wrong code entry limit</attribute>
+    <attribute side="server" code="0x0031" define="USER_CODE_TEMPORARY_DISABLE_TIME"                type="INT8U"       min="0x00"   max="0xFF"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">user code temporary disable time</attribute>
+    <attribute side="server" code="0x0032" define="SEND_PIN_OVER_THE_AIR"                           type="BOOLEAN"     min="0x00"   max="0x01"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">send pin over the air</attribute>
+    <attribute side="server" code="0x0033" define="REQUIRE_PIN_FOR_RF_OPERATION"                    type="BOOLEAN"     min="0x00"   max="0x01"              writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">require pin for rf operation</attribute>
+    <attribute side="server" code="0x0034" define="ZIGBEE_SECURITY_LEVEL"                           type="INT8U"       min="0x00"   max="0xFF"              writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">zigbee security level</attribute>
+    <attribute side="server" code="0x0040" define="DOOR_LOCK_ALARM_MASK"                            type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">alarm mask</attribute>
+    <attribute side="server" code="0x0041" define="KEYPAD_OPERATION_EVENT_MASK"                     type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">keypad operation event mask</attribute>
+    <attribute side="server" code="0x0042" define="RF_OPERATION_EVENT_MASK"                         type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">RF operation event mask</attribute>
+    <attribute side="server" code="0x0043" define="MANUAL_OPERATION_EVENT_MASK"                     type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">manual operation event mask</attribute>
+    <attribute side="server" code="0X0044" define="RFID_OPERATION_EVENT_MASK"                       type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">rfid operation event mask</attribute>
+    <attribute side="server" code="0x0045" define="KEYPAD_PROGRAMMING_EVENT_MASK"                   type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">keypad programming event mask</attribute>
+    <attribute side="server" code="0X0046" define="RF_PROGRAMMING_EVENT_MASK"                       type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">rf programming event mask</attribute>
+    <attribute side="server" code="0X0047" define="RFID_PROGRAMMING_EVENT_MASK"                     type="BITMAP16"    min="0x00"   max="0xFF"              writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-43">rfid programming event mask</attribute>
+    <command source="client" code="0x02" name="Toggle" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Toggles the door lock from its current state to the opposite state locked or unlocked.
+       </description>
+       <arg name="pin" type="CHAR_STRING" introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="client" code="0x03" name="UnlockWithTimeout" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Unlock the door with a timeout. When the timeout expires, the door will automatically re-lock.
+       </description>
+       <arg name="timeoutInSeconds" type="INT16U"      />
+       <arg name="pin"              type="CHAR_STRING" introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="client" code="0x04" name="GetLogRecord" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve a log record at a specified index.
+       </description>
+       <arg name="logIndex" type="INT16U" />
+    </command>
+    <command source="client" code="0x05" name="SetPin" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the PIN for a specified user id.
+       </description>
+       <arg name="userId"     type="INT16U"             />
+       <arg name="userStatus" type="DoorLockUserStatus" />
+       <arg name="userType"   type="DoorLockUserType"   />
+       <arg name="pin"        type="CHAR_STRING"        />
+    </command>
+    <command source="client" code="0x06" name="GetPin" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve PIN information for a user with a specific user ID.
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x07" name="ClearPin" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear the PIN for a user with a specific user ID
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x08" name="ClearAllPins" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear all PIN codes on the lock for all users.
+       </description>
+    </command>
+    <command source="client" code="0x09" name="SetUserStatus" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the status value for a specified user ID.
+       </description>
+       <arg name="userId"     type="INT16U" />
+       <arg name="userStatus" type="INT8U"  />
+    </command>
+    <command source="client" code="0x0A" name="GetUserStatus" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve the status byte for a specific user.
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x0B" name="SetWeekdaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the schedule of days during the week that the associated user based on the user ID will have access to the lock and will be able to operate it.
+       </description>
+       <arg name="scheduleId"  type="INT8U"             />
+       <arg name="userId"      type="INT16U"            />
+       <arg name="daysMask"    type="DoorLockDayOfWeek" />
+       <arg name="startHour"   type="INT8U"             />
+       <arg name="startMinute" type="INT8U"             />
+       <arg name="endHour"    type="INT8U"             />
+       <arg name="endMinute"  type="INT8U"             />
+    </command>
+    <command source="client" code="0x0C" name="GetWeekdaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve a weekday schedule for doorlock user activation for a specific schedule id and user id.
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+       <arg name="userId"     type="INT16U" />
+    </command>
+    <command source="client" code="0x0D" name="ClearWeekdaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear a weekday schedule for doorlock user activation for a specific schedule id and user id.
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+       <arg name="userId"     type="INT16U" />
+    </command>
+    <command source="client" code="0x0E" name="SetYeardaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set a door lock user id activation schedule according to a specific absolute local start and end time
+       </description>
+       <arg name="scheduleId"     type="INT8U"  />
+       <arg name="userId"         type="INT16U" />
+       <arg name="localStartTime" type="INT32U" />
+       <arg name="localEndTime"   type="INT32U" />
+    </command>
+    <command source="client" code="0x0F" name="GetYeardaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve a yearday schedule for a specific scheduleId and userId
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+       <arg name="userId"     type="INT16U" />
+    </command>
+    <command source="client" code="0x10" name="ClearYeardaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear a yearday schedule for a specific scheduleId and userId
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+       <arg name="userId"     type="INT16U" />
+    </command>
+    <command source="client" code="0x11" name="SetHolidaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the holiday schedule for a specific user
+       </description>
+       <arg name="scheduleId"     type="INT8U"  />
+       <arg name="localStartTime" type="INT32U" />
+       <arg name="localEndTime"   type="INT32U" />
+       <arg name="operatingModeDuringHoliday" type="ENUM8" />
+    </command>
+    <command source="client" code="0x12" name="GetHolidaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve a holiday schedule for a specific scheduleId
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+    </command>
+    <command source="client" code="0x13" name="ClearHolidaySchedule" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear a holiday schedule for a specific scheduleId
+       </description>
+       <arg name="scheduleId" type="INT8U"  />
+    </command>
+    <command source="client" code="0x14" name="SetUserType" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the type value for a user based on user ID.
+       </description>
+       <arg name="userId"   type="INT16U"           />
+       <arg name="userType" type="DoorLockUserType" />
+    </command>
+    <command source="client" code="0x15" name="GetUserType" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve the type for a specific user based on the user ID.
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x16" name="SetRfid" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Set the PIN for a specified user id.
+       </description>
+       <arg name="userId"     type="INT16U"             />
+       <arg name="userStatus" type="DoorLockUserStatus" />
+       <arg name="userType"   type="DoorLockUserType"   />
+       <arg name="id"         type="CHAR_STRING"        />
+    </command>
+    <command source="client" code="0x17" name="GetRfid" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Retrieve RFID ID information for a user with a specific user ID.
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x18" name="ClearRfid" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear the RFID ID for a user with a specific user ID
+       </description>
+       <arg name="userId" type="INT16U" />
+    </command>
+    <command source="client" code="0x19" name="ClearAllRfids" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Clear all RFID ID codes on the lock for all users.
+       </description>
+    </command>
+    <command source="server" code="0x02" name="ToggleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Response provided to the toggle command, indicates whether the toggle was successful or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x03" name="UnlockWithTimeoutResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Response provided to unlock with specific timeout. This command indicates whether the unlock command was successful or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x04" name="GetLogRecordResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the specific log record requested.
+       </description>
+       <arg name="logEntryId"          type="INT16U"      />
+       <arg name="timestamp"           type="INT32U"      />
+       <arg name="eventType"           type="ENUM8"       />
+       <arg name="source"              type="INT8U"       />
+       <arg name="eventIdOrAlarmCode"  type="INT8U"       />
+       <arg name="userId"              type="INT16U"      />
+       <arg name="pin"                 type="CHAR_STRING" />
+    </command>
+    <command source="server" code="0x05" name="SetPinResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Indicates whether the setting of the PIN was successful or not.
+       </description>
+       <arg name="status" type="DoorLockSetPinOrIdStatus" />
+    </command>
+    <command source="server" code="0x06" name="GetPinResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the PIN requested according to the user ID passed.
+       </description>
+       <arg name="userId"     type="INT16U"             />
+       <arg name="userStatus" type="DoorLockUserStatus" />
+       <arg name="userType"   type="DoorLockUserType"   />
+       <arg name="pin"        type="CHAR_STRING"        />
+    </command>
+    <command source="server" code="0x07" name="ClearPinResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the PIN was cleared or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x08" name="ClearAllPinsResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the PINs were cleared or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x09" name="SetUserStatusResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the user status was set or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x0A" name="GetUserStatusResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the user status.
+       </description>
+       <arg name="userId" type="INT16U" />
+       <arg name="status" type="INT8U"  />
+    </command>
+    <command source="server" code="0x0B" name="SetWeekdayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the status of setting the weekday schedule
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x0C" name="GetWeekdayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the weekday schedule requested.
+       </description>
+       <arg name="scheduleId"     type="INT8U"  />
+       <arg name="userId"         type="INT16U" />
+       <arg name="status"         type="INT8U"  />
+       <arg name="daysMask"       type="INT8U"  introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="startHour"      type="INT8U"  introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="startMinute"    type="INT8U"  introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="endHour"        type="INT8U"  introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="endMinute"      type="INT8U"  introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="server" code="0x0D" name="ClearWeekdayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the status of clearing the weekday schedule
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x0E" name="SetYeardayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the yearday schedule was set or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x0F" name="GetYeardayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the yearday schedule requested
+       </description>
+       <arg name="scheduleId"     type="INT8U"  />
+       <arg name="userId"         type="INT16U" />
+       <arg name="status"         type="INT8U" />
+       <arg name="localStartTime" type="INT32U" introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="localEndTime"   type="INT32U" introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="server" code="0x10" name="ClearYeardayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the yearday schedule was removed or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x11" name="SetHolidayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the holiday schedule was set or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x12" name="GetHolidayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the holiday schedule requested
+       </description>
+       <arg name="scheduleId"                   type="INT8U"  />
+       <arg name="status"                       type="INT8U"  />
+       <arg name="localStartTime"               type="INT32U" introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="localEndTime"                 type="INT32U" introducedIn="ha-1.2-11-5474-43"/>
+       <arg name="operatingModeDuringHoliday"   type="ENUM8"  introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="server" code="0x13" name="ClearHolidayScheduleResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the holiday schedule was removed or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x14" name="SetUserTypeResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         returns success or failure depending on whether the user type was set or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x15" name="GetUserTypeResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the user type for the user ID requested.
+       </description>
+       <arg name="userId"   type="INT16U"           />
+       <arg name="userType" type="DoorLockUserType" />
+    </command>
+    <command source="server" code="0x16" name="SetRfidResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+        <description>
+          Indicates whether the setting of the RFID ID was successful or not.
+        </description>
+        <arg name="status" type="DoorLockSetPinOrIdStatus" />
+    </command>
+    <command source="server" code="0x17" name="GetRfidResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns the RFID ID requested according to the user ID passed.
+       </description>
+       <arg name="userId"       type="INT16U"             />
+       <arg name="userStatus"   type="DoorLockUserStatus" />
+       <arg name="userType"     type="DoorLockUserType"   />
+       <arg name="rfid"         type="CHAR_STRING"        />
+    </command>
+    <command source="server" code="0x18" name="ClearRfidResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the RFID ID was cleared or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x19" name="ClearAllRfidsResponse" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Returns success or failure depending on whether the RFID IDs were cleared or not.
+       </description>
+       <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x20" name="OperationEventNotification" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Indicates that an operation event has taken place. Includes the associated event information.
+       </description>
+       <arg name="source"      type="INT8U"                      />
+       <arg name="eventCode"   type="DoorLockOperationEventCode" />
+       <arg name="userId"      type="INT16U"                     />
+       <arg name="pin"         type="CHAR_STRING"                />
+       <arg name="timeStamp"   type="INT32U"                     />
+       <arg name="data"        type="CHAR_STRING"                introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+    <command source="server" code="0x21" name="ProgrammingEventNotification" optional="true" introducedIn="ha-1.2-11-5474-43">
+       <description>
+         Indicates that a programming event has taken place. Includes the associated programming event information.
+       </description>
+       <arg name="source"      type="INT8U"                        />
+       <arg name="eventCode"   type="DoorLockProgrammingEventCode" />
+       <arg name="userId"      type="INT16U"                       />
+       <arg name="pin"         type="CHAR_STRING"                  />
+       <arg name="userType"    type="DoorLockUserType"             />
+       <arg name="userStatus"  type="DoorLockUserStatus"           />
+       <arg name="timeStamp"   type="INT32U"                       />
+       <arg name="data"        type="CHAR_STRING"                  introducedIn="ha-1.2-11-5474-43"/>
+    </command>
+  </clusterExtension>
+
+  <!-- THERMOSTAT -->
+  <enum name="ThermostatRunningMode" type="ENUM8">
+    <item name="Off"  value="0x00" />
+    <item name="Cool" value="0x03" />
+    <item name="Heat" value="0x04" />
+  </enum>
+  <enum name="StartOfWeek" type="ENUM8">
+    <item name="Sunday"    value="0x00" />
+    <item name="Monday"    value="0x01" />
+    <item name="Tuesday"   value="0x02" />
+    <item name="Wednesday" value="0x03" />
+    <item name="Thursday"  value="0x04" />
+    <item name="Friday"    value="0x05" />
+    <item name="Saturday"  value="0x06" />
+  </enum>
+  <enum name="TemperatureSetpointHold" type="ENUM8">
+    <item name="SetpointHoldOff" value="0x00" />
+    <item name="SetpointHoldOn"  value="0x01" />
+  </enum>
+  <bitmap name="ThermostatRunningState" type="BITMAP16">
+    <field name="HeatStateOn"             mask="0x0001" />
+    <field name="CoolStateOn"             mask="0x0002" />
+    <field name="FanStateOn"              mask="0x0004" />
+    <field name="HeatSecondStageStateOn"  mask="0x0008" />
+    <field name="CoolSecondStageStateOn"  mask="0x0010" />
+    <field name="FanSecondStageStateOn"   mask="0x0020" />
+    <field name="FanThirdStageStateOn"    mask="0x0040" />
+  </bitmap>
+  <bitmap name="DayOfWeek" type="BITMAP8">
+    <field name="Sunday"         mask="0x01" />
+    <field name="Monday"         mask="0x02" />
+    <field name="Tuesday"        mask="0x04" />
+    <field name="Wednesday"      mask="0x08" />
+    <field name="Thursday"       mask="0x10" />
+    <field name="Friday"         mask="0x20" />
+    <field name="Saturday"       mask="0x40" />
+    <field name="AwayOrVacation" mask="0x80" />
+  </bitmap>
+  <bitmap name="ModeForSequence" type="BITMAP8">
+    <field name="HeatSetpointFieldPresent" mask="0x01" />
+    <field name="CoolSetpointFieldPresent" mask="0x02" />
+  </bitmap>
+  <clusterExtension code="0x0201">
+    <attribute side="server" code="0x0009" define="HVAC_SYSTEM_TYPE_CONFIGURATION"     type="BITMAP8"    min="0x00"   max="0xFF"   writable="true"                  optional="true" introducedIn="ha-1.2-11-5474-15">HVAC system type configuration</attribute>	
+    <attribute side="server" code="0x001E" define="THERMOSTAT_RUNNING_MODE"            type="ENUM8"    min="0x00"   max="0x04"   writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">thermostat running mode</attribute>
+    <attribute side="server" code="0x0020" define="START_OF_WEEK"                      type="ENUM8"    min="0x00"   max="0x06"   writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">start of week</attribute>
+    <attribute side="server" code="0x0021" define="NUMBER_OF_WEEKLY_TRANSITIONS"       type="INT8U"    min="0x00"   max="0xFF"   writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">number of weekly transitions</attribute>
+    <attribute side="server" code="0x0022" define="NUMBER_OF_DAILY_TRANSITIONS"        type="INT8U"    min="0x00"   max="0xFF"   writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">number of daily transitions</attribute>
+    <attribute side="server" code="0x0023" define="TEMPERATURE_SETPOINT_HOLD"          type="ENUM8"    min="0x00"   max="0x01"   writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-15">temperature setpoint hold</attribute>
+    <attribute side="server" code="0x0024" define="TEMPERATURE_SETPOINT_HOLD_DURATION" type="INT16U"   min="0x0000" max="0x05A0" writable="true"  default="0xFFFF" optional="true" introducedIn="ha-1.2-11-5474-15">temperature setpoint hold duration</attribute>
+    <attribute side="server" code="0x0025" define="THERMOSTAT_PROGRAMMING_OPERATION_MODE" type="BITMAP8"   min="0x00" max="0xFF" writable="true"  default="0x0000" optional="true" introducedIn="ha-1.2-11-5474-15">thermostat programming operation mode</attribute>
+    <attribute side="server" code="0x0029" define="THERMOSTAT_RUNNING_STATE"           type="BITMAP16"                           writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">hvac relay state</attribute>
+    <attribute side="server" code="0x0030" define="SETPOINT_CHANGE_SOURCE"           type="ENUM8"                           writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15">setpoint change source</attribute>
+    <attribute side="server" code="0x0031" define="SETPOINT_CHANGE_AMOUNT"           type="INT16U"                           writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-15" default="0x8000">setpoint change amount</attribute>
+	<attribute side="server" code="0x0032" define="SETPOINT_CHANGE_SOURCE_TIMESTAMP" type="TIME_OF_DAY"                           writable="false" optional="true" introducedIn="ha-1.2-11-5474-15">setpoint change source timestamp</attribute>
+	<attribute side="server" code="0x0040" define="AC_TYPE" type="ENUM8" writable="true" optional="true" min="0x00" max="0x04" introducedIn="ha-1.2-11-5474-15">ac type</attribute>
+	<attribute side="server" code="0x0041" define="AC_CAPACITY" type="INT16U" writable="true" optional="true" min="0x0000" max="0xffff" introducedIn="ha-1.2-11-5474-15">ac capacity</attribute>
+	<attribute side="server" code="0x0042" define="AC_REFRIGERANT_TYPE" type="ENUM8" writable="true" optional="true" min="0x00" max="0x03" introducedIn="ha-1.2-11-5474-15">ac refrigerant type</attribute>
+	<attribute side="server" code="0x0043" define="AC_COMPRESSOR" type="ENUM8" writable="true" optional="true" min="0x00" max="0x03" introducedIn="ha-1.2-11-5474-15">ac compressor</attribute>
+	<attribute side="server" code="0x0044" define="AC_ERROR_CODE" type="ENUM16" writable="true" optional="true" min="0x0000" max="0xffff" introducedIn="ha-1.2-11-5474-15">ac error code</attribute>
+	<attribute side="server" code="0x0045" define="AC_LOUVER_POSITION" type="ENUM8" writable="true" optional="true" min="0x00" max="0x05" introducedIn="ha-1.2-11-5474-15">ac louver position</attribute>
+	<attribute side="server" code="0x0046" define="AC_COIL_TEMPERATURE" type="INT16S" writable="false" optional="true" min="0x954d" max="0x7fff" introducedIn="ha-1.2-11-5474-15">ac coil temperature</attribute>
+	<attribute side="server" code="0x0047" define="AC_CAPACITY_FORMAT" type="ENUM8" writable="true" optional="true" min="0x00" max="0xff" introducedIn="ha-1.2-11-5474-15">ac capacity format</attribute>
+    <command source="client" code="0x01" name="SetWeeklySchedule" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        Command description for SetWeeklySchedule
+      </description>
+      <arg name="numberOfTransitionsForSequence" type="ENUM8"                        />
+      <arg name="dayOfWeekForSequence"           type="DayOfWeek"                    />
+      <arg name="modeForSequence"                type="ModeForSequence"              />
+      <arg name="payload"                        type="INT8U"           array="true" />
+    </command>
+    <command source="client" code="0x02" name="GetWeeklySchedule" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        Command description for GetWeeklySchedule
+      </description>
+      <arg name="daysToReturn" type="DayOfWeek"       />
+      <arg name="modeToReturn" type="ModeForSequence" />
+    </command>
+    <command source="client" code="0x03" name="ClearWeeklySchedule" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        The Clear Weekly Schedule command is used to clear the weekly schedule.
+      </description>
+    </command>
+    <command source="client" code="0x04" name="GetRelayStatusLog" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        The Get Relay Status Log command is used to query the thermostat internal relay status log.
+      </description>
+    </command>
+    <command source="server" code="0x00" name="CurrentWeeklySchedule" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        The Current Weekly Schedule Command is sent from the server in response to the Get Weekly Schedule Command.
+      </description>
+      <arg name="numberOfTransitionsForSequence" type="ENUM8"                        />
+      <arg name="dayOfWeekForSequence"           type="DayOfWeek"                    />
+      <arg name="modeForSequence"                type="ModeForSequence"              />
+      <arg name="payload"                        type="INT8U"           array="true" />
+    </command>
+    <command source="server" code="0x01" name="RelayStatusLog" optional="false" introducedIn="ha-1.2-11-5474-15">
+      <description>
+        This command is sent from the thermostat cluster server in response to the Get  Relay Status Log.
+      </description>
+      <arg name="timeOfDay"            type="INT16U"   />
+      <arg name="relayStatus"          type="BITMAP16" />
+      <arg name="localTemperature"     type="INT16S"   />
+      <arg name="humidityInPercentage" type="INT8U"    />
+      <arg name="setpoint"             type="INT16S"   />
+      <arg name="unreadEntries"        type="INT16U"    />
+    </command>
+  </clusterExtension>
+
+  <clusterExtension code="0x0204">
+	<attribute side="server" code="0x0002" define="SCHEDULE_PROGRAMMING_VISIBILITY"     type="ENUM8"    min="0x00"   max="0x01"   writable="true" optional="true" introducedIn="ha-1.2-11-5474-15">schedule programming visibility</attribute>	
+  </clusterExtension>
+
+  <!-- APPLIANCE IDENTIFICATION -->
+<!--
+  <bitmap name="BasicIdentification" type="BITMAP56">
+    <field name="CompanyId"     mask="0x0000000000FFFF" />
+    <field name="BrandId"       mask="0x000000FFFF0000" />
+    <field name="ProductTypeId" mask="0x00FFFF00000000" />
+    <field name="SpecVer"       mask="0x7F000000000000" />
+  </bitmap>
+-->
+  <enum name="ProductTypeId" type="ENUM16">
+    <item name="WhiteGoods"          value="0x0000" />
+    <item name="Dishwasher"          value="0x5601" />
+    <item name="TumbleDryer"         value="0x5602" />
+    <item name="WasherDryer"         value="0x5603" />
+    <item name="WashingMachine"      value="0x5604" />
+    <item name="Hobs"                value="0x5E03" />
+    <item name="InductionHobs"       value="0x5E09" />
+    <item name="Oven"                value="0x5E01" />
+    <item name="ElectricalOven"      value="0x5E06" />
+    <item name="RefrigeratorFreezer" value="0x6601" />
+  </enum>
+  <enum name="CecedSpecificationVersion" type="ENUM8">
+    <item name="CompliantWithV10NotCertified" value="0x10" />
+    <item name="CompliantWithV10Certified"    value="0x1A" />
+  </enum>
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Appliance Identification</name>
+    <domain>Home Automation</domain>
+    <description>Attributes and commands for determining basic information about a device and setting user device information.</description>
+    <code>0x0B00</code>
+    <define>APPLIANCE_IDENTIFICATION_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="BASIC_IDENTIFICATION"        type="INT56U"                                             writable="false" optional="false">basic identification</attribute>
+    <attribute side="server" code="0x0010" define="APPLIANCE_COMPANY_NAME"      type="CHAR_STRING"                            length="16" writable="false" optional="true" >company name</attribute>
+    <attribute side="server" code="0x0011" define="COMPANY_ID"                  type="INT16U"       min="0x0000" max="0xFFFF"             writable="false" optional="true" >company id</attribute>
+    <attribute side="server" code="0x0012" define="BRAND_NAME"                  type="CHAR_STRING"                            length="16" writable="false" optional="true" >brand name</attribute>
+    <attribute side="server" code="0x0013" define="BRAND_ID"                    type="INT16U"       min="0x0000" max="0xFFFF"             writable="false" optional="true" >brand id</attribute>
+    <attribute side="server" code="0x0014" define="APPLIANCE_MODEL"             type="OCTET_STRING"                           length="16" writable="false" optional="true" >model</attribute>
+    <attribute side="server" code="0x0015" define="APPLIANCE_PART_NUMBER"       type="OCTET_STRING"                           length="16" writable="false" optional="true" >part number</attribute>
+    <attribute side="server" code="0x0016" define="APPLIANCE_PRODUCT_REVISION"  type="OCTET_STRING"                           length="6"  writable="false" optional="true" >product revision</attribute>
+    <attribute side="server" code="0x0017" define="APPLIANCE_SOFTWARE_REVISION" type="OCTET_STRING"                           length="6"  writable="false" optional="true" >software revision</attribute>
+    <attribute side="server" code="0x0018" define="PRODUCT_TYPE_NAME"           type="OCTET_STRING"                           length="2"  writable="false" optional="true" >product type name</attribute>
+    <attribute side="server" code="0x0019" define="PRODUCT_TYPE_ID"             type="INT16U"       min="0x0000" max="0xFFFF"             writable="false" optional="true" >product type id</attribute>
+    <attribute side="server" code="0x001A" define="CECED_SPECIFICATION_VERSION" type="INT8U"        min="0x00"   max="0xFF"               writable="false" optional="true" >ceced specification version</attribute>
+  </cluster>
+
+  <!-- METER IDENTIFICATION -->
+  <enum name="MeterTypeId" type="ENUM16">
+    <item name="UtilityPrimaryMeter"    value="0x0000" />
+    <item name="UtilityProductionMeter" value="0x0001" />
+    <item name="UtilitySecondaryMeter"  value="0x0002" />
+    <item name="PrivatePrimaryMeter"    value="0x0100" />
+    <item name="PrivateProductionMeter" value="0x0101" />
+    <item name="PrivateSecondaryMeters" value="0x0102" />
+    <item name="GenericMeter"           value="0x0110" />
+  </enum>
+  <enum name="DataQualityId" type="ENUM16">
+    <item name="AllDataCertified"                     value="0x0000" />
+    <item name="OnlyInstantaneousPowerNotCertified"   value="0x0001" />
+    <item name="OnlyCumulatedConsumptionNotCertified" value="0x0002" />
+    <item name="NotCertifiedData"                     value="0x0003" />
+  </enum>
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Meter Identification</name>
+    <domain>Home Automation</domain>
+    <description>This cluster provides Attributes and commands for determining advanced information about utility metering device.</description>
+    <code>0x0B01</code>
+    <define>METER_IDENTIFICATION_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="METER_COMPANY_NAME"      type="CHAR_STRING"                                  length="16" writable="false" optional="false">company name</attribute>
+    <attribute side="server" code="0x0001" define="METER_TYPE_ID"           type="INT16U"       min="0x0000"   max="0xFFFF"                 writable="false" optional="false">meter type id</attribute>
+    <attribute side="server" code="0x0004" define="DATA_QUALITY_ID"         type="INT16U"       min="0x0000"   max="0xFFFF"                 writable="false" optional="false">data quality id</attribute>
+    <attribute side="server" code="0x0005" define="CUSTOMER_NAME"           type="CHAR_STRING"                                  length="16" writable="true"  optional="true" >customer name</attribute>
+    <attribute side="server" code="0x0006" define="METER_MODEL"             type="OCTET_STRING"                                 length="16" writable="false" optional="true" >model</attribute>
+    <attribute side="server" code="0x0007" define="METER_PART_NUMBER"       type="OCTET_STRING"                                 length="16" writable="false" optional="true" >part number</attribute>
+    <attribute side="server" code="0x0008" define="METER_PRODUCT_REVISION"  type="OCTET_STRING"                                 length="6"  writable="false" optional="true" >product revision</attribute>
+    <attribute side="server" code="0x000A" define="METER_SOFTWARE_REVISION" type="OCTET_STRING"                                 length="6"  writable="false" optional="true" >software revision</attribute>
+    <attribute side="server" code="0x000B" define="UTILITY_NAME"            type="CHAR_STRING"                                  length="16" writable="false" optional="true" >utility name</attribute>
+    <attribute side="server" code="0x000C" define="POD"                     type="CHAR_STRING"                                  length="16" writable="false" optional="false">pod</attribute>
+    <attribute side="server" code="0x000D" define="AVAILABLE_POWER"         type="INT24S"       min="0x000000" max="0xFFFFFF"               writable="false" optional="false">available power</attribute>
+    <attribute side="server" code="0x000E" define="POWER_THRESHOLD"         type="INT24S"       min="0x000000" max="0xFFFFFF"               writable="false" optional="false">power threshold</attribute>
+  </cluster>
+
+  <!-- APPLIANCE EVENTS AND ALERT -->
+  <bitmap name="AlertStructure" type="BITMAP24">
+    <field name="AlertId"          mask="0x0000FF" />
+    <field name="Category"         mask="0x000F00" />
+    <field name="PresenceRecovery" mask="0x003000" />
+  </bitmap>
+  <enum name="AlertStructureCategory" type="ENUM16">
+    <item name="Warning" value="0x0100" />
+    <item name="Danger"  value="0x0200" />
+    <item name="Failure" value="0x0300" />
+  </enum>
+  <enum name="AlertStructurePresenceRecovery" type="ENUM16">
+    <item name="Presence" value="0x0000" />
+    <item name="Recovery" value="0x1000" />
+  </enum>
+  <bitmap name="AlertCount" type="BITMAP8">
+    <field name="NumberOfAlerts" mask="0x0F" />
+    <field name="TypeOfAlert"    mask="0xF0" />
+  </bitmap>
+  <enum name="AlertCountType" type="ENUM8">
+    <item name="Unstructured" value="0x00" />
+  </enum>
+  <enum name="EventIdentification" type="ENUM8">
+    <item name="EndOfCycle"         value="0x01" />
+    <item name="TemperatureReached" value="0x04" />
+    <item name="EndOfCooking"       value="0x05" />
+    <item name="SwitchingOff"       value="0x06" />
+    <item name="WrongData"          value="0x07" />
+  </enum>
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Appliance Events and Alert</name>
+    <domain>Home Automation</domain>
+    <description>Attributes and commands for transmitting or notifying the occurrence of an event, such as "temperature reached" and of an alert such as alarm, fault or warning.</description>
+    <code>0x0B02</code>
+    <define>APPLIANCE_EVENTS_AND_ALERT_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <command source="client" code="0x00" name="GetAlerts" optional="false">
+      <description>
+        This basic message is used to retrieve Household Appliance current alerts.
+      </description>
+    </command>
+    <command source="server" code="0x00" name="GetAlertsResponse" optional="false">
+      <description>
+        This message is used to return household appliance current alerts.
+      </description>
+      <arg name="alertsCount"     type="AlertCount"                  />
+      <arg name="alertStructures" type="AlertStructure" array="true" />
+    </command>
+    <command source="server" code="0x01" name="AlertsNotification" optional="false">
+      <description>
+        This message is used to notify the current modification of warning and/or fault conditions.
+      </description>
+      <arg name="alertsCount"     type="AlertCount"                  />
+      <arg name="alertStructures" type="AlertStructure" array="true" />
+    </command>
+    <command source="server" code="0x02" name="EventsNotification" optional="false">
+      <description>
+        This message is used to notify an event occurred during the normal working of the appliance.
+      </description>
+      <arg name="eventHeader" type="INT8U"               />
+      <arg name="eventId"     type="EventIdentification" />
+    </command>
+  </cluster>
+
+  <cluster introducedIn="ha-1.2-11-5474-15">
+    <name>Appliance Statistics</name>
+    <domain>Home Automation</domain>
+    <description>
+      This cluster provides a mechanism for the transmitting appliance statistics to a collection unit (gateway). The statistics can be in format of data logs. In case of statistic information that will not fit the single ZigBee payload, the Partition cluster should be used.
+    </description>
+    <code>0x0B03</code>
+    <define>APPLIANCE_STATISTICS_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="LOG_MAX_SIZE" type="INT32U" writable="false" default="0x0000003C" optional="false">log max size</attribute> 
+    <attribute side="server" code="0x0001" define="LOG_QUEUE_MAX_SIZE" type="INT8U" writable="false" default="0x01" optional="false">log queue max size</attribute> 
+    <command source="server" code="0x00" name="LogNotification" optional="false">
+      <description>
+        The Appliance Statistics Cluster server occasionally sends out a Log Notification command to the devices to which it needs to log information related to statistics (e.g., home gateways) which implement the client side of Appliance Statistics Cluster.
+      </description>
+      <arg name="timeStamp"  type="TIME_OF_DAY"        />
+      <arg name="logId"      type="INT32U"             />
+      <arg name="logLength"  type="INT32U"             />
+      <arg name="logPayload" type="INT8U" array="true" />
+    </command>
+    <command source="server" code="0x01" name="LogResponse" optional="false">
+      <description>
+        The Appliance Statistics Cluster server sends out a Log Response command to respond to a Log Request command generated by the client side of the Appliance Statistics cluster.
+      </description>
+      <arg name="timeStamp"  type="TIME_OF_DAY"        />
+      <arg name="logId"      type="INT32U"             />
+      <arg name="logLength"  type="INT32U"             />
+      <arg name="logPayload" type="INT8U" array="true" />
+    </command>
+    <command source="server" code="0x02" name="LogQueueResponse" optional="false">
+      <description>
+        The Log Queue Response command is generated as a response to a LogQueueRequest command in order to notify the client side of the Appliance statistics cluster about the logs stored in the server side (queue) that can be retrieved by the client side of this cluster through a LogRequest command.
+      </description>
+      <arg name="logQueueSize"  type="INT8U"        />
+      <arg name="logIds"        type="INT32U" array="true"            />
+    </command>
+    <command source="server" code="0x03" name="StatisticsAvailable" optional="false">
+      <description>
+        The Appliance Statistics Cluster server sends out a Statistic Available command to notify the client side of the Appliance Statistics cluster that there are statistics that can be retrieved by using the Log Request command.
+      </description>
+      <arg name="logQueueSize"  type="INT8U"        />
+      <arg name="logIds"        type="INT32U" array="true"            />
+    </command>
+    <command source="client" code="0x00" name="LogRequest" optional="false">
+      <description>
+        The Log request command is sent from a device supporting the client side of the Appliance Statistics cluster (e.g., Home Gateway) to retrieve the log from the device supporting the server side (e.g., appliance).
+      </description>
+      <arg name="logId" type="INT32U" />
+    </command>
+    <command source="client" code="0x01" name="LogQueueRequest" optional="false">
+      <description>
+        The Log Queue Request command is send from a device supporting the client side of the Appliance Statistics cluster (e.g. Home Gateway) to retrieve the information about the logs inserted in the queue, from the device supporting the server side (e.g. appliance).
+      </description>
+    </command>
+  </cluster>
+  <cluster introducedIn="ha-1.2-11-5474-19">
+    <name>Electrical Measurement</name>
+    <domain>Home Automation</domain>
+    <description>Attributes related to the electrical properties of a device. This cluster is used by power outlets and other devices that need to provide instantaneous data as opposed to metrology data which should be retrieved from the metering cluster..</description>
+    <code>0x0B04</code>
+    <define>ELECTRICAL_MEASUREMENT_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="MEASUREMENT_TYPE"                         type="BITMAP32"  min="0x00000000" max="0xFFFFFFFF" writable="false" default="0x000000" optional="true">measurement type</attribute>
+    <attribute side="server" code="0x0100" define="DC_VOLTAGE"                               type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc voltage</attribute>
+    <attribute side="server" code="0x0101" define="DC_VOLTAGE_MIN"                           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc voltage min</attribute>
+    <attribute side="server" code="0x0102" define="DC_VOLTAGE_MAX"                           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc voltage max</attribute>
+    <attribute side="server" code="0x0103" define="DC_CURRENT"                               type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc current</attribute>
+    <attribute side="server" code="0x0104" define="DC_CURRENT_MIN"                           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc current min</attribute>
+    <attribute side="server" code="0x0105" define="DC_CURRENT_MAX"                           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc current max</attribute>
+    <attribute side="server" code="0x0106" define="DC_POWER"                                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc power</attribute>
+    <attribute side="server" code="0x0107" define="DC_POWER_MIN"                             type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc power min</attribute>
+    <attribute side="server" code="0x0108" define="DC_POWER_MAX"                             type="INT16S"    min="-32768"     max="32767"      writable="false" default="0x8000"   optional="true">dc power max</attribute>
+    <attribute side="server" code="0x0200" define="DC_VOLTAGE_MULTIPLIER"                    type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc voltage multiplier</attribute>
+    <attribute side="server" code="0x0201" define="DC_VOLTAGE_DIVISOR"                       type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc voltage divisor</attribute>
+    <attribute side="server" code="0x0202" define="DC_CURRENT_MULTIPLIER"                    type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc current multiplier</attribute>
+    <attribute side="server" code="0x0203" define="DC_CURRENT_DIVISOR"                       type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc current divisor</attribute>
+    <attribute side="server" code="0x0204" define="DC_POWER_MULTIPLIER"                      type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc power multiplier</attribute>
+    <attribute side="server" code="0x0205" define="DC_POWER_DIVISOR"                         type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">dc power divisor</attribute>
+    <attribute side="server" code="0x0300" define="AC_FREQUENCY"                             type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">ac frequency</attribute>
+    <attribute side="server" code="0x0301" define="AC_FREQUENCY_MIN"                         type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">ac frequency min</attribute>
+    <attribute side="server" code="0x0302" define="AC_FREQUENCY_MAX"                         type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">ac frequency max</attribute>
+    <attribute side="server" code="0x0303" define="NEUTRAL_CURRENT"                          type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0x0000"   optional="true">neutral current</attribute>
+    <attribute side="server" code="0x0304" define="TOTAL_ACTIVE_POWER"                       type="INT24S"    min="-8388607"   max="8388607"    writable="false" default="0x000000" optional="true">total active power</attribute>
+    <attribute side="server" code="0x0305" define="TOTAL_REACTIVE_POWER"                     type="INT24S"    min="-8388607"   max="8388607"    writable="false" default="0x000000" optional="true">total reactive power</attribute>
+    <attribute side="server" code="0x0306" define="TOTAL_APPARENT_POWER"                     type="INT24U"    min="0"          max="0xFFFFFF"   writable="false" default="0x000001" optional="true">total apparent power</attribute>
+    <attribute side="server" code="0x0307" define="MEASURED_1ST_HARMONIC_CURRENT"            type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 1st harmonic current</attribute>
+    <attribute side="server" code="0x0308" define="MEASURED_3RD_HARMONIC_CURRENT"            type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 3rd harmonic current</attribute>
+    <attribute side="server" code="0x0309" define="MEASURED_5TH_HARMONIC_CURRENT"            type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 5th harmonic current</attribute>
+    <attribute side="server" code="0x030A" define="MEASURED_7TH_HARMONIC_CURRENT"            type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 7th harmonic current</attribute>
+    <attribute side="server" code="0x030B" define="MEASURED_9TH_HARMONIC_CURRENT"            type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 9th harmonic current</attribute>
+    <attribute side="server" code="0x030C" define="MEASURED_11TH_HARMONIC_CURRENT"           type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured 11th harmonic current</attribute>
+    <attribute side="server" code="0x030D" define="MEASURED_PHASE_1ST_HARMONIC_CURRENT"      type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 1st harmonic current</attribute>
+    <attribute side="server" code="0x030E" define="MEASURED_PHASE_3RD_HARMONIC_CURRENT"      type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 3rd harmonic current</attribute>
+    <attribute side="server" code="0x030F" define="MEASURED_PHASE_5TH_HARMONIC_CURRENT"      type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 5th harmonic current</attribute>
+    <attribute side="server" code="0x0310" define="MEASURED_PHASE_7TH_HARMONIC_CURRENT"      type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 7th harmonic current</attribute>
+    <attribute side="server" code="0x0311" define="MEASURED_PHASE_9TH_HARMONIC_CURRENT"      type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 9th harmonic current</attribute>
+    <attribute side="server" code="0x0312" define="MEASURED_PHASE_11TH_HARMONIC_CURRENT"     type="INT16S"    min="-32768"     max="323767"     writable="false" default="0x8000"   optional="true">measured phase 11th harmonic current</attribute>
+    <attribute side="server" code="0x0400" define="AC_FREQUENCY_MULTIPLIER"                  type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac frequency multiplier</attribute>
+    <attribute side="server" code="0x0401" define="AC_FREQUENCY_DIVISOR"                     type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac frequency divisor</attribute>
+    <attribute side="server" code="0x0402" define="POWER_MULTIPLIER"                         type="INT24U"    min="0"          max="0xFFFFFF"   writable="false" default="0x000001" optional="true">power multiplier</attribute>
+    <attribute side="server" code="0x0403" define="POWER_DIVISOR"                            type="INT24U"    min="0"          max="0xFFFFFF"   writable="false" default="0x000001" optional="true">power divisor</attribute>
+    <attribute side="server" code="0x0404" define="HARMONIC_CURRENT_MULTIPLIER"              type="INT8S"     min="-127"       max="127"        writable="false" default="0x00"     optional="true">harmonic current multiplier</attribute>
+    <attribute side="server" code="0x0405" define="PHASE_HARMONIC_CURRENT_MULTIPLIER"        type="INT8S"     min="-127"       max="127"        writable="false" default="0x00"     optional="true">phase harmonic current multiplier</attribute>
+    <attribute side="server" code="0x0500" define="INSTANTANEOUS_VOLTAGE"                    type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">instantaneous voltage</attribute>
+    <attribute side="server" code="0x0501" define="INSTANTANEOUS_LINE_CURRENT"               type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">instantaneous line current</attribute>
+    <attribute side="server" code="0x0502" define="INSTANTANEOUS_ACTIVE_CURRENT"             type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">instantaneous active current</attribute>
+    <attribute side="server" code="0x0503" define="INSTANTANEOUS_REACTIVE_CURRENT"           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">instantaneous reactive current</attribute>
+    <attribute side="server" code="0x0504" define="INSTANTANEOUS_POWER"                      type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">instantaneous power</attribute>
+    <attribute side="server" code="0x0505" define="RMS_VOLTAGE"                              type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">rms voltage</attribute>
+    <attribute side="server" code="0x0506" define="RMS_VOLTAGE_MIN"                          type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0x8000"   optional="true">rms voltage min</attribute>
+    <attribute side="server" code="0x0507" define="RMS_VOLTAGE_MAX"                          type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0x8000"   optional="true">rms voltage max</attribute>
+    <attribute side="server" code="0x0508" define="RMS_CURRENT"                              type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">rms current</attribute>
+    <attribute side="server" code="0x0509" define="RMS_CURRENT_MIN"                          type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">rms current min</attribute>
+    <attribute side="server" code="0x050A" define="RMS_CURRENT_MAX"                          type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">rms current max</attribute>
+    <attribute side="server" code="0x050B" define="ACTIVE_POWER"                             type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power</attribute>
+    <attribute side="server" code="0x050C" define="ACTIVE_POWER_MIN"                         type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power min</attribute>
+    <attribute side="server" code="0x050D" define="ACTIVE_POWER_MAX"                         type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power max</attribute>
+    <attribute side="server" code="0x050E" define="REACTIVE_POWER"                           type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">reactive power</attribute>
+    <attribute side="server" code="0x050F" define="APPARENT_POWER"                           type="INT16U"    min="0"          max="0xFFFF"     writable="false" default="0xffff"   optional="true">apparent power</attribute>
+    <attribute side="server" code="0x0510" define="AC_POWER_FACTOR"                          type="INT8S"     min="-100"       max="100"        writable="false" default="0x00"     optional="true">power factor</attribute>
+    <attribute side="server" code="0x0511" define="AVERAGE_RMS_VOLTAGE_MEASUREMENT_PERIOD"   type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">average rms voltage measurement period</attribute>
+    <attribute side="server" code="0x0513" define="AVERAGE_RMS_UNDER_VOLTAGE_COUNTER"        type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">average rms under voltage counter</attribute>
+    <attribute side="server" code="0x0514" define="RMS_EXTREME_OVER_VOLTAGE_PERIOD"          type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">rms extreme over voltage period</attribute>
+    <attribute side="server" code="0x0515" define="RMS_EXTREME_UNDER_VOLTAGE_PERIOD"         type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">rms extreme under voltage period</attribute>
+    <attribute side="server" code="0x0516" define="RMS_VOLTAGE_SAG_PERIOD"                   type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">rms voltage sag period</attribute>
+    <attribute side="server" code="0x0517" define="RMS_VOLTAGE_SWELL_PERIOD"                 type="INT16U"    min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">rms voltage swell period</attribute>
+    <attribute side="server" code="0x0600" define="AC_VOLTAGE_MULTIPLIER"                    type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac voltage multiplier</attribute>
+    <attribute side="server" code="0x0601" define="AC_VOLTAGE_DIVISOR"                       type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac voltage divisor</attribute>
+    <attribute side="server" code="0x0602" define="AC_CURRENT_MULTIPLIER"                    type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac current multiplier</attribute>
+    <attribute side="server" code="0x0603" define="AC_CURRENT_DIVISOR"                       type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac current divisor</attribute>
+    <attribute side="server" code="0x0604" define="AC_POWER_MULTIPLIER"                      type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac power multiplier</attribute>
+    <attribute side="server" code="0x0605" define="AC_POWER_DIVISOR"                         type="INT16U"    min="1"          max="0xFFFF"     writable="false" default="0x01"     optional="true">ac power divisor</attribute>
+    <attribute side="server" code="0x0700" define="DC_OVERLOAD_ALARMS_MASK"                  type="BITMAP8"   min="0x00"       max="0xFF"       writable="true"  default="0x00"     optional="true">overload alarms mask</attribute>
+    <attribute side="server" code="0x0701" define="DC_VOLTAGE_OVERLOAD"                      type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">voltage overload</attribute>
+    <attribute side="server" code="0x0702" define="DC_CURRENT_OVERLOAD"                      type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">current overload</attribute>
+    <attribute side="server" code="0x0800" define="AC_OVERLOAD_ALARMS_MASK"                  type="BITMAP16"  min="0x0000"     max="0xFFFF"     writable="true"  default="0x0000"   optional="true">ac overload alarms mask</attribute>
+    <attribute side="server" code="0x0801" define="AC_VOLTAGE_OVERLOAD"                      type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">ac voltage overload</attribute>
+    <attribute side="server" code="0x0802" define="AC_CURRENT_OVERLOAD"                      type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">ac current overload</attribute>
+    <attribute side="server" code="0x0803" define="AC_POWER_OVERLOAD"                        type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">ac active power overload</attribute>
+    <attribute side="server" code="0x0804" define="AC_REACTIVE_POWER_OVERLOAD"               type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">ac reactive power overload</attribute>
+    <attribute side="server" code="0x0805" define="AVERAGE_RMS_OVER_VOLTAGE"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">average rms over voltage</attribute>
+    <attribute side="server" code="0x0806" define="AVERAGE_RMS_UNDER_VOLTAGE"                type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">average rms under voltage</attribute>
+    <attribute side="server" code="0x0807" define="RMS_EXTREME_OVER_VOLTAGE"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">rms extreme over voltage</attribute>
+    <attribute side="server" code="0x0808" define="RMS_EXTREME_UNDER_VOLTAGE"                type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">rms extreme under voltage</attribute>
+    <attribute side="server" code="0x0809" define="RMS_VOLTAGE_SAG"                          type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">rms voltage sag</attribute>
+    <attribute side="server" code="0x080A" define="RMS_VOLTAGE_SWELL"                        type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">rms voltage swell</attribute>
+	<attribute side="server" code="0x0901" define="LINE_CURRENT_PHASE_B"                     type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">line current phase b</attribute>
+	<attribute side="server" code="0x0902" define="ACTIVE_CURRENT_PHASE_B"                   type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active current phase b</attribute>
+	<attribute side="server" code="0x0903" define="REACTIVE_CURRENT_PHASE_B"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">reactive current phase b</attribute>
+	<attribute side="server" code="0x0905" define="RMS_VOLTAGE_PHASE_B"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage phase b</attribute>
+	<attribute side="server" code="0x0906" define="RMS_VOLTAGE_MIN_PHASE_B"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage min phase b</attribute>
+	<attribute side="server" code="0x0907" define="RMS_VOLTAGE_MAX_PHASE_B"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage max phase b</attribute>
+	<attribute side="server" code="0x0908" define="RMS_CURRENT_PHASE_B"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current phase b</attribute>
+	<attribute side="server" code="0x0909" define="RMS_CURRENT_MIN_PHASE_B"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current min phase b</attribute>
+	<attribute side="server" code="0x090A" define="RMS_CURRENT_MAX_PHASE_B"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current max phase b</attribute>
+	<attribute side="server" code="0x090B" define="ACTIVE_POWER_PHASE_B"                     type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power phase b</attribute>
+	<attribute side="server" code="0x090C" define="ACTIVE_POWER_MIN_PHASE_B"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power min phase b</attribute>
+	<attribute side="server" code="0x090D" define="ACTIVE_POWER_MAX_PHASE_B"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power max phase b</attribute>
+    <attribute side="server" code="0x090E" define="REACTIVE_POWER_PHASE_B"                   type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">reactive power phase b</attribute>
+	<attribute side="server" code="0x090F" define="APPARENT_POWER_PHASE_B"                   type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">apparent power phase b</attribute>
+    <attribute side="server" code="0x0910" define="POWER_FACTOR_PHASE_B"                     type="INT8S"     min="-100"       max="100"        writable="false" default="0x00"     optional="true">power factor phase b</attribute>
+	<attribute side="server" code="0x0911" define="AVERAGE_RMS_VOLTAGE_MEASUREMENT_PERIOD_PHASE_B"      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms voltage measurement period phase b</attribute>
+	<attribute side="server" code="0x0912" define="AVERAGE_RMS_OVER_VOLTAGE_COUNTER_PHASE_B"            type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms over voltage counter phase b</attribute>
+	<attribute side="server" code="0x0913" define="AVERAGE_RMS_UNDER_VOLTAGE_COUNTER_PHASE_B"           type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms under voltage counter phase b</attribute>
+	<attribute side="server" code="0x0914" define="RMS_EXTREME_OVER_VOLTAGE_PERIOD_PHASE_B"             type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms extreme over voltage period phase b</attribute>
+	<attribute side="server" code="0x0915" define="RMS_EXTREME_UNDER_VOLTAGE_PERIOD_PHASE_B"            type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms extreme under voltage period phase b</attribute>
+	<attribute side="server" code="0x0916" define="RMS_VOLTAGE_SAG_PERIOD_PHASE_B"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms voltage sag period phase b</attribute>
+	<attribute side="server" code="0x0917" define="RMS_VOLTAGE_SWELL_PERIOD_PHASE_B"                    type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms voltage swell period phase b</attribute>
+	<attribute side="server" code="0x0A01" define="LINE_CURRENT_PHASE_C"                     type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">line current phase c</attribute>
+	<attribute side="server" code="0x0A02" define="ACTIVE_CURRENT_PHASE_C"                   type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active current phase c</attribute>
+	<attribute side="server" code="0x0A03" define="REACTIVE_CURRENT_PHASE_C"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">reactive current phase c</attribute>
+	<attribute side="server" code="0x0A05" define="RMS_VOLTAGE_PHASE_C"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage phase c</attribute>
+	<attribute side="server" code="0x0A06" define="RMS_VOLTAGE_MIN_PHASE_C"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage min phase c</attribute>
+	<attribute side="server" code="0x0A07" define="RMS_VOLTAGE_MAX_PHASE_C"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms voltage max phase c</attribute>
+	<attribute side="server" code="0x0A08" define="RMS_CURRENT_PHASE_C"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current phase b</attribute>
+	<attribute side="server" code="0x0A09" define="RMS_CURRENT_MIN_PHASE_C"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current min phase c</attribute>
+	<attribute side="server" code="0x0A0A" define="RMS_CURRENT_MAX_PHASE_C"                  type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">rms current max phase c</attribute>
+	<attribute side="server" code="0x0A0B" define="ACTIVE_POWER_PHASE_C"                     type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power phase c</attribute>
+	<attribute side="server" code="0x0A0C" define="ACTIVE_POWER_MIN_PHASE_C"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power min phase c</attribute>
+	<attribute side="server" code="0x0A0D" define="ACTIVE_POWER_MAX_PHASE_C"                 type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">active power max phase c</attribute>
+    <attribute side="server" code="0x0A0E" define="REACTIVE_POWER_PHASE_C"                   type="INT16S"    min="-32768"     max="32767"      writable="false" default="0xffff"   optional="true">reactive power phase c</attribute>
+	<attribute side="server" code="0x0A0F" define="APPARENT_POWER_PHASE_C"                   type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0xffff"   optional="true">apparent power phase c</attribute>
+    <attribute side="server" code="0x0A10" define="POWER_FACTOR_PHASE_C"                     type="INT8S"     min="-100"       max="100"        writable="false" default="0x00"     optional="true">power factor phase c</attribute>
+	<attribute side="server" code="0x0A11" define="AVERAGE_RMS_VOLTAGE_MEASUREMENT_PERIOD_PHASE_C"      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms voltage measurement period phase c</attribute>
+	<attribute side="server" code="0x0A12" define="AVERAGE_RMS_OVER_VOLTAGE_COUNTER_PHASE_C"            type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms over voltage counter phase c</attribute>
+	<attribute side="server" code="0x0A13" define="AVERAGE_RMS_UNDER_VOLTAGE_COUNTER_PHASE_C"           type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">average rms under voltage counter phase c</attribute>
+	<attribute side="server" code="0x0A14" define="RMS_EXTREME_OVER_VOLTAGE_PERIOD_PHASE_C"             type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms extreme over voltage period phase c</attribute>
+	<attribute side="server" code="0x0A15" define="RMS_EXTREME_UNDER_VOLTAGE_PERIOD_PHASE_C"            type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms extreme under voltage period phase c</attribute>
+	<attribute side="server" code="0x0A16" define="RMS_VOLTAGE_SAG_PERIOD_PHASE_C"                      type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms voltage sag period phase c</attribute>
+	<attribute side="server" code="0x0A17" define="RMS_VOLTAGE_SWELL_PERIOD_PHASE_C"                    type="INT16U"    min="0x0000"     max="0xffff"     writable="false" default="0x0000"   optional="true">rms voltage swell period phase c</attribute>
+	<command source="server" code="0x00" name="GetProfileInfoResponseCommand" optional="true">
+      <description>
+        A function which returns the power profiling information requested in the GetProfileInfo command. The power profiling information consists of a list of attributes which are profiled along with the period used to profile them.
+      </description>
+      <arg name="profileCount"          type="INT8U"               />
+      <arg name="profileIntervalPeriod" type="ENUM8"               />
+      <arg name="maxNumberOfIntervals"  type="INT8U"               />
+      <arg name="listOfAttributes"      type="INT16U" array="true" />
+    </command>
+    <command source="server" code="0x01" name="GetMeasurementProfileResponseCommand" optional="true">
+      <description>
+        A function which returns the electricity measurement profile. The electricity measurement profile includes information regarding the amount of time used to capture data related to the flow of electricity as well as the intervals thes
+      </description>
+      <arg name="startTime"                  type="INT32U"              />
+      <arg name="status"                     type="ENUM8"               />
+      <arg name="profileIntervalPeriod"      type="ENUM8"               />
+      <arg name="numberOfIntervalsDelivered" type="INT8U"               />
+      <arg name="attributeId"                type="INT16U"              />
+      <arg name="intervals"                  type="INT8U"  array="true" />
+    </command>
+    <command source="client" code="0x00" name="GetProfileInfoCommand" optional="true">
+      <description>
+        A function which retrieves the power profiling information from the electrical measurement server.
+      </description>
+    </command>
+    <command source="client" code="0x01" name="GetMeasurementProfileCommand" optional="true">
+      <description>
+        A function which retrieves an electricity measurement profile from the electricity measurement server for a specific attribute Id requested.
+      </description>
+      <arg name="attributeId"       type="INT16U" />
+      <arg name="startTime"         type="INT32U" />
+      <arg name="numberOfIntervals" type="ENUM8"  />
+    </command>
+  </cluster>
+
+  <cluster introducedIn="ha-1.2-11-5474-19">
+    <name>Diagnostics</name>
+    <domain>Home Automation</domain>
+    <description>Attributes related to the gathering of diagnostic information from a stack.</description>
+    <code>0x0B05</code>
+    <define>DIAGNOSTICS_CLUSTER</define>
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+    <attribute side="server" code="0x0000" define="NUMBER_OF_RESETS"                   type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">number of resets</attribute>
+    <attribute side="server" code="0x0100" define="MAC_RX_BCAST"                       type="INT32U" min="0x0000" max="0xFFFFFFFF" writable="false" default="0x0000" optional="true">mac rx broadcast</attribute>
+    <attribute side="server" code="0x0101" define="MAC_TX_BCAST"                       type="INT32U" min="0x0000" max="0xFFFFFFFF" writable="false" default="0x0000" optional="true">mac tx broadcast</attribute>
+    <attribute side="server" code="0x0102" define="MAC_RX_UCAST"                       type="INT32U" min="0x0000" max="0xFFFFFFFF" writable="false" default="0x0000" optional="true">mac rx unicast</attribute>
+    <attribute side="server" code="0x0103" define="MAC_TX_UCAST"                       type="INT32U" min="0x0000" max="0xFFFFFFFF" writable="false" default="0x0000" optional="true">mac tx unicast</attribute>
+    <attribute side="server" code="0x0104" define="MAC_TX_UCAST_RETRY"                 type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">mac tx unicast retry</attribute>
+    <attribute side="server" code="0x0105" define="MAC_TX_UCAST_FAIL"                  type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">mac tx unicast fail</attribute>
+    <attribute side="server" code="0x0106" define="APS_RX_BCAST"                       type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps rx broadcast</attribute>
+    <attribute side="server" code="0x0107" define="APS_TX_BCAST"                       type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps tx broadcast</attribute>
+    <attribute side="server" code="0x0108" define="APS_RX_UCAST"                       type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps rx unicast</attribute>
+    <attribute side="server" code="0x0109" define="APS_UCAST_SUCCESS"                  type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps unicast success</attribute>
+    <attribute side="server" code="0x010A" define="APS_TX_UCAST_RETRY"                 type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps tx unicast retries</attribute>
+    <attribute side="server" code="0x010B" define="APS_TX_UCAST_FAIL"                  type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps tx unicast failures</attribute>
+    <attribute side="server" code="0x010C" define="ROUTE_DISC_INITIATED"               type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">route discovery initiated</attribute>
+    <attribute side="server" code="0x010D" define="NEIGHBOR_ADDED"                     type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">neighbor added</attribute>
+    <attribute side="server" code="0x010E" define="NEIGHBOR_REMOVED"                   type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">neighbor moved</attribute>
+    <attribute side="server" code="0x010F" define="NEIGHBOR_STALE"                     type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">neighbor stale</attribute>
+    <attribute side="server" code="0x0110" define="JOIN_INDICATION"                    type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">join indication</attribute>
+    <attribute side="server" code="0x0111" define="CHILD_MOVED"                        type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">child moved</attribute>
+    <attribute side="server" code="0x0112" define="NWK_FC_FAILURE"                     type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">network frame control failure</attribute>
+    <attribute side="server" code="0x0113" define="APS_FC_FAILURE"                     type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps frame control failure</attribute>
+    <attribute side="server" code="0x0114" define="APS_UNAUTHORIZED_KEY"               type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps unauthorized key</attribute>
+    <attribute side="server" code="0x0115" define="NWK_DECRYPT_FAILURE"                type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">network decryption failure</attribute>
+    <attribute side="server" code="0x0116" define="APS_DECRYPT_FAILURE"                type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">aps decryption failure</attribute>
+    <attribute side="server" code="0x0117" define="PACKET_BUFFER_ALLOC_FAILURES"       type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">packet buffer allocation failures</attribute>
+    <attribute side="server" code="0x0118" define="RELAYED_UNICAST"                    type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">relayed unicasts</attribute>
+    <attribute side="server" code="0x0119" define="PHY_TO_MAC_QUEUE_LIMIT_REACHED"     type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">phy to mac queue limit reached</attribute>
+    <attribute side="server" code="0x011A" define="PACKET_VALIDATE_DROP_COUNT"         type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">packet validate drop count</attribute>
+    <attribute side="server" code="0x011B" define="AVERAGE_MAC_RETRY_PER_APS_MSG_SENT" type="INT16U" min="0x0000" max="0xFFFF"     writable="false" default="0x0000" optional="true">average mac retry per aps message sent</attribute>
+    <attribute side="server" code="0x011C" define="LAST_MESSAGE_LQI"                   type="INT8U"  min="0x00"   max="0xFF"       writable="false" default="0x0000" optional="true">last message lqi</attribute>
+    <attribute side="server" code="0x011D" define="LAST_MESSAGE_RSSI"                  type="INT8S"  min="0x00"   max="0xFF"       writable="false" default="0x0000" optional="true">last message rssi</attribute>
+  </cluster>
+
+  <clusterExtension code="0x0001">
+    <attribute side="server" code="0x0021" define="BATTERY_PERCENTAGE_REMAINING"   type="INT8U"       min="0x00"   max="0xFF"               writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery percentage remaining</attribute>
+    <attribute side="server" code="0x0037" define="BATTERY_VOLTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery voltage threshold 1</attribute>
+    <attribute side="server" code="0x0038" define="BATTERY_VOLTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery voltage threshold 2</attribute>
+    <attribute side="server" code="0x0039" define="BATTERY_VOLTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery voltage threshold 3</attribute>
+    <attribute side="server" code="0x003a" define="BATTERY_PERCENTAGE_MIN_THRESHOLD"  type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43" >battery percentage min threshold</attribute>
+    <attribute side="server" code="0x003b" define="BATTERY_PERCENTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery percentage threshold 1</attribute>
+    <attribute side="server" code="0x003c" define="BATTERY_PERCENTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery percentage threshold 2</attribute>
+    <attribute side="server" code="0x003d" define="BATTERY_PERCENTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-43">battery percentage threshold 3</attribute>
+    <attribute side="server" code="0x003e" define="BATTERY_ALARM_STATE"    type="BITMAP32"       min="0x00000000"   max="0xFFFFFFFF"               writable="false"  default="0x00000000"   optional="true" introducedIn="ha-1.2-11-5474-57">battery alarm state</attribute>
+    <attribute side="server" code="0x0040" define="BATTERY_2_VOLTAGE"                type="INT8U"       min="0x00"   max="0xFF"               writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 voltage</attribute>
+    <attribute side="server" code="0x0041" define="BATTERY_2_PERCENTAGE_REMAINING"   type="INT8U"       min="0x00"   max="0xFF"               writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 percentage remaining</attribute>
+    <attribute side="server" code="0x0050" define="BATTERY_2_MANUFACTURER"           type="CHAR_STRING"                           length="16" writable="true"  default=""       optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 manufacturer</attribute>
+    <attribute side="server" code="0x0051" define="BATTERY_2_SIZE"                   type="ENUM8"       min="0x00"   max="0xFF"               writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 size</attribute>
+    <attribute side="server" code="0x0052" define="BATTERY_2_AHR_RATING"             type="INT16U"      min="0x0000" max="0xFFFF"             writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 ahr rating</attribute>
+    <attribute side="server" code="0x0053" define="BATTERY_2_QUANTITY"               type="INT8U"       min="0x00"   max="0xFF"               writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 quantity</attribute>
+    <attribute side="server" code="0x0054" define="BATTERY_2_RATED_VOLTAGE"          type="INT8U"       min="0x00"   max="0xFF"               writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 rated voltage</attribute>
+    <attribute side="server" code="0x0055" define="BATTERY_2_ALARM_MASK"             type="BITMAP8"     min="0x00"   max="0x01"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 alarm mask</attribute>
+    <attribute side="server" code="0x0056" define="BATTERY_2_VOLTAGE_MIN_THRESHOLD"  type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 voltage min threshold</attribute>
+    <attribute side="server" code="0x0057" define="BATTERY_2_VOLTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 voltage threshold 1</attribute>
+    <attribute side="server" code="0x0058" define="BATTERY_2_VOLTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 voltage threshold 2</attribute>
+    <attribute side="server" code="0x0059" define="BATTERY_2_VOLTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 voltage threshold 3</attribute>
+    <attribute side="server" code="0x005a" define="BATTERY_2_PERCENTAGE_MIN_THRESHOLD"  type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57" >battery 2 percentage min threshold</attribute>
+    <attribute side="server" code="0x005b" define="BATTERY_2_PERCENTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 percentage threshold 1</attribute>
+    <attribute side="server" code="0x005c" define="BATTERY_2_PERCENTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 percentage threshold 2</attribute>
+    <attribute side="server" code="0x005d" define="BATTERY_2_PERCENTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 percentage threshold 3</attribute>
+    <attribute side="server" code="0x005e" define="BATTERY_2_ALARM_STATE"    type="BITMAP32"       min="0x00000000"   max="0xFFFFFFFF"               writable="false"  default="0x00000000"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 2 alarm state</attribute>
+    <attribute side="server" code="0x0060" define="BATTERY_3_VOLTAGE"                type="INT8U"       min="0x00"   max="0xFF"               writable="false"                  optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 voltage</attribute>
+    <attribute side="server" code="0x0061" define="BATTERY_3_PERCENTAGE_REMAINING"   type="INT8U"       min="0x00"   max="0xFF"               writable="false" default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 percentage remaining</attribute>
+    <attribute side="server" code="0x0070" define="BATTERY_3_MANUFACTURER"           type="CHAR_STRING"                           length="16" writable="true"  default=""       optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 manufacturer</attribute>
+    <attribute side="server" code="0x0071" define="BATTERY_3_SIZE"                   type="ENUM8"       min="0x00"   max="0xFF"               writable="true"  default="0xFF"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 size</attribute>
+    <attribute side="server" code="0x0072" define="BATTERY_3_AHR_RATING"             type="INT16U"      min="0x0000" max="0xFFFF"             writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 ahr rating</attribute>
+    <attribute side="server" code="0x0073" define="BATTERY_3_QUANTITY"               type="INT8U"       min="0x00"   max="0xFF"               writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 quantity</attribute>
+    <attribute side="server" code="0x0074" define="BATTERY_3_RATED_VOLTAGE"          type="INT8U"       min="0x00"   max="0xFF"               writable="true"                   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 rated voltage</attribute>
+    <attribute side="server" code="0x0075" define="BATTERY_3_ALARM_MASK"             type="BITMAP8"     min="0x00"   max="0x01"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 alarm mask</attribute>
+    <attribute side="server" code="0x0076" define="BATTERY_3_VOLTAGE_MIN_THRESHOLD"  type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 voltage min threshold</attribute>
+    <attribute side="server" code="0x0077" define="BATTERY_3_VOLTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 voltage threshold 1</attribute>
+    <attribute side="server" code="0x0078" define="BATTERY_3_VOLTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 voltage threshold 2</attribute>
+    <attribute side="server" code="0x0079" define="BATTERY_3_VOLTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 voltage threshold 3</attribute>
+    <attribute side="server" code="0x007a" define="BATTERY_3_PERCENTAGE_MIN_THRESHOLD"  type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57" >battery 3 percentage min threshold</attribute>
+    <attribute side="server" code="0x007b" define="BATTERY_3_PERCENTAGE_THRESHOLD_1"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 percentage threshold 1</attribute>
+    <attribute side="server" code="0x007c" define="BATTERY_3_PERCENTAGE_THRESHOLD_2"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 percentage threshold 2</attribute>
+    <attribute side="server" code="0x007d" define="BATTERY_3_PERCENTAGE_THRESHOLD_3"    type="INT8U"       min="0x00"   max="0xFF"               writable="true"  default="0x00"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 percentage threshold 3</attribute>
+    <attribute side="server" code="0x007e" define="BATTERY_3_ALARM_STATE"    type="BITMAP32"       min="0x00000000"   max="0xFFFFFFFF"               writable="false"  default="0x00000000"   optional="true" introducedIn="ha-1.2-11-5474-57">battery 3 alarm state</attribute>
+  </clusterExtension>
+
+</configurator>

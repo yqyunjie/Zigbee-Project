@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="SELECT_FILE_DESCRIPTORS" name="Select File Descriptors" returnType="int">
+    <description>
+      This function is called when the Gateway plugin will do a select() call to yield the processor until it has a timed event that needs to execute.  The function implementor may add additional file descriptors that the application will monitor with select() for data ready.  These file descriptors must be read file descriptors.  The number of file descriptors added must be returned by the function (0 for none added).
+    </description>
+    <arg name="list" type="int*" description="A pointer to a list of File descriptors that the function implementor may append to"/>
+    <arg name="maxSize" type="int" description="The maximum number of elements that the function implementor may add."/>
+    <codeForStub>
+    return 0;
+    </codeForStub>
+ </function>
+</callback>

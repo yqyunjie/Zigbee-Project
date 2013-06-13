@@ -1,0 +1,125 @@
+<project buildenvironment="{608a6722-83f5-413c-8dfd-62423b31ccb4}" executionenvironment="{b800576b-c853-409b-8864-a765706e8aba}" executionenvironmentname="XAP2b Emulator" buildenvironmentoption="" buildenvironmentname="XAP2b" executionenvironmentoption="" >
+ <folder name="Startup Code" >
+  <extension name="xap" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/cstartup.xap" />
+ </folder>
+ <folder name="C Files" >
+  <extension name="c" />
+  <file path="_replace_halDirFromStackFs_/ember-configuration.c" />
+  <file path="_replace_halDirFromStackFs_/micro/generic/crc.c" />
+  <file path="_replace_halDirFromStackFs_/micro/generic/random.c" />
+  <file path="_replace_halDirFromStackFs_/micro/generic/mem-util.c" />
+  <file path="_replace_halDirFromStackFs_/micro/generic/sim-eeprom.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/token-def.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/diagnostic.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/micro.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/system-timer.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/token.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/uart.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/flash.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/adc.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/led.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/button.c" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/buzzer.c" />
+  <file path="app/builder/_replace_projectName_/call-command-handler.c" />
+  <file path="app/builder/_replace_projectName_/callback-stub.c" />
+  <file path="app/builder/_replace_projectName_/stack-handler-stub.c" />
+  <file path="app/framework/util/af-main-soc.c" />
+  <file path="app/framework/util/af-main-common.c" />
+  <file path="app/framework/cli/core-cli.c" />
+  <file path="app/framework/cli/option-cli.c" />
+  <file path="app/framework/cli/network-cli.c" />
+  <file path="app/framework/cli/plugin-cli.c" />
+  <file path="app/framework/cli/security-cli.c" />
+  <file path="app/framework/cli/tiny-cli.c" />
+  <file path="app/framework/cli/zcl-cli.c" />
+  <file path="app/framework/cli/zdo-cli.c" />
+  <file path="app/framework/util/af-event.c" />
+  <file path="app/framework/util/attribute-size.c" />
+  <file path="app/framework/util/attribute-storage.c" />
+  <file path="app/framework/util/attribute-table.c" />
+  <file path="app/framework/util/client-api.c" />
+  <file path="app/framework/util/message.c" />
+  <file path="app/framework/util/multi-network.c" />
+  <file path="app/framework/util/process-cluster-message.c" />
+  <file path="app/framework/util/process-global-message.c" />
+  <file path="app/framework/util/util.c" />
+  <file path="app/framework/util/print.c" />
+  <file path="app/framework/util/print-formatter.c" />
+  <file path="app/util/zigbee-framework/zigbee-device-common.c" />
+  <file path="app/util/zigbee-framework/zigbee-device-library.c" />
+  <file path="app/util/common/form-and-join.c" />
+  <file path="app/util/common/form-and-join-node-adapter.c" />
+  <file path="app/util/serial/serial.c" />
+  <file path="app/util/serial/command-interpreter2.c" />
+  <file path="app/framework/security/af-node.c" />
+  <file path="app/framework/security/af-trust-center.c" />
+  <file path="app/framework/security/af-security-common.c" />
+  <file path="app/framework/security/crypto-state.c" />
+  <file path="app/framework/util/service-discovery-soc.c" />
+  <file path="app/framework/util/service-discovery-common.c" />
+  <file path="app/util/security/security-address-cache.c" />
+  <file path="app/util/counters/counters.c" />
+  <file path="app/util/common/library.c" />
+  _replace_callbackStubs_
+  _replace_includeFiles_
+  _replace_pluginFiles_
+ </folder>
+ <folder name="Libraries and Assembler Files" >
+  <extension name="xap" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/mem-util-xap2b.xap" />
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/flash-corebuf.xap" />
+  <file path="./build/hal-library-xap2b-mcc-em250-em250-debug_off/hal-library.xap"/>
+  _replace_stackLibrary_
+  _replace_endDeviceBindLibrary_
+  _replace_securityLibrary_
+  _replace_securityKeysLibrary_
+  _replace_cbkeLibrary_
+  _replace_cbkeDsaSignLibrary_
+  _replace_cbkeDsaVerifyLibrary_
+  _replace_eccLibrary_
+  _replace_installCodeLibrary_
+  _replace_bindingTableLibrary_
+  _replace_multiNetworkLibrary_
+  _replace_packetValidateLibrary_
+  _replace_zllLibrary_
+  <file path="./build/alarm-stub-library-xap2b-mcc-em250-em250/alarm-stub-library.xap"/>
+ </folder>
+ <folder name="Endup Code" >
+  <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/cendup.xap" />
+ </folder>
+ <file path="_replace_halDirFromStackFs_/micro/xap2b/em250/memory.map" />
+ <properties currentconfiguration="Release" >
+  <configuration name="Release" >
+   <property key="asmDefines" >$DEADSTRIP;$PEEPHOLE;_replace_asmDefines_</property>
+   <property key="asmIncludeDirs" >.;./_replace_halDirFromStackFs_/micro/xap2b/em250</property>
+   <property key="compilerExtra" >  </property>
+   <property key="defines" >PLATFORM_HEADER=&quot;_replace_halDirFromStackFs_/micro/xap2b/compiler/mcc.h&quot;;BOARD_HEADER=&quot;_replace_boardHeader_&quot; ;EMBER_STACK_PRO;XAP2B;XAP2B_EM250;PHY_EM250;BOARD_DEV0455;ZA_GENERATED_HEADER="app/builder/_replace_projectName_/_replace_projectName_.h";FORM_AND_JOIN;APPLICATION_TOKEN_HEADER="app/framework/util/tokens.h";ATTRIBUTE_STORAGE_CONFIGURATION="_replace_endpoint_config_";CONFIGURATION_HEADER="app/framework/util/config.h";GENERATED_TOKEN_HEADER="app/builder/_replace_projectName_/_replace_tokenHeader_";EMBER_SERIAL0_DEBUG;EMBER_APPLICATION_HAS_TRUST_CENTER_JOIN_HANDLER;_replace_defines__replace_dashDMacros_</property>
+   <property key="generateDebug" >1</property>
+   <property key="generateLibDebug" >1</property>
+   <property key="generateLinkerListFile" >1</property>
+   <property key="generateListFile" >1</property>
+   <!-- NOTE: See bug 14706 before modifying the next line in the template file.  Ignore this comment for an actual XIP file. -->
+   <property key="includeDirs" > .;app/builder/_replace_projectName_;./stack;_replace_halDirFromStackFs_;_replace_halDirFromStackFs_/.. _replace_includePathsXip_ </property>
+   <property key="intermediateDir" >./build/_replace_projectName_</property>
+   <property key="keepAssembler" >1</property>
+   <property key="linkerExtra" >  </property>
+   <property key="memoryModel" >0</property>
+   <property key="optimizationLevel">2</property>
+   <property key="outputDir" >./build/_replace_projectName_</property>
+   <property key="packFile" >_replace_halDirFromStackBs_\micro\xap2b\em250\segments.xap</property>
+   <property key="peripheralList" >em250.xml</property>
+   <property key="postBuild" >$(installDir)/bin/post_build.bat</property>
+   <property key="postBuildDirectorySeparators" >1</property>
+   <property key="postBuildDisplay" >Converting .xpv/.xdv into bootloader .ebl image</property>
+   <property key="postBuildEnvExtra" >PLAT=xap2b;MICRO=em250;PHY=em250;BOARD=dev0455</property>
+   <property key="postBuildOutput" >2</property>
+   <property key="postClean" >$(installDir)/bin/post_clean.bat</property>
+   <property key="postCleanDirectorySeparators" >1</property>
+   <property key="postCleanDisplay" >Cleaning .ebl image and deadstrip intermediates</property>
+   <property key="postCleanOutput" >2</property>
+   <property key="warning7" >0</property>
+   
+  </configuration>
+ </properties>
+</project>

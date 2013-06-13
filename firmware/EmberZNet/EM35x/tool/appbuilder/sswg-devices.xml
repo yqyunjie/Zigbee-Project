@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<configurator>
+  <deviceType>
+    <name>SSWG-ESP</name>
+    <domain>SSWG</domain>
+    <typeName>SSWG Energy Service Interface</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0500</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Messaging</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Prepayment</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true" >TOU Calender</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true" >Device Management</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SSWG-Meter</name>
+    <domain>SSWG</domain>
+    <typeName>SSWG Metering Device</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0501</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Prepayment</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >TOU Calender</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Device Management</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SSWG-pt</name>
+    <domain>SSWG</domain>
+    <typeName>SSWG Prepayment Terminal</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0506</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Price</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Prepayment</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+</configurator>

@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<configurator>
+  <deviceType>
+    <name>SE-rangeextender</name>
+    <domain>SE</domain>
+    <typeName>SE Range Extender</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0008</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-ESP</name>
+    <domain>SE</domain>
+    <typeName>SE Energy Service Interface</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0500</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Messaging</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Simple Metering</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-Meter</name>
+    <domain>SE</domain>
+    <typeName>SE Metering Device</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0501</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-Meter-Mirror</name>
+    <domain>SE</domain>
+    <typeName>SE Metering Mirror Device</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0501</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-IPD</name>
+    <domain>SE</domain>
+    <typeName>SE In-Premises Display</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0502</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-PCT</name>
+    <domain>SE</domain>
+    <typeName>SE Programmable Communicating Thermostat (PCT)</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0503</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Demand Response and Load Control</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-LC</name>
+    <domain>SE</domain>
+    <typeName>SE Load Control Device</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0504</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Demand Response and Load Control</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Price</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>SE-SA</name>
+    <domain>SE</domain>
+    <typeName>SE Smart Appliance</typeName>
+    <zigbeeType>Router</zigbeeType>
+    <profileId editable="false">0x0109</profileId>
+    <deviceId editable="false">0x0505</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Key Establishment</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Commissioning</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Identify</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Over the Air Bootloading</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Tunneling</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="false">Generic Tunnel</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Price</include>
+      <include client="true"  server="false" clientLocked="true"  serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Messaging</include>
+    </clusters>
+  </deviceType>
+</configurator>

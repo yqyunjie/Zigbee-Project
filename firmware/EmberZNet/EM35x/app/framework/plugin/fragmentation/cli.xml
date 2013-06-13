@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-fragmentation" name="Plugin Commands: Fragmentation">
+    <description />
+  </group>
+</cli>

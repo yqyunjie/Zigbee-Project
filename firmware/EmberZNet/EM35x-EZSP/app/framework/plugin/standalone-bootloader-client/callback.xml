@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="ALLOW_INCOMING_MESSAGE" name="Allow Incoming Message" returnType="boolean">
+    <description>
+      Allows the application to control whether the plugin can respond to incoming bootload messages.
+    </description>
+    <arg name="sourceEui64" type="EmberEUI64" description="The EUI64 of the sending node."/>
+    <arg name="command" type="int8u" description="The incoming command ID"/>
+    <codeForStub>
+      // Return TRUE to tell the standalone bootloader client plugin to respond per normal.
+      // Return FALSE to tell it to drop the message on the floor.
+      return TRUE;
+    </codeForStub>
+  </function>
+  <function id="ALLOW_BOOTLOAD_LAUNCH" name="Allow Bootload Launch" returnType="boolean">
+    <description>
+      This function is a callback when the client is being told to launch the standalone bootloader.  This is done after authentication has completed successfully.
+    </description>
+    <arg name="sourceEui64" type="EmberEUI64" description="The EUI64 of the node requesting the bootload."/>
+    <codeForStub>
+      // Return TRUE to allow the plugin to launch the standalone bootloader and continue with the over-the-air bootload.
+      // Return FALSE to disallow the plugin from launching the standalone bootloader.
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-poll-control-client" name="Plugin Commands: Poll Control Client">
+    <description>
+      The poll-control-client plugin contributes CLI commands to the application framework to be used for setting poll control parameters in a local, client context.
+    </description>
+  </group>
+  <command cli="plugin poll-control-client mode" functionName="mode" group="plugin-poll-control-client">
+    <description>
+      Set the fast polling mode.
+    </description>
+    <arg name="mode" type="BOOLEAN" description = "The fast polling mode." />
+  </command>
+  <command cli="plugin poll-control-client timeout" functionName="timeout" group="plugin-poll-control-client">
+    <description>
+      Set the fast polling timeout.
+    </description>
+    <arg name="timeout" type="INT16U" description = "The fast polling timeout." />
+  </command>
+  <command cli="plugin poll-control-client respond" functionName="respond" group="plugin-poll-control-client">
+    <description>
+      Set the response mode.
+    </description>
+    <arg name="mode" type="BOOLEAN" description = "The response mode." />
+  </command>
+  <command cli="plugin poll-control-client print" functionName="print" group="plugin-poll-control-client">
+    <description>
+      Print the fast polling mode and timeout.
+    </description>
+  </command>
+  <command cli="plugin poll-control-client stop" functionName="stop" group="plugin-poll-control-client">
+    <description>
+      Send a fast poll stop message to the poll control server.
+    </description>
+    <arg name="nodeId" type="INT16U" description="The destination node id." />
+    <arg name="srcEndpoint" type="INT8U" description="The source endpoint." />
+    <arg name="dstEndpoint" type="INT8U" description="The destination endpoint." />
+  </command>
+  <command cli="plugin poll-control-client set-long" functionName="setLong" group="plugin-poll-control-client">
+    <description>
+      Set the long poll interval.
+    </description>
+    <arg name="nodeId" type="INT16U" description="The destination node id." />
+    <arg name="srcEndpoint" type="INT8U" description="The source endpoint." />
+    <arg name="dstEndpoint" type="INT8U" description="The destination endpoint." />
+    <arg name="interval" type="INT32U" description="The new interval." />
+  </command>
+  <command cli="plugin poll-control-client set-short" functionName="setShort" group="plugin-poll-control-client">
+    <description>
+      Set the short poll interval.
+    </description>
+    <arg name="nodeId" type="INT16U" description="The destination node id." />
+    <arg name="srcEndpoint" type="INT8U" description="The source endpoint." />
+    <arg name="dstEndpoint" type="INT8U" description="The destination endpoint." />
+    <arg name="interval" type="INT16U" description="The new interval." />
+  </command>
+</cli>

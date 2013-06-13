@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-simple-metering-server" name="Plugin Commands: Simple Metering Server">
+    <description>
+      The simple-metering-server plugin contributes CLI commands to the application framework to be used in conjunction with the Simple Metering cluster in a server context
+    </description>
+  </group>
+  <command cli="plugin simple-metering-server print" functionName="print" group="plugin-simple-metering-server">
+    <description>
+      Prints the test meters
+    </description>
+  </command>
+  <command cli="plugin simple-metering-server rate" functionName="rate" group="plugin-simple-metering-server">
+    <description>
+      Used to change the rate argument
+    </description>
+    <arg name="rate" type="INT16U" description="The rate at which the test meter generates test data" />
+  </command>
+  <command cli="plugin simple-metering-server variance" functionName="variance" group="plugin-simple-metering-server">
+    <description>
+      Used to change the variance in the test data created by the test meter.
+    </description>
+    <arg name="rate" type="INT16U" description="" />
+  </command>
+  <command cli="plugin simple-metering-server adjust" functionName="adjust" group="plugin-simple-metering-server">
+    <description>
+      Used to adjust the test meter.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint of the test meter." />
+  </command>
+  <command cli="plugin simple-metering-server off" functionName="off" group="plugin-simple-metering-server">
+    <description>
+      Turn off output from the test meter.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint of the test meter" />
+  </command>
+  <command cli="plugin simple-metering-server electric" functionName="electric" group="plugin-simple-metering-server">
+    <description>
+      Turns test meter into an electric meter
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint of the test meter" />
+  </command>
+  <command cli="plugin simple-metering-server gas" functionName="gas" group="plugin-simple-metering-server">
+    <description>
+      Turns test meter into a gas meter
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint of the test meter" />
+  </command>
+  <command cli="plugin simple-metering-server rnd_error" functionName="randomError" group="plugin-simple-metering-server">
+    <description>
+      Sets the random error to the value provided which is the chance in 256 of an error occurring.
+    </description>
+    <arg name="chanceIn255" type="INT8U" description="The chance of an error occurring in 255" />
+  </command>
+  <command cli="plugin simple-metering-server set_error" functionName="setError" group="plugin-simple-metering-server">
+    <description>
+      Sets the meter's status attribute id to the passed error value.
+    </description>
+    <arg name="error" type="INT8U" description="The chance of an error occurring in 255" />
+    <arg name="endpoint" type="INT8U" description="The endpoint affected" />
+  </command>
+  <command cli="plugin simple-metering-server profiles" functionName="profiles" group="plugin-simple-metering-server">
+    <description>
+      Turn on and off profiles on the test meter server..
+    </description>
+    <arg name="profileType" type="INT8U" description="The profile to set" />
+  </command>
+</cli>

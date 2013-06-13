@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-messaging-client" name="Plugin Commands: Messaging Client">
+    <description>
+      The messaging-client plugin contributes CLI commands to the application framework to be used for manipulating messages in a client context.
+    </description>
+  </group>
+  <command cli="plugin messaging-client confirm" functionName="confirm" group="plugin-messaging-client">
+    <description>
+      Send the message confirmation.
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+  <command cli="plugin messaging-client print" functionName="print" group="plugin-messaging-client">
+    <description>
+      Print the message info.
+    </description>
+    <arg name="endpoint" type="INT8U" description = "The relevant endpoint." />
+  </command>
+</cli>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-concentrator" name="Plugin Commands: Concentrator">
+    <description>
+      The Concentrator plugin contributes several CLI commands to the application framework for controlling the sending of MTORRs.
+    </description>
+  </group>
+  <command cli="plugin concentrator status" functionName="concentratorStatus" group="plugin-concentrator">
+    <description>
+      Prints current status and configured parameters of the concentrator
+    </description>
+  </command>
+  <command cli="plugin concentrator start" functionName="concentratorStartDiscovery" group="plugin-concentrator">
+    <description>
+      Starts the periodic broadcast of MTORRs
+    </description>
+  </command>
+  <command cli="plugin concentrator stop" functionName="emberAfPluginConcentratorStopDiscovery" group="plugin-concentrator">
+    <description>
+      Stops the periodic broadcast of MTORRs
+    </description>
+  </command>
+  <command cli="plugin concentrator agg" functionName="optionAggregationCommand" group="plugin-concentrator">
+    <description>
+      (Requires Concentrator Support to be enabled on this device.) Schedules a ZigBee PRO Many To One Route Request (MTORR) to be sent out at next opportunity, which will cause aggregation (many-to-one) routes to be created towards this concentrator.
+    </description>
+  </command>
+</cli>

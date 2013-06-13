@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-zll-commissioning" name="Plugin Commands: ZigBee Link Light (ZLL) Commissioning">
+    <description>
+      The ZigBee Link Light (ZLL) Commissioning Plugin contributes several commands to the application framework's CLI. These commands are used for forming and managing a ZLL network.
+    </description>
+  </group>
+  <command cli="plugin zll-commissioning form" functionName="formNetwork" group="plugin-zll-commissioning">
+    <description>
+      Form a ZLL network.
+    </description>
+    <arg name="channel" type="INT8U"  description="The channel on which to form the network." />
+    <arg name="power"   type="INT8S"  description="The power setting for network transmissions." />
+    <arg name="panId"   type="INT16U" description="The PAN identifier for the network." />
+  </command>
+  <command cli="plugin zll-commissioning link" functionName="initiateTouchLink" group="plugin-zll-commissioning">
+    <description>
+      Initiate the touch link procedure.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning link device" functionName="initiateTouchLink" group="plugin-zll-commissioning">
+    <description>
+      Initiate a touch link for the purpose of retrieving information about a target device.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning link identify" functionName="initiateTouchLink" group="plugin-zll-commissioning">
+    <description>
+      Initiate a touch link for the purpose of causing a target device to identify itself.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning link reset" functionName="initiateTouchLink" group="plugin-zll-commissioning">
+    <description>
+      Initiate a touch link for the purpose of resetting a target device.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning abort" functionName="emberAfZllAbortTouchLink" group="plugin-zll-commissioning">
+    <description>
+      Abort the touch link procedure.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning info" functionName="endpointInformation" group="plugin-zll-commissioning">
+    <description>
+      Send an EndpointInformationRequest to a client.
+    </description>
+    <arg name="destination"         type="INT16U" description="The network address of the device to which the request will be sent." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="The source endpoint from which the request will be sent." />
+    <arg name="destinationEndpoint" type="INT8U"  description="The destination endpoint to which the request will be sent." />
+  </command>
+  <command cli="plugin zll-commissioning groups" functionName="getGroupIdentifiersRequest" group="plugin-zll-commissioning">
+    <description>
+      Send a GroupIdentifiersRequest to a server.
+    </description>
+    <arg name="destination"         type="INT16U" description="The network address of the device to which the request will be sent." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="The source endpoint from which the request will be sent." />
+    <arg name="destinationEndpoint" type="INT8U"  description="The destination endpoint to which the request will be sent." />
+    <arg name="startIndex"          type="INT8U"  description="The group table index at which to start retreiving data." />
+  </command>
+  <command cli="plugin zll-commissioning endpoints" functionName="getEndpointListRequest" group="plugin-zll-commissioning">
+    <description>
+      Send a GetEndpointListRequest to a server.
+    </description>
+    <arg name="destination"         type="INT16U" description="The network address of the device to which the request will be sent." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="The source endpoint from which the request will be sent." />
+    <arg name="destinationEndpoint" type="INT8U"  description="The destination endpoint to which the request will be sent." />
+    <arg name="startIndex"          type="INT8U"  description="The endpoint index at which to start retreiving data." />
+  </command>
+  <command cli="plugin zll-commissioning tokens" functionName="printZllTokens" group="plugin-zll-commissioning">
+    <description>
+      Print the ZLL tokens.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning channel" functionName="setScanChannel" group="plugin-zll-commissioning">
+    <description>
+      Set the scan channel used by the ZLL Commissioning plugin.
+    </description>
+    <arg name="channel" type="INT8U" description="The channel to be used." />
+  </command>
+  <command cli="plugin zll-commissioning mask" functionName="setScanMask" group="plugin-zll-commissioning">
+    <description>
+      Set the scan channel set used by the ZLL Commissioning plugin.  An index of 0 sets the primary ZLL channel set, 1 is the +1 channel set, 2 is the +2 channel set, 3 is the +3 channel set, and 4 is all ZigBee channels.
+    </description>
+    <arg name="index" type="INT8U" description="The index of the channel mask to be used." />
+  </command>
+  <command cli="plugin zll-commissioning status" functionName="statusCommand" group="plugin-zll-commissioning">
+    <description>
+      Print the ZLL channel set and tokens.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning joinable" functionName="joinable" group="plugin-zll-commissioning">
+    <description>
+      Scan for joinable networks and attempt to join if a network is found.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning unused" functionName="unused" group="plugin-zll-commissioning">
+    <description>
+      Scan for an unused PAN identifier and form a new ZLL network.
+    </description>
+  </command>
+  <command cli="plugin zll-commissioning reset" functionName="emberAfZllResetToFactoryNew" group="plugin-zll-commissioning">
+    <description>
+      Reset the local device to factory new.
+    </description>
+  </command>
+</cli>

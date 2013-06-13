@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-price-server" name="Plugin Commands: Price Server">
+    <description>
+      The identify plugin contributes a CLI command to the application framework to be used for printing information related to identification. 
+    </description>
+  </group>
+  <command cli="plugin price-server print" functionName="print" group="plugin-price-server">
+    <description>
+      Print the price info for the provided endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The relevant endpoint" />
+  </command>
+  <command cli="plugin price-server clear" functionName="clear" group="plugin-price-server">
+    <description>
+      Clears out the currently set price for the supplied endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The relevant endpoint" />
+  </command>
+  <command cli="plugin price-server who" functionName="who" group="plugin-price-server">
+    <description>
+      Clears out the currently set price.
+    </description>
+      <arg name="provId" type="INT8U" description="provider id" />
+      <arg name="label" type="OCTET_STRING" description="rate label" />
+      <arg name="eventId" type="INT8U" description="issuer event id" />
+  </command>
+  <command cli="plugin price-server what" functionName="what" group="plugin-price-server">
+    <description>
+      Indicates what units the price is presented in.
+    </description>
+      <arg name="unitOfMeas" type="INT8U" description="unit of measure" />
+      <arg name="curr" type="INT16U" description="currency" />
+      <arg name="ptd" type="INT8U" description="price trailing digit and tier" />
+      <arg name="prt" type="INT8U" description="number of price tiers and tier" />
+  </command>
+  <command cli="plugin price-server when" functionName="when" group="plugin-price-server">
+    <description>
+      Sets start time and duration for the price.
+    </description>
+      <arg name="startTime" type="INT32U" description="start time for the price" />
+      <arg name="duration" type="INT16U" description="duration for the price" />
+  </command>
+  <command cli="plugin price-server price" functionName="prce" group="plugin-price-server">
+    <description>
+      Set the single price held within the price plugin server
+    </description>
+    <arg name="price" type="INT32U" description="price" />
+    <arg name="ratio" type="INT8U" description="ratio" />
+    <arg name="genPrice" type="INT32U" description="generation price" />
+    <arg name="genRatio" type="INT8U" description="generation price ratio" />
+  </command>
+  <command cli="plugin price-server alternate" functionName="alternate" group="plugin-price-server">
+    <description>
+      Set the alternate values for the price
+    </description>
+      <arg name="alternateCostDelivered" type="INT32U" description="alternate cost delivered" />
+      <arg name="alternateCostUnit" type="INT8U" description="alternate cost unit" />
+      <arg name="alternateCostTrailingDigit" type="INT8U" description="alternate cost trailing digit" />
+  </command>
+  <command cli="plugin price-server ack" functionName="ack" group="plugin-price-server">
+    <description>
+      Turn price acknowledgement on or off depending on passed boolean value.
+    </description>
+    <arg name="req" type="INT8U" description="boolean acknowledgement required" />
+  </command>
+  <command cli="plugin price-server valid" functionName="valid" group="plugin-price-server">
+    <description>
+      Make a price at a given index valid.
+    </description>
+      <arg name="endpoint" type="INT8U" description="the relevant endpoint" />
+      <arg name="index"    type="INT8U" description="index in the price table" />
+  </command>
+  <command cli="plugin price-server invalid" functionName="valid" group="plugin-price-server">
+    <description>
+      Make a price at a given index invalid
+    </description>
+    <arg name="endpoint" type="INT8U" description="the relevant endpoint" />
+    <arg name="index"    type="INT8U" description="index in the price table" />
+  </command>
+  <command cli="plugin price-server get" functionName="get" group="plugin-price-server">
+    <description>
+      Retrieve a price from a given index into the cli's single price buffer for editing
+    </description>
+    <arg name="endpoint" type="INT8U" description="the relevant endpoint" />
+    <arg name="index"    type="INT8U" description="index of the price to retrieve" />
+  </command>
+  <command cli="plugin price-server sprint" functionName="sprint" group="plugin-price-server">
+    <description>
+      Print the contents of the price table for the provided endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="the relevant endpoint" />
+  </command>
+  <command cli="plugin price-server publish" functionName="publish" group="plugin-price-server">
+    <description>
+      Publish the current price 
+    </description>
+      <arg name="nodeId" type="INT16U" description="the destination node id" />
+      <arg name="srcEndpoint" type="INT8U" description="the source endpoint" />
+      <arg name="dstEndpoint" type="INT8U" description="the destination endpoint" />
+      <arg name="priceIndex"    type="INT8U" description="index of the price to publish" />
+  </command>
+</cli>

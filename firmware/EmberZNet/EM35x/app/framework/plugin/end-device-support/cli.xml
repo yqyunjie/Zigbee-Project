@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-end-device-support" name="Plugin Commands: End Device Support">
+    <description>
+      The End Device Support plugin contributes commands for controlling the sleeping and polling behavior of the device.
+    </description>
+  </group>
+  <command cli="plugin end-device-support status" functionName="statusCommand" group="plugin-end-device-support">
+    <description>
+      Display the status of the End Device's polling and sleeping.
+    </description>
+  </command>
+  <command cli="plugin end-device-support force-awake" functionName="stayAwakeCommand" group="plugin-end-device-support">
+    <description>
+      Sets whether the CLI forces the device to stay awake.
+    </description>
+    <arg name="stayAwake" type="BOOLEAN" description="The value indicating whether the device should stay awake."/>
+  </command>
+  <command cli="plugin end-device-support awake-when-not-joined" functionName="awakeWhenNotJoinedCommand" group="plugin-end-device-support">
+    <description>
+      Sets whether the device stays awake when not joined to a ZigBee network.
+    </description>
+    <arg name="stayAwakeWhenNotJoined" type="BOOLEAN" description="The value indicating whether the device should stay awake when not joined to a ZigBee network."/>
+  </command>
+</cli>

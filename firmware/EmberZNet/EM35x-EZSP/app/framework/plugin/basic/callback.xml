@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="BASIC_SERVER_RESET_TO_FACTORY_DEFAULTS" name="Reset To Factory Defaults" returnType="void">
+    <description>
+      This function is called by the Basic server plugin when a request to reset to factory defaults is received.  The plugin will reset attributes managed by the framework to their default values.  The application should preform any other necessary reset-related operations in this callback, including resetting any externally-stored attributes.
+    </description>
+    <arg name="endpoint" type="int8u"/>
+    <codeForStub />
+  </function>
+</callback>

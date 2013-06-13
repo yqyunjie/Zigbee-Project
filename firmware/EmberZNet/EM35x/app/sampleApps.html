@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>EmberZNet 5.0 EM35x Sample Applications</title>
+
+</head><body>
+
+<h2>EmberZNet 5.0 EM35x Sample Applications</h2>
+
+
+<h3>NOTE:</h3>
+<p><b>
+The sample applications described below are NOT based on the Ember ZigBee application framework nor are they configured via AppBuilder.  These are intended to serve as more basic examples of stack-level functionality outside of the Ember ZigBee application framework.  For sample applications built upon the Ember ZigBee application framework with the aid of AppBuilder configuration files, please see the subdirectories and README.txt files within the app/sample-apps/..." directory tree of your EmberZNet installation.
+</b></p>
+<p><br></p>
+<h3> Explanations of included example code </h3>
+Click on the links below to read a description of each same application:<br>
+<ul>
+<li> <a href = "#zigbeeAppFramework">Ember ZigBee Application Framework </a> (<i>Ember ZigBee Application Framework</i>)
+<li> <a href = "#nodetest">Nodetest</a> (<i>nodetest</i>)
+<li> <a href = "#sensor">Sensor & Sink</a> (<i>sensor</i>)
+<li> <a href = "#ZDO">ZigBee Device Object (ZDO) Sample </a> (<i>ZDO</i>)
+<li> <a href = "#mfg">Manufacturing Library Sample</a> (<i>mfg-sample-app</i>)
+<li> <a href = "#standaloneBootloaderDemo">Standalone Bootloader Demo</a> (<i>standalone-bootloader-demo-v2</i>)
+<li> <a href = "#util">Utility libraries</a> (<i>util</i>)
+</ul>
+
+
+
+<p>
+<h3> List of included application workspaces </h3>
+Click on the links below to open the various applications:<br>
+<ul>
+  <li> Sensor
+  <ul>
+    <li> <b> Sensor </b> for 
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em357/sensor.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em351/sensor.eww"> EM351 </a>
+    <li> <b> Sink </b> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em357/sink.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em351/sink.eww"> EM351 </a>
+    <li> <b> Sleepy-Sensor </b> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em357/sleepy-sensor.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em351/sleepy-sensor.eww"> EM351 </a>
+    <li> <b> Mobile-Sensor</b> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em357/mobile-sensor.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/sensor/ewb-em351/mobile-sensor.eww"> EM351 </a>
+  </ul>
+</ul>
+
+<ul>
+  <li> <b> ZigBee Device Object (ZDO) Sample</b> for
+            <a type="application/octet-stream" href = "../app/zdo/ewb-em357/zdo-sample.eww"> EM357 </a> for 
+            <a type="application/octet-stream" href = "../app/zdo/ewb-em351/zdo-sample.eww"> EM351 </a>
+</ul>
+
+<ul>
+  <li> <b> Manufacturing Library Sample </b> for
+            <a type="application/octet-stream" href = "../app/mfglib/ewb-em357/mfg-sample-app.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/mfglib/ewb-em351/mfg-sample-app.eww"> EM351 </a>
+</ul>
+
+<ul>
+  <li> <b> Standalone-Bootloader-Demo (DEBUG) </b> for 
+            <a type="application/octet-stream" href = "../app/standalone-bootloader-demo/ewb-em357/standalone-bootloader-demo-v2.eww"> EM357 </a> for
+            <a type="application/octet-stream" href = "../app/standalone-bootloader-demo/ewb-em351/standalone-bootloader-demo-v2.eww"> EM351 </a>
+</ul>
+</p>
+
+<hr>
+<br>
+<a name = "zigbeeAppFramework"></a> <b>Smart Energy / Home Automation (HA) Application Framework </b><br>
+<a href = "../documentation/120-3023-000_AF_V2_API/group__cli.html"> Application Framework (Device/Application) Command Line Interface </a>
+<br>
+
+<hr>
+<a name = "nodetest"></a> <b>Nodetest</b><br>
+<i>Synopsis:</i> A low-level test program meant for functional testing of RF modules (either your own custom-manufactured devices or those provided in the kits from Ember), including token viewing/programming, range testing, RSSI measurement, and special test modes of transmission as required for FCC and CE certification. <br>
+<br>
+<i>Roles:</i>
+<ul>
+<li> Device Under Test (DUT) -- The primary device undergoing functional testing.  You will probably want to also load Nodetest to a node that you are sure is working correctly (often called the "Golden Node") so that you can verify proper communication and comparison between the DUT and the Golden Node when each are running Nodetest.
+</ul>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+The EM35x version of Nodetest runs at 115200 bps. Active serial port is auto-detected; whichever of the UART or virtual UART first detects a Carrier Return (\r), Line Feed (\n), or asterisk ('*') character will become the port used until the application is reset.
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+This application supports different commands depending on the hardware platform being used.  Use the <b>HELP</b> or <b>?</b> command to get a listing of all supported commands on the current device's platform.
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+<li>This application is provided in pre-built form only.
+<li>The packets transmitted by Nodetest are raw packets sent by the radio without the aid of a networking stack, so 802.15.4 and ZigBee conventions, such as CSMA-CA algorithms, random backoffs, transmission retries and MAC and Network Layer packet headers, do not apply in this context.  Such test conditions can produce very different results when comparing reliability of communication to a test case involving two (or more) devices running a full ZigBee networking stack.  Therefore, it is recommended that you perform interference testing, coexistence testing and reliability testing with your own application (based on the networking stack) in addition to any similar testing done with Rangetest, so that your results are more representative of a true networking scenario.
+<li>Packets transmitted by Nodetest are of a fixed size (the minimum size allowed by the radio) and are always transmitted at a fixed rate.  (This rate may be different for different radios; see program output for details.)
+<li>This application is not intended for use in operating networks.  Use by nodes in a network will result in packet collisions and lost traffic.  This application can be used by multiple nodes at the same time where one node sends packets and multiple other nodes receive the traffic.
+<li> This application is defined with NULL_BTL (no bootloader) by default.
+</ul>
+<hr>
+<a name = "sensor"></a> <b>Sensor & Sink</b><br>
+<i>Synopsis:</i> An example of a complete application that implements a distributed sensor network with 1 or more data collection points (called "sensors") and 1 or more data storage points (called "sinks").  Each Sink broadcasts its identity (EUI64 address) via a Transport-layer multicast message (the SINK_ADVERTISE message in this application), along with a temporary reply route, to nearby Sensor nodes, who can then set up a binding to the Sink and send a request (the SENSOR_SELECT_SINK message) for attachment to that Sink.  If the Sink agrees to accept data from a particular Sensor, the Sensor recieves a confirmation message (SINK_READY) and begins transmitting data reports (DATA) to the Sink at fixed intervals (as set by SEND_DATA_RATE). <br>
+<br>
+<i>Roles:</i> 
+<ul>
+	<li>Sensor -- A device that takes data readings from some input source and passes these readings to a particular collection point.  Many Sensors report to a single Sink.
+	<li>Sink -- A device that serves as a collection point for 1 or more Sensor devices.  In this example, the Sink is set up to be the ZigBee Coordinator device, and it forms the network automatically on first startup and retains this settings across reboots.  (See Notes section below if wanting to use multiple Sinks in a network.)
+        <li>Sleepy-Sensor -- A sleeping version of the Sensor application. Battery powered devices must sleep in order to extend their battery life. 
+        <li>Mobile-Sensor -- A sleeping and mobile version of the Sensor application.
+</ul>
+<i>Buttons used:</i> <br>
+Sensor:
+<ul>
+<li>BUTTON 0: If the device is not joined to a network, pressing this causes the device to search for an available network and join it if possible.  After it has successfully joined a network, pressing this button will cause the device to permit joining (accepting other devices into the network) for the next 60 seconds. 
+<li>BUTTON 1: Causes the device to leave the ZigBee network. The sink will attempt to join a new network when BUTTON0 is pressed.
+</ul><br>
+Sink:
+<ul>
+<li>BUTTON 0: After network formation, pressing this button allows joining to the network by other devices for the next 60 seconds.
+<li>BUTTON 1: Causes the device to leave the ZigBee network. The Sink will form a new network on reset (by pressed the RESET button, or using the 'e' command) if it has left the old network.
+
+Forces the device to reset.  This can be useful if you have used the '!' command to leave the network and now want the device to establish a new network.  (Note that if you have not left the network before resetting, the device will simply resume operation on the same network as before.)
+<br>
+</ul>
+<br><br>
+<i>Serial baud rates, ports used:</i><br>
+115200 bps on UART1 for all devices
+<br>
+<br>
+<i>Serial commands supported:</i><br>
+Sensor:
+<ul>
+	<li><b>?</b> = help
+	<li><b>i</b> = print node info
+	<li><b>k</b> = print keys
+	<li><b>b</b> = bootloader
+	<li><b>l</b> = send multicast [hello]
+	<li><b>t</b> = play tune
+	<li><b>a</b> = print address table
+	<li><b>m</b> = print multicast table
+	<li><b>f</b> = send sink advertisement
+	<li><b>0</b> = button 0: turn allow join ON for 60 sec
+	<li><b>1</b> = button 1: leave ZigBee network
+	<li><b>e</b> = reset node
+	<li><b>x</b> = print node tokens
+	<li><b>c</b> = print child table
+	<li><b>j</b> = print JIT storage status
+	<li><b>B</b> = attempt to bootload the device whose EUI is stored at location 0 of the address table
+	<li><b>C</b> = attempt to bootload the first device in the child table
+	<li><b>Q</b> = send out a BOOTLOADER_QUERY message
+	<li><b>*</b> = switch the network key: send the key followed by a switch key command 30 seconds later
+	<li><b>&</b> = send a switch key command. This is needed only if the device sent a new key and then reset before it was able to send the switch key command
+</ul>
+
+Sink:
+<ul>
+	<li><b>?</b> = help
+	<li><b>i</b> = print node info
+	<li><b>k</b> = print keys
+	<li><b>b</b> = bootloader
+	<li><b>l</b> = send multicast [hello]
+	<li><b>t</b> = play tune
+	<li><b>a</b> = print address table
+	<li><b>m</b> = print multicast table
+	<li><b>f</b> = send sink advertisement
+	<li><b>0</b> = button 0: turn allow join ON for 60 sec
+	<li><b>1</b> = button 1: leave ZigBee network
+	<li><b>e</b> = reset node
+	<li><b>x</b> = print node tokens
+	<li><b>c</b> = print child table
+	<li><b>j</b> = print JIT storage status
+	<li><b>B</b> = attempt to bootload the device whose EUI is stored at location 0 of the address table
+	<li><b>C</b> = attempt to bootload the first device in the child table
+	<li><b>Q</b> = send out a BOOTLOADER_QUERY message
+	<li><b>*</b> = switch the network key: send the key followed by a switch key command 30 seconds later
+	<li><b>&</b> = send a switch key command. This is needed only if the device sent a new key and then reset before it was able to send the switch key command
+</ul>
+
+Sleepy-Sensor and Mobile-Sensor:
+<ul>
+	<li><b>?</b> = help
+	<li><b>i</b> = print node info
+	<li><b>b</b> = send node into bootloader
+	<li><b>l</b> = send multicast [hello]
+	<li><b>t</b> = play tune
+	<li><b>a</b> = print address table
+	<li><b>m</b> = print multicast table
+	<li><b>0</b> = simulate button 0: join to network or if already joined, turn allow join ON for 60 sec
+	<li><b>1</b> = simulate button 1: leave ZigBee network
+	<li><b>e</b> = reset node
+	<li><b>x</b> = print node tokens
+	<li><b>s</b> = turn on sleeping when not join
+</ul>
+
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+	<li>This application defaults to using a fixed set of network parameters, with a default channel setting of 26.  (Remove the <b>#define USE_HARDCODED_NETWORK_SETTINGS</b> line in the common.h header file to allow the application to dynamically select its network parameters.)
+<li>Although the example portrays a single Sink node that acts as a ZigBee Coordinator, the application could be easily adapted to allow a variant of the Sink node that joins the network as an ordinary ZigBee Router so that multiple Sinks can be supported.
+<li>Although the example is set up to have a Sensor node participate in the network as a ZigBee Router, the application could support Sensors as sleepy or mobile ZigBee End Devices as well.
+<li>This application uses a "push" style of communication, where the Sensor sends reports to the Sink without needing to be asked for this data.  This is more efficient than a "pull" model, where a device only transmits data when asked to do so by another device, because it cuts the amount of traffic in half, thereby reducing the number of collisions and routing burden in the network.
+<br>
+<li>The data reports used in this example are fixed size packets (of a size defined by SEND_DATA_SIZE).  The data contents are simply a 16-bit random pattern (generated for each message) that is repeated as many times as necessary to fill the packet to its required size.  As a useful exercise, you may wish to modify the sendData() function to use the ADC driver (described in the HAL API Guide) to obtain analog temperature readings from the development board's onboard temperature sensor (which is connected to ADC channel 1).
+<li>The application uses a constant called MISS_PACKET_TOLERANCE as a threshold for fault tolerance.  On the Sensor, this controls how many message timeouts can be permitted between the Sensor and Sink before the Sensor decides to attach itself to a different Sink.  For a Sink, this controls how many data reports can be missed from a Sensor before the Sink "forgets" about the Sensor (stops maintaining a record of its attachment).  Although bindings are kept on the Sink node to track the attached Sensors, these could easily be made temporary (used only for the SINK_READY message) to allow the Sink application to support more nodes without englarging the binding table, assuming that the Sink application does not care which Sensors and how many Sensors are attached to it.
+<li>This application is designed to scale to approximately 250 sensors and one sink.  The applicability of this in large networks is dependant on the traffic rates expected from sensors to sink.  Suitable jitter needs to be sensor data reports to ensure traffic is spread out to avoid bottlenecks around the sink.
+<li>The sensor advertisement is a broadcast.  The behavior of such a broadcast in the network depends on the network topology and density.  Zigbee limits the number of broadcasts that can be active in a network to 10 to minimize the network disruption and loss of bandwidth.  As this network increases in size or density, the rate of the sensor advertisement should be reduced in frequency.
+<li> This application is defined with NULL_BTL (no bootloader) by default.
+</ul>
+<hr>
+<a name = "ZDO"></a> <b>ZigBee Device Object (ZDO) Sample</b><br>
+<i>Synopsis:</i> an example of how to send ZDO messages using the ZDO library.
+<br>
+<br>
+<i>Roles:</i>
+<ul>
+<li> ZDO Test Device
+</ul>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+115200 bps on UART1 for all devices 
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+<li>('help')    prints the help menu
+<li>('version') prints the version of the application
+<li>('info')    prints info about this node including channel, power, and app
+<li>('network') network commands: form/join/leave/permit join
+<li>('zdo')     Sends ZDO commands - see help for more info
+<li>('print')   prints the binding table
+<li>('reset')   resets the node
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+<li> This is meant as a simple example of using the ZDO Library calls and is not designed as a fully featured application.
+<li> This application is defined with NULL_BTL (no bootloader) by default.
+</ul>
+<hr>
+<a name = "mfg"></a> <b>Manufacturing Library Sample</b><br>
+<i>Synopsis:</i> an example of how to use the manufacturing library
+<br>
+<br>
+<i>Roles:</i>
+<ul>
+<li> Manufacturing Library Device
+</ul>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+115200 bps on UART1 for all devices 
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+<li>help
+<li>version
+<li>info
+<li>reset
+<li>network form [channel] [power] [panid in hex]
+<li>network join [channel] [power] [panid in hex]
+<li>network leave
+<li>network pjoin [time]
+<li>network
+<li>mfg start [want callback, 0=False, 1=True]
+<li>mfg end
+<li>mfg tone start
+<li>mfg tone stop
+<li>mfg stream start
+<li>mfg stream stop
+<li>mfg send [numPackets] test-packet [length]
+<li>mfg send [numPackets] random [length] 
+<li>mfg send [numPackets] message [first 8 bytes] [second 8 bytes]
+<li>mfg chan set [channel]
+<li>mfg chan get
+<li>mfg power set [power]
+<li>mfg power get
+<li>mfg testmodcal [channel] [duration in ms] 
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+<li> This is meant as a simple example of using the Manufacturing Library calls and is not designed as a fully featured application.
+<li> This application is defined with NULL_BTL (no bootloader) by default.
+</ul>
+<hr>
+<a name = "util"></a> <b>Utility libraries</b><br>
+<i>Synopsis:</i><br>
+A collection of useful functions used in Ember's sample applications and for common ZigBee tasks that you may wish to re-use in your custom project.  You are welcome to use and modify this code as you see fit, as our goal is to reduce the amount of time you spend creating code for common network tasks. 
+<br><br>
+<i>Included collections:</i>
+<ul>
+
+	<li><b>bootload -- <i> (app/util/bootload/*)</i></b>: supporting bootloading new application image using standalone bootloader via over-the-air and uart (serial) port
+  <li><b>command interpreter -- <i>(app/util/serial/command-interpreter2.[ch])</i></b>: processes commands coming from the serial port (Application Framework).
+	<li><b>command-line-interface (CLI) -- <i>(app/util/serial/cli.[ch])</i></b>: a simple command interpreter for processing serial input and calling application functions.
+  <li><b>common -- <i>(app/util/common/common.[ch])</i></b>: common code for applications.
+  <li><b>concentrator -- <i>(app/util/concentrator/concentrator.[ch])</i></b>: provides support for standard route maintenance activities that must be performed by a concentrator.
+	<li><b>counters -- <i>(app/util/counters.[ch])</i></b>: implements emberCounterHandler() and keeps a tally of the events reported by the stack.
+	<li><b>form-and-join -- <i>(app/util/common/form-and-join.[ch])</i></b>: support for scanning for, forming, and joining networks.
+	<li><b>fragment -- <i>(app/util/zigbee-framework/fragment*)</i></b>: breaks long messages into smaller blocks for transmission and reassembles received blocks.
+	<li><b>inter-PAN -- <i>(app/util/zigbee-framework/ami-inter-pan*)</i></b>: Utilities for sending and receiving ZigBee AMI InterPAN messages.
+	<li><b>legacy -- <i>(app/util/legacy.[ch])</i></b>: old APIs to facilitate upgrading applications from EmberZNet 2.x to EmberZNet 3.x
+  <li><b>library status -- <i>(app/util/common/library.[ch])</i></b>: code to displayor retrieve the presence or absence of Ember stack libraries on the device.
+	<li><b>network manager -- <i>(app/util/zigbee-framework/network-manager*)</i></b>: Utilities for use by the ZigBee network manager.
+	<li><b>print stack tables -- <i>(app/util/common/print-stack-tables.[ch])</i></b>: functions to print stack tables for use in troubleshooting.
+	<li><b>security -- <i>(app/util/security/*)</i></b>: implementation for setting up security on a Trust Center device and a non Trust Center device.
+	<li><b>serial -- <i> (app/util/serial/serial.[ch])</i></b>: the high-level serial drivers used by the stack for I/O processing.
+	<li><b>source-route -- <i>(app/util/source-route*)</i></b>: Example code for managing source routes on a gateway.
+	<li><b>zigbee device object (ZDO) TX functions -- <i>(app/util/zigbee-framework/zigbee-device*)</i></b>: The ZDO library provides functions that construct and send several common ZDO requests. It also provides a function for extracting the two addresses from  a ZDO address response.
+
+
+</ul>
+<hr>
+<a name = "standaloneBootloaderDemo"></a> <b>Standalone Bootloader Demo</b><br>
+<i>Synopsis:</i><br>
+An example of how to use the bootload library utilities.  The application features various commands to exercise all available bootload features.
+<br><br>
+<i>Buttons Used</i>:<br>
+None
+<br><br>
+<i>Serial baud rates, ports used:</i><br>
+The application uses a feature called virtual uart to communicate with users.  All commands are transmitted and received via (telnet) port 4900. The baud rate does not need to be set for the virtual uart. Serial port 1 is configured to be 'bootload port' at 115200 bps.  Note that both application and bootload ports can be configured to be the same port, however, application usage
+of the port needs to be limited when bootloading is in progress in order to maximize performance and to avoid any interruption to bootload process. (Any printf statements printed to the bootload port can disrupt the Xmodem upload session.) 
+<br><br>
+<i>Serial commands supported:</i><br>
+<ul>
+  <li><b>query_network</b> - Report application information of itself and other nodes in the network.
+  <li><b>query_neighbor</b> - Report bootloading related information of itself and its neighbor.  This information is particularly useful in determining which node
+  to bootload.
+  <li><b>serial</b> - Put the node in serial bootload mode.
+  <li><b>remote</b> {<i>eui64</i>} - Attempt to load new application image via XModem protocol onto another (remote) node. Example: <i>remote {B7DC1200006F0D00}</i> causes an Xmodem session to be established between the local EM35x and a serially connected device (such as a PC running HyperTerminal), with the upload EBL file data being tunnelled through the local node to remote device with EUI64 0x000D6F000012DCB7.
+  <li><b>recover</b> {<i>eui64</i>} <i>bootloaderMode</i> - Recover nodes that fail bootloading on the current channel. Example: <i>recover {B7DC1200006F0D00} 1</i> begins a pass-through recovery bootload session between the local EM35x and neighboring node with EUI64 0x000D6F000012DCB7.
+  <li><b>default</b> <i>bootloaderMode</i> - Recover nodes that fail bootloading and have reverted to the default channel (hardcoded in the bootloader as Channel 13, centered at 2.415 GHz), such as after encountering a reset during a prior bootload operation (so that their channel information was lost). Example: <i>default 1</i> Initiates a remote passthru bootload session between the local EM35x and some neighboring node waiting in recovery mode on the default channel.
+	<li><b>form</b> - Form network.
+	<li><b>leave</b> - Leave network.
+	<li><b>join</b> - Join to network (as router).
+</ul>
+
+<p>Additionally, several serial commannds are available for debugging purposes:</p>
+<ul>
+  <li><b>status</b> - Print information about the running application, such as the local device's EUI64, node ID, and stack state (including network parameters if the node is online).
+  <li><b>reboot</b> - Reboot the local node
+  <li><b>network_init</b> - Re-initialize the network state from saved non-volatile data (tokens).  Note that the Standalone Bootloader Demo will typically perform this action on startup, so it is not generally necessary to perform this action manually.
+  <li><b>set_channel</b> <i>channelNumber</i> - Used to override the preferred channel for the application so that "channelNumber" is used instead.  Example:  <i>set_channel 13</i> or <i>set_channel 0xD</i> changes demo application to use channel 13 for next <i>form</i> or <i>join</i> command.
+  <li><b>set_pan_id</b> <i>panID</i> - Used to override the preferred PAN ID for the application so that "panID" (16 bits, parsed as decimal unless "0x" prefix is used) is used instead.  Example:  <i>set_pan_id 0xE157</i> or <i>set_pan_id 57687</i> changes demo application to use PAN ID 0xE157 for next <i>form</i> or <i>join</i> command.
+  <li><b>set_power</b> <i>newPower</i> - Used to override the preferred radio transmission power for the application so that "newPower" (an 8-bit, signed value,representing nominal output power in dBm, optionally including a "-" prefix to signify negative values) is used instead.  Example:  <i>set_pan_id 0xE157</i> or <i>set_pan_id 57687</i> changes demo application to use PAN ID 0xE157 for next <i>form</i> or <i>join</i> command.
+  <li><b>set_tune</b> <i>[0|1]</i> - Used to turn buzzer notifications ("tunes") for application state changes (such as stack going online or offline) on and off.  Value of 0 = off, 1 = on.  Application defaults to having these turned on.  Example: <i>set_tune 0</i> turns off the buzzer activity associated with certain application events.
+  <li><b>get_id</b> - Retrieves current node ID of the local device, returned in 16-bit hexadecimal notation.  (This is only valid if the device is currently part of a network.)
+  <li><b>list_commands</b> - Prints a listing of available CLI commands for this application.
+</ul>
+<i>Notes:</i>
+<ul>
+  <li>Since the Standalone Bootloader v2 protocol is a MAC-layer protocol, all querying and bootloading operations can only be achieved over a single hop of radio communication.  (ie. Source must be within direct radio range of target.)  Any multi-hop communication between a source and target device would need to involve application-layer proxying of the message first as a ZigBee APS message to the node used for the last hop (a neighbor of the target) and then as a Standalone Bootloader message down to the target from the neighboring proxy node.  This kind of proxying is beyond the scope of this demo application.
+  <li><i>form</i> and <i>join</i> commands use hardcoded network parameters as defined in bootloader-demo-v2.h.
+  <li>For <i>set_XXX</i> commands, the new setting given in the command will take effect after performing a "leave" command, during the next "form" or "join" command, as long as those commands occur prior to rebooting the device.  
+	<li>Available bootloaderMode values used as parameter for 'recover' and 'default' commands is 1 for remote bootloading (pass-through)
+  <li>EUI64 values printed and used by the command line interface are always shown in LSB (least significant byte first) notation.
+	<li>For remote bootloading, to start the process, user needs to select file to download.  The node will signal the event by printing "CCCC..." to serial port 1.  Note that valid application image files for em35x standalone bootloader have .ebl extension.
+  <li>For the <i>default</i> command to proceed, the local device must already be running on the default channel.  (Since this is not the channel hardcoded for form/join commands, the application would need to use the <i>set_channel 13</i> command to force the local device over to channel 13.)
+  <li>When the <i>default</i> command is used, if there are multiple devices waiting in recovery on the default channel, the first one to respond to the bootload request (which is sent as a 1-hop broadcast via the bootloader protocol) will be the target.
+  <li>There is a java application that can be used along with this standalone bootloader demo sample application, called BootloaderDemoV2.java, located at tool/standalone-bootloader.
+  <li>Additional details about this application can be found in the block comment at the top of bootloader-demo-v2.h.
+</ul>
+
+<hr>
+</body>
+</html>

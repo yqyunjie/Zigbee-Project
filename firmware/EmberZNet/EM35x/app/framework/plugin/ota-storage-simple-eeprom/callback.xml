@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="ERASE_COMPLETE" name="Erase Complete" returnType="void">
+    <description>
+      This is called when an EEPROM erase operation has completed.
+    </description>
+    <arg type="boolean" name="success" description="The result of the erase operation."/>
+    <codeForStub/>
+  </function>
+</callback>

@@ -1,0 +1,17 @@
+<callback prefix="emberAf" postfix="Callback">
+  <function id="QUERY_RESPONSE" name="Query Response" returnType="void">
+    <description>
+      Allows the application to control whether the plugin can respond to incoming bootload messages.
+    </description>
+    <arg name="queryWasBroadcast" type="boolean" description="Boolean indicating whether the query was broadcast or unicast"/>
+    <arg name="queryData" type="const EmberAfStandaloneBootloaderQueryResponseData*" description="A data structure providing the details about the local device's bootloader."/>
+    <codeForStub/>
+  </function> 
+  <function id="FINISHED" name="Finished" returnType="void">
+    <description>
+       Notifies the application when the standalone bootload has completed, successfully or otherwise.
+    </description>
+   <arg name="success" type="boolean" description="Boolean indicating the success or failure of the bootload."/>
+   <codeForStub/>
+  </function>
+</callback>

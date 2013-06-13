@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<configurator>
+  <!-- These devices are based on the additions in 115474r09. -->
+  <deviceType>
+    <name>HA-consumptionawarenessdevice</name>
+    <domain>HA</domain>
+    <typeName>HA Consumption Awareness Device</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0104</profileId>
+    <deviceId editable="false">0x000D</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Identify</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Device Temperature Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false" >Poll Control</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false" >Electrical Measurement</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true">Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true">Over the Air Bootloading</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>HA-homegatewayems</name>
+    <domain>HA</domain>
+    <typeName>HA Home Gateway / Energy Management System</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0104</profileId>
+    <deviceId editable="false">0x0050</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Identify</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Device Temperature Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Poll Control</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Electrical Measurement</include>
+      <include client="false" server="true"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="true"  server="false"  clientLocked="true" serverLocked="false">Simple Metering</include>
+      <include client="true"  server="false"  clientLocked="true" serverLocked="true">Meter Identification</include>
+      <include client="true"  server="false"  clientLocked="true" serverLocked="true">Power Profile</include>
+      <include client="true"  server="false"  clientLocked="true" serverLocked="true">Appliance Statistics</include>
+      <include client="false"  server="false"  clientLocked="false" serverLocked="true">Appliance Control</include>
+      <include client="false"  server="false"  clientLocked="false" serverLocked="true">Appliance Identification</include>
+      <include client="false"  server="false"  clientLocked="false" serverLocked="true">Appliance Events and Alert</include>
+      <include client="false"  server="false"  clientLocked="false" serverLocked="true">Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true">Over the Air Bootloading</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>HA-smartplug</name>
+    <domain>HA</domain>
+    <typeName>HA Smart Plug</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0104</profileId>
+    <deviceId editable="false">0x0051</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Identify</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >On/off</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Device Temperature Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Poll Control</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Electrical Measurement</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Demand Response and Load Control</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true">Over the Air Bootloading</include>
+      
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>HA-whitegoods</name>
+    <domain>HA</domain>
+    <typeName>HA White Goods</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0104</profileId>
+    <deviceId editable="false">0x0052</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Identify</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Device Temperature Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Poll Control</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Electrical Measurement</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Meter Identification</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Price</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Power Profile</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Appliance Statistics</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Appliance Control</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Appliance Identification</include>
+      <include client="false" server="true"  clientLocked="true" serverLocked="true" >Appliance Events and Alert</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Simple Metering</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true">Over the Air Bootloading</include>
+    </clusters>
+  </deviceType>
+  <deviceType>
+    <name>HA-meterinterface</name>
+    <domain>HA</domain>
+    <typeName>HA Meter Interface</typeName>
+    <zigbeeType>Coordinator</zigbeeType>
+    <profileId editable="false">0x0104</profileId>
+    <deviceId editable="false">0x0053</deviceId>
+    <clusters lockOthers="true">
+      <include client="false" server="true"  clientLocked="true"  serverLocked="true" >Basic</include>
+      <include client="true"  server="true"  clientLocked="true"  serverLocked="true" >Identify</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Power Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Device Temperature Configuration</include>
+      <include client="false" server="false" clientLocked="true"  serverLocked="false">Alarms</include>
+      <include client="false" server="true"   clientLocked="true" serverLocked="true">Simple Metering</include>
+      <include client="false" server="true"   clientLocked="true" serverLocked="true">Meter Identification</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Poll Control</include>
+      <include client="false" server="false"  clientLocked="true" serverLocked="false" >Electrical Measurement</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Time</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="true" >Messaging</include>
+      <include client="false" server="false"  clientLocked="false" serverLocked="false" >Price</include>
+      <include client="false" server="false" clientLocked="false" serverLocked="true">Over the Air Bootloading</include>
+    </clusters>
+  </deviceType>
+</configurator>

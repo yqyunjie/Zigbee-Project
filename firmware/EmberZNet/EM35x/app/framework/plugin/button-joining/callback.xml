@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="BUTTON_EVENT" name="Button Event" returnType="void">
+    <description>
+      This allows another module to get notification when a button is pressed and released but the button joining plugin did not handle it.  This callback is NOT called in ISR context so there are no restrictions on what code can execute.
+		</description>
+		<arg name="buttonNumber" type="int8u" description="The button number that was pressed."/>
+    <arg name="buttonPressDurationMs" type="int32u" description="The length of time button was held down before it was released."/>
+    <codeForStub/>
+  </function>
+</callback>
+

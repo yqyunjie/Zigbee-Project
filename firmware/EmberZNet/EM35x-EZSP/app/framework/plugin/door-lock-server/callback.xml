@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="DOOR_LOCK_SERVER_ACTIVATE_LOCK" name="Activate Door Lock" returnType="boolean">
+    <description>
+      This function is provided by the door lock server plugin. It is 
+    </description>
+    <arg name="activate" type="boolean" description="True if the lock should move to the locked position, false if it should move to the unlocked position"    />
+    <codeForStub>
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

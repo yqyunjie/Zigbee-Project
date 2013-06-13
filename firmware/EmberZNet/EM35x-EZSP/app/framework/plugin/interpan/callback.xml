@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="INTERPAN_PRE_MESSAGE_RECEIVED" name="Pre Message Received" returnType="boolean">
+    <description> 
+      This function is called by the Interpan plugin when an interpan message is received but has not yet been handled by the plugin or the framework.  The application should return TRUE if the message was handled.
+    </description>
+    <arg name="header"  type="const EmberAfInterpanHeader *" description="" />
+    <arg name="msgLen"  type="int8u"                         description="" />
+    <arg name="message" type="int8u *"                       description="" />
+    <codeForStub>
+      return FALSE;
+    </codeForStub>
+  </function>
+</callback>

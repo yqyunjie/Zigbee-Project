@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="MESSAGING_CLIENT_DISPLAY_MESSAGE" name="Display Message" returnType="void">
+    <description> 
+      This function is called by the Messaging client plugin whenever the application should display a message.
+    </description>
+    <arg name="message" type="EmberAfPluginMessagingClientMessage *" description="The message that should be displayed." />
+    <codeForStub />
+  </function>
+  <function id="MESSAGING_CLIENT_CANCEL_MESSAGE" name="Cancel Message" returnType="void">
+    <description> 
+      This function is called by the Messaging client plugin whenever the application should stop displaying a message.
+    </description>
+    <arg name="message" type="EmberAfPluginMessagingClientMessage *" description="The message that should no longer be displayed." />
+    <codeForStub />
+  </function>
+</callback>

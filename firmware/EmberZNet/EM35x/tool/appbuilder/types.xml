@@ -1,0 +1,937 @@
+<?xml version="1.0"?>
+<configurator>
+  <bitmap name="ShadeClosureStatus" type="BITMAP8">
+    <field name="operational" mask="0x1"/>
+    <field name="adjusting" mask="0x2"/>
+    <field name="opening" mask="0x4"/>
+    <field name="motorOpening" mask="0x8"/>
+  </bitmap>
+  <bitmap name="AlarmMask" type="BITMAP8">
+    <field name="GeneralHwFault" mask="0x1"/>
+    <field name="GeneralSwFault" mask="0x2"/>
+  </bitmap>
+  <bitmap name="RestartOptions" type="BITMAP8">
+    <field name="StartMode1" mask="0x1"/>
+    <field name="StartupMode2" mask="0x2"/>
+    <field name="StartupMode3" mask="0x4"/>
+    <field name="Immediate" mask="0x8"/>
+  </bitmap>
+  <bitmap name="ResetOptions" type="BITMAP8">
+    <field name="ResetCurrent" mask="0x1"/>
+    <field name="ResetAll" mask="0x2"/>
+    <field name="EraseIndex" mask="0x4"/>
+  </bitmap>
+  <enum name="CommissioningStartupControl" type="ENUM8">
+    <item name="NoAction"    value="0x00"/>
+    <item name="FormNetwork"     value="0x01"/>
+    <item name="RejoinNetwork" value="0x02"/>
+    <item name="StartFromScratch" value="0x03"/>
+  </enum>
+  <bitmap name="MainsAlarmMask" type="BITMAP8">
+    <field name="VoltageTooLow" mask="0x1"/>
+    <field name="VoltageTooHigh" mask="0x2"/>
+  </bitmap>
+  <bitmap name="BatteryAlarmMask" type="BITMAP8">
+    <field name="VoltageTooLow" mask="0x1"/>
+  </bitmap>
+  <bitmap name="DeviceTempAlarmMask" type="BITMAP8">
+    <field name="TooLow" mask="0x1"/>
+    <field name="TooHigh" mask="0x2"/>
+  </bitmap>
+  <bitmap name="TimeStatusMask" type="BITMAP8">
+    <field name="MasterClock" mask="0x1"/>
+    <field name="Synchronized" mask="0x2"/>
+  </bitmap>
+  <bitmap name="LocationType" type="BITMAP8">
+    <field name="absolute" mask="0x1"/>
+    <field name="2-D" mask="0x2"/>
+    <field name="coordinateSystem" mask="0xc"/>
+  </bitmap>
+  <bitmap name="GetLocationDataFlags" type="BITMAP8">
+    <field name="absoluteOnly" mask="0x1"/>
+    <field name="recalculate" mask="0x2"/>
+    <field name="broadcast" mask="0x4"/>
+    <field name="broadcastResponse" mask="0x8"/>
+    <field name="compactResponse" mask="0x10"/>
+  </bitmap>
+  <bitmap name="PumpStatus" type="BITMAP16">
+    <field name="deviceFault" mask="0x1"/>
+    <field name="supplyfault" mask="0x2"/>
+    <field name="speedLow" mask="0x4"/>
+    <field name="speedHigh" mask="0x8"/>
+    <field name="localOverride" mask="0x10"/>
+    <field name="running" mask="0x20"/>
+    <field name="remotePressure" mask="0x40"/>
+    <field name="remoteFlow" mask="0x80"/>
+    <field name="remoteTemperature" mask="0x100"/>
+  </bitmap>
+  <bitmap name="PumpAlarmMask" type="BITMAP16">
+    <field name="SupplyVoltageTooLow" mask="0x1"/>
+    <field name="SupplyVoltageTooHigh" mask="0x2"/>
+    <field name="PowerMissingPhase" mask="0x4"/>
+    <field name="SystemPressureTooLow" mask="0x8"/>
+    <field name="SystemPressureTooHigh" mask="0x10"/>
+    <field name="DryRunning" mask="0x20"/>
+    <field name="MotorTemperatureTooHigh" mask="0x40"/>
+    <field name="PumpMotorHasFatalFailure" mask="0x80"/>
+    <field name="ElectronicTemperatureTooHigh" mask="0x100"/>
+    <field name="PumpBlocked" mask="0x200"/>
+    <field name="SensorFailure" mask="0x400"/>
+    <field name="ElectronicNonFatalFailure" mask="0x800"/>
+    <field name="ElectronicFatalFailure" mask="0x1000"/>
+    <field name="GeneralFault" mask="0x2000"/>
+  </bitmap>
+  <bitmap name="ThermostatOccupancy" type="BITMAP8">
+    <field name="occupied" mask="0x1"/>
+  </bitmap>
+  <bitmap name="ThermostatSensing" type="BITMAP8">
+    <field name="localTempSensedRemotely" mask="0x1"/>
+    <field name="outdoorTempSensedRemotely" mask="0x2"/>
+    <field name="occupancySensedRemotely" mask="0x4"/>
+  </bitmap>
+  <bitmap name="ThermostatAlarmMask" type="BITMAP8">
+    <field name="initializationFailure" mask="0x1"/>
+    <field name="hardwareFailure" mask="0x2"/>
+    <field name="selfcalibrationFailure" mask="0x4"/>
+  </bitmap>
+  <bitmap name="BallastStatus" type="BITMAP8">
+    <field name="NonOperational" mask="0x1"/>
+    <field name="LampNotInSocket" mask="0x2"/>
+  </bitmap>
+  <bitmap name="LampAlarmMode" type="BITMAP8">
+    <field name="lampBurnHours" mask="0x1"/>
+  </bitmap>
+  <bitmap name="Occupancy" type="BITMAP8">
+    <field name="occupied" mask="0x1"/>
+  </bitmap>
+  <bitmap name="IasZoneStatus" type="BITMAP16">
+    <field name="alarm1" mask="0x1"/>
+    <field name="alarm2" mask="0x2"/>
+    <field name="tamper" mask="0x4"/>
+    <field name="battery" mask="0x8"/>
+    <field name="supervisionReports" mask="0x10"/>
+    <field name="restoreReports" mask="0x20"/>
+    <field name="trouble" mask="0x40"/>
+    <field name="AC" mask="0x80"/>
+  </bitmap>
+  <bitmap name="WarningInfo" type="BITMAP8">
+    <field name="mode" mask="0xf0"/>
+    <field name="strobe" mask="0xc"/>
+  </bitmap>
+  <bitmap name="SquawkInfo" type="BITMAP8">
+    <field name="mode" mask="0xf0"/>
+    <field name="strobe" mask="0x8"/>
+    <field name="level" mask="0x3"/>
+  </bitmap>
+  <bitmap name="AmiDeviceClass" type="BITMAP16">
+    <field name="hvacCompressorOrFurnace" mask="0x0001" />
+    <field name="StripHeatBaseboardHeat"  mask="0x0002" />
+    <field name="WaterHeater"             mask="0x0004" />
+    <field name="PoolPumpSpaJacuzzi"      mask="0x0008" />
+    <field name="SmartAppliances"         mask="0x0010" />
+    <field name="IrrigationPump"          mask="0x0020" />
+    <field name="ManagedCAndILoads"       mask="0x0040" />
+    <field name="SimpleMiscLoads"         mask="0x0080" />
+    <field name="ExteriorLighting"        mask="0x0100" />
+    <field name="InteriorLighting"        mask="0x0200" />
+    <field name="ElectricVehicle"         mask="0x0400" />
+    <field name="GenerationSystems"       mask="0x0800" />
+  </bitmap>
+  <enum name="MeteringBlockEnumerations" type="ENUM8">
+    <item name="NoBlocksInUse" value="0x00" />
+    <item name="Block1"        value="0x01" />
+    <item name="Block2"        value="0x02" />
+    <item name="Block3"        value="0x03" />
+    <item name="Block4"        value="0x04" />
+    <item name="Block5"        value="0x05" />
+    <item name="Block6"        value="0x06" />
+    <item name="Block7"        value="0x07" />
+    <item name="Block8"        value="0x08" />
+    <item name="Block9"        value="0x09" />
+    <item name="Block10"       value="0x0A" />
+    <item name="Block11"       value="0x0B" />
+    <item name="Block12"       value="0x0C" />
+    <item name="Block13"       value="0x0D" />
+    <item name="Block14"       value="0x0E" />
+    <item name="Block15"       value="0x0F" />
+    <item name="Block16"       value="0x10" />
+  </enum>
+  <enum name="MeteringSupplyStatus" type="ENUM8">
+    <item name="SupplyOff"      value="0x00" />
+    <item name="SupplyOffArmed" value="0x01" />
+    <item name="SupplyOn"       value="0x02" />
+  </enum>
+  <bitmap name="AmiMeterStatus" type="BITMAP8">
+    <field name="checkMeter"            mask="0x01"/>
+    <field name="lowBattery"            mask="0x02"/>
+    <field name="tamperDetect"          mask="0x04"/>
+    <field name="powerFailure"          mask="0x08"/>
+    <field name="powerQuality"          mask="0x10"/>
+    <field name="leakDetect"            mask="0x20"/>
+    <field name="serviceDisconnectOpen" mask="0x40"/>
+    <field name="reserved"              mask="0x80"/>
+  </bitmap>
+  <bitmap name="MeteringStatusElectricity" type="BITMAP8">
+    <field name="checkMeter"            mask="0x01" />
+    <field name="lowBattery"            mask="0x02" />
+    <field name="tamperDetect"          mask="0x04" />
+    <field name="powerFailure"          mask="0x08" />
+    <field name="powerQuality"          mask="0x10" />
+    <field name="leakDetect"            mask="0x20" />
+    <field name="serviceDisconnectOpen" mask="0x40" />
+    <field name="reserved"              mask="0x80" />
+  </bitmap>
+  <bitmap name="MeteringStatusGas" type="BITMAP8">
+    <field name="checkMeter"        mask="0x01" />
+    <field name="lowBattery"        mask="0x02" />
+    <field name="tamperDetect"      mask="0x04" />
+    <field name="notDefined"        mask="0x08" />
+    <field name="lowPressure"       mask="0x10" />
+    <field name="leakDetect"        mask="0x20" />
+    <field name="serviceDisconnect" mask="0x40" />
+    <field name="reverseFlow"       mask="0x80" />
+  </bitmap>
+  <bitmap name="MeteringStatusWater" type="BITMAP8">
+    <field name="checkMeter"        mask="0x01" />
+    <field name="lowBattery"        mask="0x02" />
+    <field name="tamperDetect"      mask="0x04" />
+    <field name="pipeEmpty"         mask="0x08" />
+    <field name="lowPressure"       mask="0x10" />
+    <field name="leakDetect"        mask="0x20" />
+    <field name="serviceDisconnect" mask="0x40" />
+    <field name="reverseFlow"       mask="0x80" />
+  </bitmap>
+  <bitmap name="MeteringStatusHeatAndCooling" type="BITMAP8">
+    <field name="checkMeter"        mask="0x01" />
+    <field name="lowBattery"        mask="0x02" />
+    <field name="tamperDetect"      mask="0x04" />
+    <field name="temperatureSensor" mask="0x08" />
+    <field name="burstDetect"       mask="0x10" />
+    <field name="leakDetect"        mask="0x20" />
+    <field name="serviceDisconnect" mask="0x40" />
+    <field name="flowSensor"        mask="0x80" />
+  </bitmap>
+  <enum name="MeteringTemperatureUnitOfMeasure" type="ENUM8">
+    <item name="Kelvin"        value="0x00" />
+    <item name="Celsius"       value="0x01" />
+    <item name="Fahrenheit"    value="0x02" />
+    <item name="KelvinBcd"     value="0x80" />
+    <item name="CelsiusBcd"    value="0x81" />
+    <item name="FahrenheitBcd" value="0x82" />
+  </enum>
+  <enum name="MeteringAlarmCode" type="ENUM8">
+    <item name="CheckMeter"                             value="0x00" />
+    <item name="LowBattery"                             value="0x01" />
+    <item name="TamperDetect"                           value="0x02" />
+    <item name="PowerFailurePipeEmptyTemperatureSensor" value="0x03" />
+    <item name="PowerQualityLowPressureBurstDetect"     value="0x04" />
+    <item name="LeakDetect"                             value="0x05" />
+    <item name="ServiceDisconnect"                      value="0x06" />
+    <item name="ReverseFlowFlowSensor"                  value="0x07" />
+    <item name="LowVoltageL1"                           value="0x10" />
+    <item name="HighVoltageL1"                          value="0x11" />
+    <item name="LowVoltageL2"                           value="0x12" />
+    <item name="HighVoltageL2"                          value="0x13" />
+    <item name="LowVoltageL3"                           value="0x14" />
+    <item name="HighVoltageL3"                          value="0x15" />
+    <item name="OverCurrentL1"                          value="0x16" />
+    <item name="OverCurrentL2"                          value="0x17" />
+    <item name="OverCurrentL3"                          value="0x18" />
+    <item name="FrequencyTooLowL1"                      value="0x19" />
+    <item name="FrequencyTooHighL1"                     value="0x1A" />
+    <item name="FrequencyTooLowL2"                      value="0x1B" />
+    <item name="FrequencyTooHighL2"                     value="0x1C" />
+    <item name="FrequencyTooLowL3"                      value="0x1D" />
+    <item name="FrequencyTooHighL3"                     value="0x1E" />
+    <item name="GroundFault"                            value="0x1F" />
+    <item name="ElectricTamperDetect"                   value="0x20" />
+    <item name="BurstDetect"                            value="0x30" />
+    <item name="PressureTooLow"                         value="0x31" />
+    <item name="PressureTooHigh"                        value="0x32" />
+    <item name="FlowSensorCommunicationError"           value="0x33" />
+    <item name="FlowSensorMeasurementFault"             value="0x34" />
+    <item name="FlowSensorReverseFlow"                  value="0x35" />
+    <item name="FlowSensorAirDetect"                    value="0x36" />
+    <item name="PipeEmpty"                              value="0x37" />
+    <item name="InletTemperatureSensorFault"            value="0x50" />
+    <item name="OutletTemperatureSensorFault"           value="0x51" />
+  </enum>
+  <bitmap name="AmiEventControl" type="BITMAP8">
+    <field name="randomizedStartTime" mask="0x01" />
+    <field name="randomizedEndTime"   mask="0x02" />
+  </bitmap>
+  <bitmap name="AmiCancelControl" type="BITMAP8">
+    <field name="terminateWithRandomization" mask="0x01" />
+  </bitmap>
+  <bitmap name="AmiCommandOptions" type="BITMAP8">
+    <field name="requestRxOnWhenIdle" mask="0x01" />
+  </bitmap>
+  <bitmap name="MessagingControlMask" type="BITMAP8">
+    <field name="transMechanism" mask="0x03" />
+    <field name="messageUrgency" mask="0x0C" />
+    <field name="reserved"       mask="0x70" />
+    <field name="confirmation"   mask="0x80" />
+  </bitmap>
+  <enum name="MessagingControlTransmission" type="ENUM8">
+    <item name="normal"             value="0x00" />
+    <item name="normalAndAnonymous" value="0x01" />
+    <item name="anonymous"          value="0x02" />
+    <item name="reserved"           value="0x03" />
+  </enum>
+  <enum name="MessagingControlImportance" type="ENUM8">
+    <item name="low"      value="0x00" />
+    <item name="medium"   value="0x04" />
+    <item name="high"     value="0x08" />
+    <item name="critical" value="0x0C" />
+  </enum>
+  <enum name="MessagingControlConfirmation" type="ENUM8">
+    <item name="notRequired" value="0x00" />
+    <item name="required"    value="0x80" />
+  </enum>
+  <enum name="OperatingMode" type="ENUM8">
+    <item name="normal" value="0x0"/>
+    <item name="configure" value="0x1"/>
+  </enum>
+  <enum name="Status" type="INT8U" description="Status codes used in the ZigBee Cluster Library">
+    <item name="SUCCESS"                      value="0x00"/>
+    <item name="FAILURE"                      value="0x01"/>
+    <item name="REQUEST_DENIED"               value="0x70"/>
+    <item name="MULTIPLE_REQUEST_NOT_ALLOWED" value="0x71"/>
+    <item name="INDICATION_REDIRECTION_TO_AP" value="0x72"/>
+    <item name="PREFERENCE_DENIED"            value="0x73"/>
+    <item name="PREFERENCE_IGNORED"           value="0x74"/>
+    <item name="NOT_AUTHORIZED"               value="0x7E"/>
+    <item name="RESERVED_FIELD_NOT_ZERO"      value="0x7F"/>
+    <item name="MALFORMED_COMMAND"            value="0x80"/>
+    <item name="UNSUP_CLUSTER_COMMAND"        value="0x81"/>
+    <item name="UNSUP_GENERAL_COMMAND"        value="0x82"/>
+    <item name="UNSUP_MANUF_CLUSTER_COMMAND"  value="0x83"/>
+    <item name="UNSUP_MANUF_GENERAL_COMMAND"  value="0x84"/>
+    <item name="INVALID_FIELD"                value="0x85"/>
+    <item name="UNSUPPORTED_ATTRIBUTE"        value="0x86"/>
+    <item name="INVALID_VALUE"                value="0x87"/>
+    <item name="READ_ONLY"                    value="0x88"/>
+    <item name="INSUFFICIENT_SPACE"           value="0x89"/>
+    <item name="DUPLICATE_EXISTS"             value="0x8A"/>
+    <item name="NOT_FOUND"                    value="0x8B"/>
+    <item name="UNREPORTABLE_ATTRIBUTE"       value="0x8C"/>
+    <item name="INVALID_DATA_TYPE"            value="0x8D"/>
+    <item name="INVALID_SELECTOR"             value="0x8E"/>
+    <item name="WRITE_ONLY"                   value="0x8F"/>
+    <item name="INCONSISTENT_STARTUP_STATE"   value="0x90"/>
+    <item name="DEFINED_OUT_OF_BAND"          value="0x91"/>
+    <item name="ABORT"                        value="0x95"/>
+    <item name="INVALID_IMAGE"                value="0x96"/>
+    <item name="WAIT_FOR_DATA"                value="0x97"/>
+    <item name="NO_IMAGE_AVAILABLE"           value="0x98"/>
+    <item name="REQUIRE_MORE_IMAGE"           value="0x99"/>
+    <item name="HARDWARE_FAILURE"             value="0xC0"/>
+    <item name="SOFTWARE_FAILURE"             value="0xC1"/>
+    <item name="CALIBRATION_ERROR"            value="0xC2"/>
+  </enum>
+  <enum name="PowerSource" type="ENUM8">
+    <item name="Unknown" value="0x0"/>
+    <item name="SinglePhaseMains" value="0x1"/>
+    <item name="ThreePhaseMains" value="0x2"/>
+    <item name="Battery" value="0x3"/>
+    <item name="DcSource" value="0x4"/>
+    <item name="EmergencyMainsConstantPower" value="0x5"/>
+    <item name="EmergencyMainsTransferSwitch" value="0x6"/>
+    <item name="BatteryBackup" value="0x80"/>
+  </enum>
+  <enum name="PhysicalEnvironment" type="ENUM8">
+    <item name="Unspecified" value="0x0"/>
+    <item name="FirstProfileSpecifiedValue" value="0x1"/>
+    <item name="LastProfileSpecifiedValue" value="0x7f"/>
+    <item name="Unknown" value="0xff"/>
+  </enum>
+  <enum name="BatterySize" type="ENUM8">
+    <item name="NoBattery" value="0x0"/>
+    <item name="BuiltIn" value="0x1"/>
+    <item name="Other" value="0x2"/>
+    <item name="AA" value="0x3"/>
+    <item name="AAA" value="0x4"/>
+    <item name="C" value="0x5"/>
+    <item name="D" value="0x6"/>
+    <item name="Unknown" value="0xff"/>
+  </enum>
+  <enum name="SwitchType" type="ENUM8">
+    <item name="Toggle"        value="0x00" />
+    <item name="Momentary"     value="0x01" />
+    <item name="MultiFunction" value="0x02" introducedIn="ha-1.2-11-5474-04" />
+  </enum>
+  <enum name="SwitchActions" type="ENUM8">
+    <item name="On" value="0x0"/>
+    <item name="Off" value="0x1"/>
+    <item name="Toggle" value="0x2"/>
+  </enum>
+  <enum name="MoveMode" type="ENUM8">
+    <item name="Up" value="0x0"/>
+    <item name="Down" value="0x1"/>
+  </enum>
+  <enum name="StepMode" type="ENUM8">
+    <item name="Up" value="0x0"/>
+    <item name="Down" value="0x1"/>
+  </enum>
+  <enum name="LocationMethod" type="ENUM8">
+    <item name="Lateration" value="0x0"/>
+    <item name="Signposting" value="0x1"/>
+    <item name="RfFingerprinting" value="0x2"/>
+    <item name="OutOfBand" value="0x3"/>
+  </enum>
+  <enum name="PumpOperationMode" type="ENUM8">
+    <item name="normal" value="0x0"/>
+    <item name="minimum" value="0x1"/>
+    <item name="maximum" value="0x2"/>
+    <item name="local" value="0x3"/>
+  </enum>
+  <enum name="PumpControlMode" type="ENUM8">
+    <item name="constantSpeed" value="0x0"/>
+    <item name="constantPressure" value="0x1"/>
+    <item name="proportionalPressure" value="0x2"/>
+    <item name="constantFlow" value="0x3"/>
+    <item name="constantTemperature" value="0x5"/>
+    <item name="automatic" value="0x7"/>
+  </enum>
+  <enum name="ThermostatControlSequence" type="ENUM8">
+    <item name="coolingOnly" value="0x0"/>
+    <item name="coolingWithReheat" value="0x1"/>
+    <item name="heatingOnly" value="0x2"/>
+    <item name="heatingWithReheat" value="0x3"/>
+    <item name="coolingAndHeating" value="0x4"/>
+    <item name="coolingAndHeatingWithReheat" value="0x5"/>
+  </enum>
+  <enum name="ThermostatSystemMode" type="ENUM8">
+    <item name="off" value="0x0"/>
+    <item name="auto" value="0x1"/>
+    <item name="cool" value="0x3"/>
+    <item name="heat" value="0x4"/>
+    <item name="emergencyHeating" value="0x5"/>
+    <item name="precooling" value="0x6"/>
+    <item name="fanOnly" value="0x7"/>
+  </enum>
+  <enum name="SetpointAdjustMode" type="ENUM8">
+    <item name="heatSetpoint" value="0x0"/>
+    <item name="coolSetpoint" value="0x1"/>
+    <item name="heatAndCoolSetpoints" value="0x2"/>
+  </enum>
+  <enum name="FanMode" type="ENUM8">
+    <item name="off" value="0x0"/>
+    <item name="low" value="0x1"/>
+    <item name="medium" value="0x2"/>
+    <item name="high" value="0x3"/>
+    <item name="on" value="0x4"/>
+    <item name="auto" value="0x5"/>
+    <item name="smart" value="0x6"/>
+  </enum>
+  <enum name="FanModeSequence" type="ENUM8">
+    <item name="LowMedHigh" value="0x0"/>
+    <item name="lowHigh" value="0x1"/>
+    <item name="LowMedHighAuto" value="0x2"/>
+    <item name="lowHighAuto" value="0x3"/>
+    <item name="onAuto" value="0x4"/>
+  </enum>
+  <enum name="RelativeHumidityMode" type="ENUM8">
+    <item name="measureLocally" value="0x0"/>
+    <item name="updatedOverTheNetwork" value="0x1"/>
+  </enum>
+  <enum name="DehumidifcationLockout" type="ENUM8">
+    <item name="notAllowed" value="0x0"/>
+    <item name="allowed" value="0x1"/>
+  </enum>
+  <enum name="RelativeHumidityDisplay" type="ENUM8">
+    <item name="notDisplayed" value="0x0"/>
+    <item name="displayed" value="0x1"/>
+  </enum>
+  <enum name="TemperatureDisplayMode" type="ENUM8">
+    <item name="celsius" value="0x0"/>
+    <item name="fahrenheit" value="0x1"/>
+  </enum>
+  <enum name="KeypadLockout" type="ENUM8">
+    <item name="noLockout" value="0x0"/>
+    <item name="levelOneLockout" value="0x1"/>
+    <item name="levelTwoLockout" value="0x2"/>
+    <item name="levelThreeLockout" value="0x3"/>
+    <item name="levelFourLockout" value="0x4"/>
+    <item name="levelfiveLockout" value="0x5"/>
+  </enum>
+  <enum name="HueDirection" type="ENUM8">
+    <item name="ShortestDistance" value="0x0"/>
+    <item name="LongestDistance" value="0x1"/>
+    <item name="Up" value="0x2"/>
+    <item name="Down" value="0x3"/>
+  </enum>
+  <enum name="HueMoveMode" type="ENUM8">
+    <item name="stop" value="0x0"/>
+    <item name="Up" value="0x1"/>
+    <item name="Down" value="0x3"/>
+  </enum>
+  <enum name="HueStepMode" type="ENUM8">
+    <item name="Up" value="0x1"/>
+    <item name="Down" value="0x3"/>
+  </enum>
+  <enum name="SaturationMoveMode" type="ENUM8">
+    <item name="stop" value="0x0"/>
+    <item name="Up" value="0x1"/>
+    <item name="Down" value="0x3"/>
+  </enum>
+  <enum name="SaturationStepMode" type="ENUM8">
+    <item name="Up" value="0x1"/>
+    <item name="Down" value="0x3"/>
+  </enum>
+  <enum name="ColorMode" type="ENUM8">
+    <item name="CurrentHueAndCurrentSaturation" value="0x00" />
+    <item name="CurrentXAndCurrentY"            value="0x01" />
+    <item name="ColorTemperature"               value="0x02" />
+  </enum>
+  <enum name="MeasurementLightSensorType" type="ENUM8">
+    <item name="photodiode" value="0x0"/>
+    <item name="CMOS" value="0x1"/>
+  </enum>
+  <enum name="LevelStatus" type="ENUM8">
+    <item name="OnTarget" value="0x0"/>
+    <item name="BelowTarget" value="0x1"/>
+    <item name="AboveTarget" value="0x2"/>
+  </enum>
+  <enum name="SensingLightSensorType" type="ENUM8">
+    <item name="photodiode" value="0x0"/>
+    <item name="CMOS" value="0x1"/>
+  </enum>
+  <enum name="OccupancySensorType" type="ENUM8">
+    <item name="PIR" value="0x0"/>
+    <item name="Ultrasonic" value="0x1"/>
+    <item name="pirAndUltrasonic" value="0x2"/>
+  </enum>
+  <enum name="IasZoneState" type="ENUM8">
+    <item name="notEnrolled" value="0x0"/>
+    <item name="enrolled" value="0x1"/>
+  </enum>
+  <enum name="IasZoneType" type="ENUM16">
+    <item name="standardCie" value="0x0"/>
+    <item name="motionSensor" value="0xd"/>
+    <item name="contactSwitch" value="0x15"/>
+    <item name="fireSensor" value="0x28"/>
+    <item name="waterSensor" value="0x2a"/>
+    <item name="gasSensor" value="0x2b"/>
+    <item name="personalEmergencyDevice" value="0x2c"/>
+    <item name="vibrationMovementSensor" value="0x2d"/>
+    <item name="remoteControl" value="0x10f"/>
+    <item name="keyFob" value="0x115"/>
+    <item name="keypad" value="0x21d"/>
+    <item name="standardWarningDevice" value="0x225"/>
+  </enum>
+  <enum name="IasEnrollResponseCode" type="ENUM8">
+    <item name="success" value="0x0"/>
+    <item name="notSupported" value="0x1"/>
+    <item name="noEnrollPermit" value="0x2"/>
+    <item name="tooManyZones" value="0x3"/>
+  </enum>
+  <enum name="IasAceArmMode" type="ENUM8">
+    <item name="disarm" value="0x0"/>
+    <item name="armDayHomeZonesOnly" value="0x1"/>
+    <item name="armNightSleepZonesOnly" value="0x2"/>
+    <item name="armAllZones" value="0x3"/>
+  </enum>
+  <enum name="IasAceArmNotification" type="ENUM8">
+    <item name="allZonesDisarmed" value="0x0"/>
+    <item name="onlyDayHomeZonesArmed" value="0x1"/>
+    <item name="onlyNightSleepZonesArmed" value="0x2"/>
+    <item name="allZonesArmed" value="0x3"/>
+  </enum>
+  <enum name="WarningMode" type="ENUM8">
+    <item name="stop" value="0x0"/>
+    <item name="burglar" value="0x1"/>
+    <item name="fire" value="0x2"/>
+    <item name="emergency" value="0x3"/>
+  </enum>
+  <enum name="WarningStobe" type="ENUM8">
+    <item name="noStrobe" value="0x0"/>
+    <item name="useStrobe" value="0x1"/>
+  </enum>
+  <enum name="SquawkMode" type="ENUM8">
+    <item name="systemIsArmed" value="0x0"/>
+    <item name="systemIsDisarmed" value="0x1"/>
+  </enum>
+  <enum name="SquawkStobe" type="ENUM8">
+    <item name="noStrobe" value="0x0"/>
+    <item name="useStrobe" value="0x1"/>
+  </enum>
+  <enum name="SquawkLevel" type="ENUM8">
+    <item name="lowLevel" value="0x0"/>
+    <item name="mediumLevel" value="0x1"/>
+    <item name="highLevel" value="0x2"/>
+    <item name="veryHighLevel" value="0x2"/>
+  </enum>
+  <enum name="AmiCriticalityLevel" type="ENUM8">
+    <item name="Reserved"          value="0x00" />
+    <item name="Green"             value="0x01" />
+    <item name="1"                 value="0x02" />
+    <item name="2"                 value="0x03" />
+    <item name="3"                 value="0x04" />
+    <item name="4"                 value="0x05" />
+    <item name="5"                 value="0x06" />
+    <item name="Emergency"         value="0x07" />
+    <item name="PlannedOutage"     value="0x08" />
+    <item name="ServiceDisconnect" value="0x09" />
+    <item name="UtilityDefined1"   value="0x0A" />
+    <item name="UtilityDefined2"   value="0x0B" />
+    <item name="UtilityDefined3"   value="0x0C" />
+    <item name="UtilityDefined4"   value="0x0D" />
+    <item name="UtilityDefined5"   value="0x0E" />
+    <item name="UtilityDefined6"   value="0x0F" />
+  </enum>
+  <enum name="AmiEventStatus" type="ENUM8">
+    <item name="LoadControlEventCommandRx"                        value="0x01" />
+    <item name="EventStarted"                                     value="0x02" />
+    <item name="EventCompleted"                                   value="0x03" />
+    <item name="UserHasChooseToOptOut"                            value="0x04" />
+    <item name="UserHasChooseToOptIn"                             value="0x05" />
+    <item name="TheEventHasBeenCanceled"                          value="0x06" />
+    <item name="TheEventHasBeenSuperseded"                        value="0x07" />
+    <item name="EventPartiallyCompletedWithUserOptOut"            value="0x08" />
+    <item name="EventPartiallyCompletedDueToUserOptIn"            value="0x09" />
+    <item name="EventCompletedNoUserParticipationPreviousOptOut"  value="0x0A" />
+    <item name="RejectedInvalidCancelCommand"                     value="0xF8" />
+    <item name="RejectedInvalidCancelCommandInvalidEffectiveTime" value="0xF9" />
+    <item name="RejectedEventExpired"                             value="0xFB" />
+    <item name="RejectedInvalidCancelUndefinedEvent"              value="0xFD" />
+    <item name="LoadControlEventCommandRejected"                  value="0xFE" />
+  </enum>
+  <enum name="AmiUnitOfMeasure" type="ENUM8">
+    <item name="KiloWattHours"             value="0x00"/>
+    <item name="CubicMeterPerHour"         value="0x01"/>
+    <item name="CubicFeetPerHour"          value="0x02"/>
+    <item name="CentumCubicFeetPerHour"    value="0x03"/>
+    <item name="usGallonsPerHour"          value="0x04"/>
+    <item name="ImperialGallonsPerHour"    value="0x05"/>
+    <item name="btUsOrBtuPerHour"          value="0x06"/>
+    <item name="LitersOrLitersPerHour"     value="0x07"/>
+    <item name="KpaGauge"                  value="0x08"/>
+    <item name="KpaAbsolute"               value="0x09"/>
+    <item name="mcfOrMcfPerSecond"         value="0x0A"/>
+    <item name="Unitless"                  value="0x0B"/>
+    <item name="mjOrMjPerSecond"           value="0x0C"/>
+    <item name="KiloWattHoursBcd"          value="0x80"/>
+    <item name="CubicMeterPerHourBcd"      value="0x81"/>
+    <item name="CubicFeetPerHourBcd"       value="0x82"/>
+    <item name="CentumCubicFeetPerHourBcd" value="0x83"/>
+    <item name="usGallonsPerHourBcd"       value="0x84"/>
+    <item name="ImperialGallonsPerHourBcd" value="0x85"/>
+    <item name="btUsOrBtuPerHourBcd"       value="0x86"/>
+    <item name="LitersOrLitersPerHourBcd"  value="0x87"/>
+    <item name="KpaGuageBcd"               value="0x88"/>
+    <item name="KpaAbsoluteBcd"            value="0x89"/>
+    <item name="mcfOrMcfPerSecondBcd"      value="0x8A"/>
+    <item name="UnitlessBcd"               value="0x8B"/>
+    <item name="mjOrMjPerSecondBcd"        value="0x8C"/>
+  </enum>
+  <enum name="AmiIntervalPeriod" type="ENUM8">
+    <item name="Daily"      value="0x00" />
+    <item name="Minutes60"  value="0x01" />
+    <item name="Minutes30"  value="0x02" />
+    <item name="Minutes15"  value="0x03" />
+    <item name="Minutes10"  value="0x04" />
+    <item name="Minutes7p5" value="0x05" />
+    <item name="Minutes5"   value="0x06" />
+    <item name="Minutes2p5" value="0x07" />
+  </enum>
+  <enum name="AmiIntervalChannel" type="ENUM8">
+    <item name="ConsumptionDelivered" value="0x00" />
+    <item name="ConsumptionReceived"  value="0x01" />
+  </enum>
+  <enum name="AmiRegistrationState" type="ENUM8">
+    <item name="Unregistered" value="0x0"/>
+    <item name="JoiningNetwork" value="0x1"/>
+    <item name="JoinedNetwork" value="0x2"/>
+    <item name="SubmittedRegistrationRequest" value="0x3"/>
+    <item name="RegistrationRejected" value="0x4"/>
+    <item name="Registered" value="0x5"/>
+    <item name="RegisterationNotPossible" value="0x6"/>
+  </enum>
+  <enum name="AnonymousDataState" type="ENUM8">
+    <item name="NoSourceFound" value="0x0"/>
+    <item name="SourceFound" value="0x1"/>
+  </enum>
+  <enum name="PriceTier" type="INT8U">
+    <item name="NoTierRelated"    value="0x00" />
+    <item name="Tier1PriceLabel"  value="0x01" />
+    <item name="Tier2PriceLabel"  value="0x02" />
+    <item name="Tier3PriceLabel"  value="0x03" />
+    <item name="Tier4PriceLabel"  value="0x04" />
+    <item name="Tier5PriceLabel"  value="0x05" />
+    <item name="Tier6PriceLabel"  value="0x06" />
+    <item name="Tier7PriceLabel"  value="0x07" />
+    <item name="Tier8PriceLabel"  value="0x08" />
+    <item name="Tier9PriceLabel"  value="0x09" />
+    <item name="Tier10PriceLabel" value="0x0A" />
+    <item name="Tier11PriceLabel" value="0x0B" />
+    <item name="Tier12PriceLabel" value="0x0C" />
+    <item name="Tier13PriceLabel" value="0x0D" />
+    <item name="Tier14PriceLabel" value="0x0E" />
+    <item name="Tier15PriceLabel" value="0x0F" />
+  </enum>
+  <bitmap name="PriceControlMask" type="BITMAP8">
+    <field name="acknowledgement" mask="0x01" />
+  </bitmap>
+  <enum name="PriceControlAcknowledgement" type="ENUM8">
+    <item name="notRequired" value="0x00"/>
+    <item name="required"    value="0x01"/>
+  </enum>
+  <enum name="RegisterTier" type="INT8U">
+    <item name="NoTierRelated"                            value="0x00" />
+    <item name="CurrentTier1SummationDeliveredAttribute"  value="0x01" />
+    <item name="CurrentTier2SummationDeliveredAttribute"  value="0x02" />
+    <item name="CurrentTier3SummationDeliveredAttribute"  value="0x03" />
+    <item name="CurrentTier4SummationDeliveredAttribute"  value="0x04" />
+    <item name="CurrentTier5SummationDeliveredAttribute"  value="0x05" />
+    <item name="CurrentTier6SummationDeliveredAttribute"  value="0x06" />
+    <item name="CurrentTier7SummationDeliveredAttribute"  value="0x07" />
+    <item name="CurrentTier8SummationDeliveredAttribute"  value="0x08" />
+    <item name="CurrentTier9SummationDeliveredAttribute"  value="0x09" />
+    <item name="CurrentTier10SummationDeliveredAttribute" value="0x0A" />
+    <item name="CurrentTier11SummationDeliveredAttribute" value="0x0B" />
+    <item name="CurrentTier12SummationDeliveredAttribute" value="0x0C" />
+    <item name="CurrentTier13SummationDeliveredAttribute" value="0x0D" />
+    <item name="CurrentTier14SummationDeliveredAttribute" value="0x0E" />
+    <item name="CurrentTier15SummationDeliveredAttribute" value="0x0F" />
+  </enum>
+  <enum name="AlternateCostUnit" type="ENUM8">
+    <item name="KgOfCo2PerUnitOfMeasure" value="0x02" />
+  </enum>
+  <enum name="AmiKeyEstablishmentStatus" type="ENUM8">
+    <item name="Success"          value="0x00" />
+    <item name="UnknownIssuer"    value="0x01" />
+    <item name="BadKeyConfirm"    value="0x02" />
+    <item name="BadMessage"       value="0x03" />
+    <item name="NoResources"      value="0x04" />
+    <item name="UnsupportedSuite" value="0x05" />
+  </enum>
+  <enum name="AmiGetProfileStatus" type="ENUM8">
+    <item name="Success"                                 value="0x00" />
+    <item name="UndefinedIntervalChannelRequested"       value="0x01" />
+    <item name="IntervalChannelNotSupported"             value="0x02" />
+    <item name="InvalidEndTime"                          value="0x03" />
+    <item name="MorePeriodsRequestedThanCanBeReturned"   value="0x04" />
+    <item name="NoIntervalsAvailableForTheRequestedTime" value="0x05" />
+  </enum>
+  <enum name="AttributeWritePermission" type="ENUM8">
+    <item name="DenyWrite"            value="0x00" />
+    <item name="AllowWriteNormal"     value="0x01" />
+    <item name="AllowWriteOfReadOnly" value="0x02" />
+    <item name="UnsupportedAttribute" value="0x86" />
+    <item name="InvalidValue"         value="0x87" />
+    <item name="ReadOnly"             value="0x88" />
+    <item name="InvalidDataType"      value="0x8D" />
+</enum>
+  <enum name="MeterDeviceType" type="ENUM8">
+    <item name="ElectricMeter"         value="0x00" />
+    <item name="GasMeter"              value="0x01" />
+    <item name="WaterMeter"            value="0x02" />
+    <item name="ThermalMeter"          value="0x03" />
+    <item name="PressureMeter"         value="0x04" />
+    <item name="HeatMeter"             value="0x05" />
+    <item name="CoolingMeter"          value="0x06" />
+    <item name="MirroredGasMeter"      value="0x80" />
+    <item name="MirroredWaterMeter"    value="0x81" />
+    <item name="MirroredThermalMeter"  value="0x82" />
+    <item name="MirroredPressureMeter" value="0x83" />
+    <item name="MirroredHeatMeter"     value="0x84" />
+    <item name="MirroredCoolingMeter"  value="0x85" />
+    <item name="UndefinedMirrorMeter"  value="0xFE" />
+  </enum>
+  <enum name="TunnelingProtocolId" type="ENUM8">
+    <item name="DLMS_COSEM"  value="0x00" />
+    <item name="IEC_61107"   value="0x01" />
+    <item name="ANSI_C12"    value="0x02" />
+    <item name="M_BUS"       value="0x03" />
+    <item name="SML"         value="0x04" />
+    <item name="ClimateTalk" value="0x05" />
+    <item name="Test"        value="0xC7" />
+  </enum>
+  <enum name="TunnelingTransferDataStatus" type="ENUM8">
+    <item name="NoSuchTunnel" value="0x00" />
+    <item name="WrongDevice"  value="0x01" />
+    <item name="DataOverflow" value="0x02" />
+  </enum>
+  <enum name="TunnelingTunnelStatus" type="ENUM8">
+    <item name="Success"                 value="0x00" />
+    <item name="Busy"                    value="0x01" />
+    <item name="NoMoreTunnelIds"         value="0x02" />
+    <item name="ProtocolNotSupported"    value="0x03" />
+    <item name="FlowControlNotSupported" value="0x04" />
+  </enum>
+  <struct name="Protocol">
+    <item name="manufacturerCode" type="INT16U" />
+    <item name="protocolId"       type="INT8U"  />
+  </struct>
+  <bitmap name="PrepaymentPaymentControl" type="BITMAP8">
+    <field name="DisconnectionEnabled"    mask="0x01"/>
+    <field name="CreditManagementEnabled" mask="0x04"/>
+    <field name="CreditDisplayEnabled"    mask="0x10"/>
+    <field name="AccountBase"             mask="0x40"/>
+    <field name="ContactorFitted"         mask="0x80"/>
+  </bitmap>
+  <bitmap name="PrepaymentCreditStatus" type="BITMAP8">
+    <field name="CreditOk"                 mask="0x01"/>
+    <field name="LowCredit"                mask="0x02"/>
+    <field name="EmergencyCreditEnabled"   mask="0x04"/>
+    <field name="EmergencyCreditAvailable" mask="0x08"/>
+    <field name="EmergencyCreditSelected"  mask="0x10"/>
+    <field name="EmergencyCreditInUse"     mask="0x20"/>
+    <field name="EmergencyCreditExhausted" mask="0x40"/>
+  </bitmap>
+  <enum name="PrepaymentRecoveryPeriod" type="ENUM8">
+    <item name="PerHour"    value="0x00" />
+    <item name="PerDay"     value="0x01" />
+    <item name="PerWeek"    value="0x02" />
+    <item name="PerMonth"   value="0x03" />
+    <item name="PerQuarter" value="0x04" />
+  </enum>
+  <enum name="PrepaymentOriginatingDevice" type="ENUM8">
+    <item name="EnergyServiceInterface"  value="0x00" />
+    <item name="InPremisesDisplayDevice" value="0x02" />
+  </enum>
+  <bitmap name="PrepaymentSupplyControl" type="BITMAP8">
+    <field name="AcknowledgeRequired" mask="0x01" />
+  </bitmap>
+  <enum name="PrepaymentSupplyStatus" type="ENUM8">
+    <item name="SupplyOff"      value="0x00" />
+    <item name="SupplyOffArmed" value="0x01" />
+    <item name="SupplyOn"       value="0x02" />
+  </enum>
+  <bitmap name="PrepaymentOriginatorIdSupplyControl" type="BITMAP8">
+    <field name="SupplyControl" mask="0xF0"/>
+    <field name="OriginatorId"  mask="0x0F"/>
+  </bitmap>
+  <struct name="ReadAttributeStatusRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="status" type="Status"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeLocation" type="NO_DATA"/>
+  </struct>
+  <struct name="WriteAttributeRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeLocation" type="NO_DATA"/>
+  </struct>
+  <struct name="WriteAttributeStatusRecord">
+    <item name="status" type="Status"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+  </struct>
+  <struct name="ConfigureReportingRecord">
+    <item name="direction" type="INT8U"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="minimumReportingInterval" type="INT16U"/>
+    <item name="maximumReportingInterval" type="INT16U"/>
+    <item name="reportableChangeLocation" type="NO_DATA"/>
+    <item name="timeoutPeriod" type="INT16U"/>
+  </struct>
+  <struct name="ConfigureReportingStatusRecord">
+    <item name="status" type="Status"/>
+    <item name="direction" type="INT8U"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+  </struct>
+  <struct name="ReadReportingConfigurationRecord">
+    <item name="status" type="Status"/>
+    <item name="direction" type="INT8U"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="minimumReportingInterval" type="INT16U"/>
+    <item name="maximumReportingInterval" type="INT16U"/>
+    <item name="reportableChangeLocation" type="NO_DATA"/>
+    <item name="timeoutPeriod" type="INT16U"/>
+  </struct>
+  <enum name="ReportingDirection" type="ENUM8">
+    <item name="reported" value="0x00"/>
+    <item name="received" value="0x01"/>
+  </enum>
+  <struct name="ReadReportingConfigurationAttributeRecord">
+    <item name="direction" type="INT8U"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+  </struct>
+  <struct name="ReportAttributeRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeLocation" type="NO_DATA"/>
+  </struct>
+  <struct name="DiscoverAttributesInfoRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+  </struct>
+  <struct name="ExtendedDiscoverAttributesInfoRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeAccessControl" type="INT8U"/>
+  </struct>
+  <struct name="ReadStructuredAttributeRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="indicator" type="INT8U"/>
+    <item name="indicies" type="INT16U" array="true"/>
+  </struct>
+  <struct name="WriteStructuredAttributeRecord">
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="indicator" type="INT8U"/>
+    <item name="indicies" type="INT16U" array="true"/>
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeLocation" type="NO_DATA"/>
+  </struct>
+  <struct name="WriteStructuredAttributeStatusRecord">
+    <item name="status" type="Status"/>
+    <item name="attributeId" type="ATTRIBUTE_ID"/>
+    <item name="indicator" type="INT8U"/>
+    <item name="indicies" type="INT16U" array="true"/>
+  </struct>
+  <struct name="SceneExtensionAttributeInfo">
+    <item name="attributeType" type="INT8U"/>
+    <item name="attributeLocation" type="NO_DATA"/>
+  </struct>
+  <struct name="SceneExtensionFieldSet">
+    <item name="clusterId" type="CLUSTER_ID"/>
+    <item name="length" type="INT8U"/>
+    <item name="value" type="INT8U"/>
+  </struct>
+  <struct name="BlockThreshold">
+    <item name="blockThreshold" type="ENUM8"/>
+    <item name="priceControl" type="BITMAP8"/>
+    <item name="blockPeriodStartTime" type="UTC_TIME"/>
+    <item name="blockPeriodDurationMinutes" type="INT24U"/>
+    <item name="fuelType" type="ENUM8"/>
+    <item name="standingCharge" type="INT32U"/>
+  </struct>
+  <enum name="SignatureType" type="ENUM8">
+    <item name="Reserved" value="0x00" />
+    <item name="ECDSA"    value="0x01" />
+  </enum>
+  <struct name="Notification">
+    <item name="contentId"      type="INT16U" />
+    <item name="statusFeedback" type="Status" />
+  </struct>
+  <struct name="NeighborInfo">
+    <item name="neighbor"               type="IEEE_ADDRESS" />
+    <item name="x"                      type="INT16S" />
+    <item name="y"                      type="INT16S" />
+    <item name="z"                      type="INT16S" />
+    <item name="rssi"                   type="INT8S" />
+    <item name="numberRssiMeasurements" type="INT8U" />
+  </struct>
+  <struct name="ChatParticipant">
+    <item name="uid"      type="INT16U" />
+    <item name="nickname" type="CHAR_STRING" />
+  </struct>
+  <struct name="ChatRoom">
+    <item name="cid"  type="INT16U" />
+    <item name="name" type="CHAR_STRING" />
+  </struct>
+  <struct name="NodeInformation">
+    <item name="uid"      type="INT16U" />
+    <item name="address"  type="DATA16" />
+    <item name="endpoint" type="INT8U" />
+    <item name="nickname" type="CHAR_STRING" />
+  </struct>
+  <!-- These need to be resolved -->
+  <struct name="Identity" length="48" />
+  <struct name="EphemeralData" length="22" />
+  <struct name="Smac" length="16" />
+  <struct name="Signature" length="42" />
+</configurator>

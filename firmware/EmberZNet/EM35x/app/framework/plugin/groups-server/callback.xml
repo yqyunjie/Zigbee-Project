@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="GROUPS_SERVER_GET_GROUP_NAME" name="Get Group Name" returnType="void">
+    <description> This function returns the name of a group with the provided group ID, should it exist. 
+    </description>
+    <arg name="endpoint"  type="int8u"   description="Endpoint"   />
+    <arg name="groupId"   type="int16u"  description="Group ID"   />
+    <arg name="groupName" type="int8u *" description="Group Name" />
+    <codeForStub>
+    </codeForStub>
+  </function>
+  <function id="GROUPS_SERVER_SET_GROUP_NAME" name="Set Group Name" returnType="void">
+    <description> This function sets the name of a group with the provided group ID. 
+    </description>
+    <arg name="endpoint"  type="int8u"   description="Endpoint"   />
+    <arg name="groupId"   type="int16u"  description="Group ID"   />
+    <arg name="groupName" type="int8u *" description="Group Name" />
+    <codeForStub>
+    </codeForStub>
+  </function>
+  <function id="GROUPS_SERVER_GROUP_NAMES_SUPPORTED" name="Group Names Supported" returnType="boolean">
+    <description> This function returns whether or not group names are supported.
+    </description>
+    <arg name="endpoint"  type="int8u"   description="Endpoint"   />
+    <codeForStub>
+      return FALSE;
+    </codeForStub>
+  </function>
+</callback>

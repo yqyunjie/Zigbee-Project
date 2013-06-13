@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="INCOMING_MESSAGE" name="Incoming Message" returnType="boolean">
+    <description>
+      Indicates an Ember Bootload message has been received by the Standalone Bootloader Common plugin.
+    </description>
+    <arg name="longId"  type="EmberEUI64" description="The sender's EUI64 address"/>
+    <arg name="length"  type="int8u"      description="The length of the incoming message."/>
+    <arg name="message" type="int8u*"     description="The array of bytes for the message."/>
+    <codeForStub>
+      // Return TRUE to indicate the message was handled, false otherwise.
+      return FALSE;
+    </codeForStub>
+  </function>
+</callback>
+

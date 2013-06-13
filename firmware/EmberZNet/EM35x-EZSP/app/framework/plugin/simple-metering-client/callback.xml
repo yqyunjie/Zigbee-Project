@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="METERING_CLIENT_REQUEST_MIRROR" name="Request Mirror" returnType="int16u">
+    <description>
+      This function is called by the Simple Metering client plugin whenever a Request Mirror command is received.  The application should return the endpoint to which the mirror has been assigned.  If no mirror could be assigned, the application should return 0xFFFF.
+    </description>
+    <arg name="requestingDeviceIeeeAddress" type="EmberEUI64" />
+    <codeForStub>
+      return 0xFFFF;
+    </codeForStub>
+  </function>
+  <function id="METERING_CLIENT_REMOVE_MIRROR" name="Remove Mirror" returnType="int16u">
+    <description>
+      This function is called by the Simple Metering client plugin whenever a Remove Mirror command is received.  The application should return the endpoint on which the mirror has been removed.  If the mirror could not be removed, the application should return 0xFFFF.
+    </description>
+    <arg name="requestingDeviceIeeeAddress" type="EmberEUI64" />
+    <codeForStub>
+      return 0xFFFF;
+    </codeForStub>
+  </function>
+</callback>

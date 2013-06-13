@@ -1,0 +1,6 @@
+// Hal Button ISR Callback
+// This callback is called by the framework whenever a button is pressed on the 
+// device. This callback is called within ISR context.
+void emberAfHalButtonIsrCallback(int8u button, int8u state) {
+}
+

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="address-table" name="Plugin Commands: Address Table">
+    <description>This plugin provides a set of APIs and CLI commands for managing the address table</description>
+  </group>
+</cli>

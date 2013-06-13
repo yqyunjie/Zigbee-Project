@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="BROADCAST_SENT" name="Broadcast Sent" returnType="void">
+    <description>
+      This function is called when a new MTORR broadcast has been successfully sent by the concentrator plugin.
+    </description>
+    <codeForStub/>
+  </function>
+</callback>

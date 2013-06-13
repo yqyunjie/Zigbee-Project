@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="ZLL_ON_OFF_SERVER_OFF_WITH_EFFECT" name="Off With Effect" returnType="EmberAfStatus">
+    <description>
+      This callback is called by the ZLL On/Off Server plugin whenever an OffWithEffect command is received.  The application should implement the effect and variant requested in the command and return ::EMBER_ZCL_STATUS_SUCCESS if successful or an appropriate error status otherwise.
+    </description>
+    <arg name="endpoint"      type="int8u" />
+    <arg name="effectId"      type="int8u" />
+    <arg name="effectVariant" type="int8u" />
+    <codeForStub>
+      return EMBER_ZCL_STATUS_SUCCESS;
+    </codeForStub>
+  </function>
+</callback>

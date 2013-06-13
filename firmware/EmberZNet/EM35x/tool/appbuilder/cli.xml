@@ -1,0 +1,952 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="general" name="General">
+    <description>
+      &lt;strong&gt;Ember Application Framework, Version 2 (AFV2)&lt;/strong&gt;&lt;br&gt;&lt;/br&gt;
+
+       &lt;em&gt;Synopsis: &lt;/em&gt;an Application Framework that can be setup to implement ZigBee-compliant devices from various public profiles or any proprietary application profile for which XML description of clusters and devices has been provided.  This framework includes an implementation of the ZigBee Cluster Library, which allows building any ZCL-based device.  The AppBuilder tool within Ember Desktop is intended to serve as a graphical interface for configuration of this framework for new application targets.
+       &lt;br&gt;&lt;/br&gt;
+       &lt;br&gt;&lt;/br&gt;
+       &lt;em&gt;Buttons Used:&lt;/em&gt;
+       &lt;br&gt;&lt;/br&gt;
+       Note that the button mappings are configurable through AppBuilder's HAL Configuration tab, so you should consult your AppBuilder configuration to determine which GPIO each button (first and second) are mapped to and which are enabled.   
+       &lt;br&gt;&lt;/br&gt;
+       &lt;br&gt;&lt;/br&gt;
+       Also note that FORM and JOIN activities below are implemented by the AFV2 "Network Find" plugin by default.  If this plugin is disabled in your AppBuilder configuration, these actions rely on your application code implementing some or all of the functions listed in the Implemented Callbacks list for the Network Find plugin.
+       The BIND action described below relies on the network's Coordinator node being built with the optional End Device Bind feature. (Check "Enable End Device Bind" in the Stack Configuration tab of AppBuilder to enable this.)
+       &lt;br&gt;&lt;/br&gt;
+       &lt;ul&gt;
+       &lt;li&gt; 1st Application Button: if not joined: FORM (if the device is capable of forming)&lt;br&gt;&lt;/br&gt;
+       &lt;/li&gt;&lt;li&gt; 1st Application Button: if joined: BIND (send ZDO end device bind request)&lt;br&gt;&lt;/br&gt; 
+
+       &lt;/li&gt;&lt;li&gt; 2nd Application Button: if not joined: JOIN &lt;br&gt;&lt;/br&gt;
+       &lt;/li&gt;&lt;li&gt; 2nd Application Button: if joined: PERMIT JOINING &lt;br&gt;&lt;/br&gt;
+       &lt;/li&gt;&lt;/ul&gt;
+       &lt;em&gt;Serial baud rates, ports used:&lt;/em&gt; &lt;br&gt;&lt;/br&gt;
+       Default baud rate is 115200 bps on UART1 for all devices.&lt;br&gt;&lt;/br&gt;
+       This can be set to other baud rates using AppBuilder's HAL Configuration tab or by redefining EMBER_AF_BAUD_RATE.&lt;br&gt;&lt;/br&gt;
+       &lt;br&gt;&lt;/br&gt;
+       &lt;br&gt;&lt;/br&gt;
+       &lt;em&gt;&lt;u&gt;&lt;strong&gt;Serial commands supported:&lt;/strong&gt;&lt;/u&gt;&lt;/em&gt; &lt;br&gt;&lt;/br&gt;
+
+       &lt;strong&gt;NOTE:&lt;/strong&gt; Three different serial modes can used by AFV2 applications:&lt;br&gt;&lt;/br&gt;
+       &lt;br&gt;&lt;/br&gt;
+       &lt;ul&gt;&lt;li&gt; &lt;strong&gt;&lt;em&gt;FULL&lt;/em&gt;&lt;/strong&gt; - Supports all the commands listed below that pertain to the device. This mode uses the most flash. This mode is enabled by defining "ZA_CLI_FULL" and not defining "ZA_TINY_SERIAL_INPUT".  This is the default for new AppBuilder configurations if not changed via the HAL Configuration tab.
+       &lt;/li&gt;&lt;li&gt; &lt;strong&gt;&lt;em&gt;MINIMAL&lt;/em&gt;&lt;/strong&gt; - (Not supported on EZSP Host platforms.)  Supports a subset of the commands listed below. It uses less flash than FULL mode and more flash than TINY mode. This mode is enabled by defining "ZA_CLI_MINIMAL" and not defining "ZA_TINY_SERIAL_INPUT"
+       &lt;/li&gt;&lt;li&gt; &lt;strong&gt;&lt;em&gt;TINY&lt;/em&gt;&lt;/strong&gt; - (Not supported on EZSP Host platforms.)  Saves the most flash and saves RAM over the MINIMAL and FULL modes. This mode supports only single character commands and does not provide all the functionality that the FULL CLI provides. This mode is enabled by defining "ZA_TINY_SERIAL_INPUT". TINY serial mode has been deprecated, and will be removed in a future version.
+       &lt;/li&gt;&lt;/ul&gt;
+       &lt;p&gt;&lt;/p&gt;
+
+       &lt;br&gt;&lt;/br&gt;
+       &lt;em&gt;&lt;strong&gt;Tiny Serial commands:&lt;/strong&gt; (Available only in TINY mode) (DEPRECATED)&lt;/em&gt; &lt;br&gt;&lt;/br&gt;
+       &lt;p&gt;&lt;/p&gt;
+       &lt;ul&gt;&lt;li&gt; i = Gives information about the local node.
+       &lt;/li&gt;&lt;li&gt; f = Forms a network on channel TINY_SERIAL_CHANNEL(11) and panID TINY_SERIAL_PANID (0x00AB).
+       &lt;/li&gt;&lt;li&gt; j = Attempts to join a network on channel TINY_SERIAL_CHANNEL(11) and panID TINY_SERIAL_PANID (0x00AB).
+       &lt;/li&gt;&lt;li&gt; p = Permits join for 20 seconds.
+       &lt;/li&gt;&lt;li&gt; l = Leaves network.
+
+       &lt;/li&gt;&lt;li&gt; s = Prints the networking stack's statistics counters.
+       &lt;/li&gt;&lt;li&gt; t = Sends a read time cluster time attribute command to the ZC.
+       &lt;/li&gt;&lt;li&gt; b = Sends a read basic cluster version attribute command to the ZC.
+       &lt;/li&gt;&lt;li&gt; k = Prints security keys.
+       &lt;/li&gt;&lt;li&gt; c = Clears security keys.
+       &lt;/li&gt;&lt;li&gt; a = Establish a pArtner link key with the node defined by the "partnerLinkKeyEui" array in app/framework/util/af-main-soc.c.  User must define KEY_ESTABLISHMENT_ENDPOINT.
+       &lt;/li&gt;&lt;/ul&gt;
+       &lt;br&gt;&lt;/br&gt;
+
+       &lt;br&gt;&lt;/br&gt;
+       &lt;em&gt;&lt;strong&gt;Minimal Serial commands: &lt;/strong&gt;&lt;/em&gt;the top level commands listed below and any sub commands are supported in minimal CLI mode &lt;br&gt;&lt;/br&gt;
+
+       &lt;ul&gt;&lt;li&gt; bsend
+       &lt;/li&gt;&lt;li&gt; debugprint (if debug printing for Application area is enabled)
+       &lt;/li&gt;&lt;li&gt; keys
+       &lt;/li&gt;&lt;li&gt; network
+       &lt;/li&gt;&lt;li&gt; print
+       &lt;/li&gt;&lt;li&gt; raw
+       &lt;/li&gt;&lt;li&gt; send
+       &lt;/li&gt;&lt;li&gt; send_multicast
+       &lt;/li&gt;&lt;li&gt; version (if debug printing for Application area is enabled)
+
+       &lt;/li&gt;&lt;li&gt; counters 
+       &lt;/li&gt;&lt;li&gt; help
+       &lt;/li&gt;&lt;li&gt; reset
+       &lt;/li&gt;&lt;li&gt; echo
+       &lt;/li&gt;&lt;li&gt; info
+       &lt;/li&gt;&lt;li&gt; s-update
+       &lt;/li&gt;&lt;li&gt; libs (if debug printing for Application area is enabled)
+       &lt;/li&gt;&lt;li&gt; zdo (if configuration enables serial commadns for sending ZDO messages)
+       &lt;/li&gt;&lt;li&gt; custom (executes custom command included in the emberAfCustomCommands array of type EmberCommandEntry)&lt;/li&gt;&lt;/ul&gt;
+    </description>
+  </group>
+  <group id="zcl-global" name="Global ZCL">
+    <description>
+      All the ZCL global commands defined in the ZigBee Cluster Library Specification. These command line commands can be used to send messages over the air to, for instance, read and write attributes to devices on the network.
+    </description>
+  </group>
+  <group id="test" name="Test Harness">
+    <description>
+      All commands related to the testing of a device.
+    </description>
+  </group>
+  <group id="info" name="Informational">
+    <description>
+      The Informational command set provides commands for displaying information about the device. These commands include things like printing out the attribute tablerr
+    </description>
+  </group>
+  <group id="network" name="Network">
+    <description>
+      The Network command set provides commands for interacting with the network. This includes building as well as sending ZigBee commands out on to the network.
+    </description>
+  </group>
+  <group id="security" name="Security">
+    <description>
+      The Security command set includes all of the commands related to security configuration on the device. 
+    </description>
+  </group>
+  <group id="build-send-msg" name="Building and Sending Messages">
+    <description>
+      Commands for building and sending messages out onto the network.  
+    </description>
+  </group>
+  <group id="attribute" name="Attribute Management">
+    <description>
+      Commands related to reading and writing attributes locally on a device.
+    </description>
+  </group>
+  <group id="zdo" name="ZigBee Network Management Commands (ZDO)">
+    <description>
+      Commands related to the management of a ZigBee network including device discovery and commissioning.
+    </description>
+  </group>
+
+  <command cli="zcl global read" functionName="zclGlobalReadCommand" group="zcl-global">
+    <description>
+      Creates a global read command message to read from the cluster and attribute specified
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the cluster to read from." />
+    <arg name="attributeId" type="INT16U" description="The attribute id of the attribute to read." />
+  </command>
+  <command cli="zcl global write" functionName="zclGlobalWriteCommand" group="zcl-global">
+    <description>
+      Creates a global write command message to write to the cluster and attribute specified
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the cluster to write to." />
+    <arg name="attributeId" type="INT16U" description="The attribute id of the attribute to write." />
+    <arg name="type" type="INT32U" description="The type of the attribute to write." />
+  </command>
+  <command cli="zcl global uwrite" functionName="zclGlobalWriteCommand" group="zcl-global">
+    <description>
+      Creates a global write undivided command message to write to the cluster and attribute specified
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the cluster to write to." />
+    <arg name="attributeId" type="INT16U" description="The attribute id of the attribute to write." />
+    <arg name="type" type="INT8U" description="The type of the attribute to write." />
+  </command>
+  <command cli="zcl global nwrite" functionName="zclGlobalWriteCommand" group="zcl-global">
+    <description>
+      Creates a global write command message to write to the cluster and attribute specified      
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the cluster to read from." />
+    <arg name="attributeId" type="INT16U" description="The attribute id of the attribute to read." />
+    <arg name="type" type="INT8U" description="The type of the attribute to write." />
+  </command>
+  <command cli="zcl global discover" functionName="zclGlobalDiscoverCommand" group="zcl-global">
+    <description>
+      Creates discovery message for devices with the associated cluster and attribute specified.     
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the cluster to discover." />
+    <arg name="attributeId" type="INT16U" description="The attribute id of the attribute to read during discovery." />
+    <arg name="max" type="INT8U" description="Max number of discovery responses." />
+  </command>
+  <command cli="zcl global report-read" functionName="zclGlobalReportReadCommand" group="zcl-global">
+    <description>
+      Creates a global read reporting command for the associated cluster, attribute and server/client direction.
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id to read from." />
+    <arg name="attributeId" type="INT16U" description="The attribute id to read from." />
+    <arg name="direction" type="INT8U" description="0 for client-to-server, 1 for server-to-client." />
+  </command>
+  <command cli="zcl global send-me-a-report" functionName="zclGlobalSendMeAReportCommand" group="zcl-global">
+    <description>
+       Creates a global send me a report command for the associated values.
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id of the requested report." />
+    <arg name="attributeId" type="INT16U" description="The attribute id for requested report." />
+    <arg name="dataType" type="INT8U" description="The two byte ZigBee type value for the requested report." />
+    <arg name="minReportTime" type="INT16U" description="Minimum number of seconds between reports." />
+    <arg name="maxReportTime" type="INT16U" description="Maximum number of seconds between reports." />
+    <arg name="reportableChange" type="ARRAY" description="Amount of change to trigger a report." />
+  </command>
+  <command cli="zcl global expect-report-from-me" functionName="zclGlobalExpectReportFromMeCommand" group="zcl-global">
+    <description>
+      Create a expect-report-from-me message with associated values.
+    </description>
+    <arg name="cluster" type="INT16U" description="The cluster id for the requested report." />
+    <arg name="attributeId" type="INT16U" description="The attribute id for the requested report." />
+    <arg name="timeout" type="INT16U" description="Maximum amount of time between reports." />
+  </command>
+  <command cli="zcl global direction" functionName="zclGlobalDirectionCommand" group="zcl-global">
+    <description>
+      Sets the direction for global commands, either client to server or server to client.
+    </description>
+    <arg name="direction" type="INT8U" description="The direction for global commands, 0 = client to server, 1 = server to client." />
+  </command>
+  <command cli="zcl global disc-com-gen" functionName="zclGlobalCommandDiscoveryCommand" group="zcl-global">
+    <description>
+	  Create a Discover Commands Generated command with associated values.
+    </description>
+    <arg name="clusterId" type="INT16U" description="The cluster to find commands on." />
+    <arg name="startCommandId" type="INT8U" description="The command id to start the command search on." />
+    <arg name="maxCommandId" type="INT8U" description="Max command ids to search for." />
+  </command>
+  <command cli="zcl global disc-com-rec" functionName="zclGlobalCommandDiscoveryCommand" group="zcl-global">
+    <description>
+	  Create a Discover Commands Received command with associated values.
+    </description>
+    <arg name="clusterId" type="INT16U" description="The cluster to find commands on." />
+    <arg name="startCommandId" type="INT8U" description="The command id to start the command search on." />
+    <arg name="maxCommandId" type="INT8U" description="Max command ids to search for." />
+  </command>
+  <command cli="zcl test response on" functionName="zclTestResponseOnCommand" group="test">
+    <description>
+      Sets a flag so that the application framework WILL respond to the next ZCL message that comes in over the air.
+    </description>
+  </command>
+  <command cli="zcl test response off" functionName="zclTestResponseOffCommand" group="test">
+    <description>
+      Sets a flag so that the application framework WILL NOT respond to the next ZCL message that comes in over the air.
+    </description>
+  </command>
+  <command cli="zcl attr-read-frag-response" functionName="attributeReadCausingFragmentedResponseCommand" group="test">
+    <description>
+      This is a command used for testing that generates an attribute read command which requests so many attributes that the returned response is fragmented.
+    </description>
+  </command>
+
+  <command cli="test-harness status" functionName="printStatus" group="test">
+    <description>
+      Prints the current mode of the test harness.
+    </description>
+  </command>
+  <command cli=" test-harness aps-sec-for-clust on" functionName="setApsSecurityForCluster" group="test">
+    <description>
+      This turns on indication that the specified cluster requires APS security. This does not override the normal rules by the SE profile for security.  It simply supplements the rules with one additional cluster that requires APS security.
+    </description>
+    <arg name="clusterId" type="INT16U" description="The cluster to be turned on requiring APS security." />
+  </command>
+  <command cli="test-harness aps-sec-for-clust off" functionName="setApsSecurityForCluster" group="test">
+    <description>
+      This turns off indication that the specified cluster requires APS security. This does not override the normal rules by the SE profile for security.  It simply supplements the rules with one additional cluster that requires APS security.
+    </description>
+  </command>
+  <command cli="test-harness registration on" functionName="setRegistration" group="test">
+    <description>
+      Turns on automatic Smart Energy Registration after joining or reboot.  Default is on.
+    </description>
+  </command>
+  <command cli="test-harness registration off" functionName="setRegistration" group="test">
+    <description>
+      Turns off automatic Smart Energy Registration after joining or reboot.  Default is on.
+    </description>
+  </command>
+
+  <command cli="test-harness ke normal-mode" functionName="setMode" group="test">
+    <description>
+      Sets normal mode for key establishment on the test harness, which suppresses any bad behavior and allows normal KE operation.
+    </description>
+  </command>
+  <command cli="test-harness ke no-resources" functionName="setMode" group="test">
+    <description>
+      The device will send a "Terminate Key Estabilshment Message (No resources)" in response to any attempt to initiate KE with it.  As a client, it will send a Terminate message after receiving the Initiate Key establishment response.
+    </description>
+  </command>
+  <command cli="test-harness ke default-resp" functionName="setMode" group="test">
+    <description>
+      The device will send a "Default Response (Failure)" in response to any attempt to initiate KE with it.  As a client, it will send a Default Response after receiving the Initiate Key establishment response.
+    </description>
+  </command>
+  <command cli="test-harness out-of-sequence" functionName="setMode" group="test">
+    <description>
+      This command will send an out-of-sequence message during key establishment. It will look for the local device to send the command with the passed 'ID' and will send a different command ID.  So if the outgoing command is  Initiate KE (ID 0) and the passed ID = 0, then it will send an Ephemeral Data Command (ID 1) instead.
+    </description>
+    <arg name="commandId" type="INT16U" description="The command id that the test harness is looking for." />
+  </command>
+  <command cli="test-harness ke timeout" functionName="setMode" group="test">
+    <description>
+      This command will induce a timeout by dropping the outgoing message instead of sending it.  This will occur for every command, except when the device is a KE client sending the first message.  In that case it will induce a timeout on the second message (ephemeral data request).
+    </description>
+  </command>
+  <command cli="test-harness ke delay-cbke" functionName="setMode" group="test">
+    <description>
+      This command causes the test harness to introduce artificial delays to the ephemeral key and confirm key generation time.  It will delay generation by 'delay-time-seconds' so it takes longer than normal. Thus the ephemeral data request/response message will be delayed. The 'advertised-delay-seconds' is the amount of time that the local device tells the partner it will take them (in the Initiate KE message). If the delay-time-seconds &lt;= advertised-delay-seconds, then key establishment should complete successfully but just be delayed.  If delay-time-seconds > advertised-delay-seconds then the partner device should timeout the operation as the local device will take longer than expected.  However the local device will still send the ephemeral data message in an attempt to continue key establishment.  It is expected that the partner will reject this attempt and send back a Terminate  message.
+    </description>
+    <arg name="delayTimeInSeconds" type="INT16U" description="The number of seconds to delay." />
+    <arg name="advertisedDelayInSeconds" type="INT16U" description="The advertised delay time in seconds." />
+  </command>
+
+  <command cli="test-harness ke cert-mangle length" functionName="setCertMangleType" group="test">
+    <description>
+      This will modify the initiate key establishment message length by +/- 'signed-length' bytes.
+    </description>
+    <arg name="signedLength" type="INT8S" description="The number of bytes to add or remove on th einitiate ke message." />
+  </command>
+  <command cli="test-harness ke cert-mangle issuer" functionName="setCertMangleType" group="test">
+    <description>
+      This will rewrite the issuer field of the certificate with the 'new-issuer-value' when the initiate key establishment message is sent out.
+    </description>
+    <arg name="newIssuerValue" type="OCTET_STRING" description="The new issuer value." />
+  </command>
+  <command cli="test-harness ke cert-mangle subject" functionName="setCertMangleType" group="test">
+    <description>
+      This will rewrite the subject field (EUI64) of the certificate with the 'new-subject-value' when the initiate key establishment message is sent out.
+    </description>
+    <arg name="newSubjectValue" type="OCTET_STRING" description="The new subject value." />
+  </command>
+  <command cli="test-harness ke cert-mangle corrupt" functionName="setCertMangleType" group="test">
+    <description>
+      This will rewrite the 'index' byte of the certificate field of the initiate key establishment message to corrupt the certificate. It will bit-flip the 'index' byte to change its value.
+    </description>
+    <arg name="index" type="INT8U" description="The new index byte of the certificate field." />    
+  </command>
+  <command cli="test-harness ke new-key-policy" functionName="setCertMangleType" group="test">
+    <description>
+      This will change the policy of whether the TC allows new link keys into its table.  Normally all devices are pre-configured in the TC with an install code and so the TC must have prior knowledge of the device in order to allow CBKE with it.  However when running in the SE_TEST security mode the TC uses a global link key and so there is no prior knowledge.
+    </description>    
+    <arg name="policyFlag" type="INT8U" description="New policy boolean value." />    
+  </command>
+  <command cli="test-harness price send-new-fields" functionName="setCertMangleType" group="test">
+    <description>
+      This will tell the price server whether or not it should send publish price commands with the new SE 1.1 fields: Number of Block Threshholds and Price Control.  Defaults to TRUE.
+    </description>
+    <arg name="sendPublishPriceCmd" type="INT8U" description="New policy boolean value for the sending of publish price commands." />    
+  </command>
+  <command cli="test-harness tc-keepalive send" functionName="tcKeepaliveSendCommand" group="test">
+    <description>
+      This command will cause the device to immediatley send a Trust Center Keepalive message.
+    </description>
+  </command>
+  <command cli="test-harness tc-keepalive stop" functionName="tcKeepaliveStartStopCommand" group="test">
+    <description>
+      Turn off the keepalive state machine so it does not periodically send keepalive messages.
+    </description>
+  </command>
+  <command cli="test-harness tc-keepalive start" functionName="tcKeepaliveStartStopCommand" group="test">
+    <description>
+      Turn on the keepalive state machine so starts periodically sending keepalive messages.
+    </description>
+  </command>
+  <command cli="test-harness ota image-mangle" functionName="corruptOtaImageCommand" group="test">
+    <description>
+      This will mangle the image stored in the OTA Simple Storage RAM Driver. Only available when the OTA Simple Storage RAM driver plugin is enabled. This is really only useful in simulated testing.  For testing on real hardware it is better to use a Linux box with a set of images, one of which is corrupted.
+    </description>
+  </command>
+  <command cli="test-harness key-update unicast" functionName="keyUpdateCommand" group="test">
+    <description>
+      This command will set the key-update method to use unicast (as opposed to broadcast) to individually update devices with the new NWK key.
+    </description>
+  </command>
+  <command cli="test-harness key-update broadcast" functionName="keyUpdateCommand" group="test">
+    <description>
+      This command will set the key-update method to use broadcast (as opposed to unicast) to update all devices at the same time with the new NWK key.
+    </description>
+  </command>
+  <command cli="test-harness key-update now" functionName="keyUpdateCommand" group="test">
+    <description>
+      Start the NWK key update process now.
+    </description>
+  </command>
+  <command cli="zcl mfg-code" functionName="zclMfgCodeCommand" group="general">
+    <description>
+      Sets the two byte manufacturer specific identifier to use for the next command if the command is not already built.
+    </description>
+    <arg name="mfgSpecificId" type="INT16U" description="Manufacturer Specific Id" />
+  </command>
+  <command cli="zcl time" functionName="emberAfSetTime" group="general">
+    <description>
+      Cli command to call emberAfSetTime function documented in af.h 
+    </description>
+    <arg name="utcTime" type="INT32U" description="ZigBee UTC time, number of seconds since the year 2000" />
+  </command>
+  <command cli="zcl identify on" functionName="zclIdentifyOnCommand" group="identify">
+    <description>
+      Creates the payload for an over the air message that turns identifying on for a given endpoint and a given amount of time
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint on the device which should begin identifying" />
+    <arg name="time" type="INT16U" description="The number of seconds to spend identifying" />
+  </command>
+  <command cli="zcl identify off" functionName="zclIdentifyOffCommand" group="identify">
+    <description>
+      Creates a message payload for a command that turns identifying off on a given endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The endpoint on which to stop identifying" />
+  </command>
+  <command cli="zcl scenes set on" functionName="zclScenesSetCommand" group="scenes">
+    <description>
+      Sets the on-off value to on for the add scene command and sets the level control clusters level value also sent
+      with the add scene command.
+    </description>
+    <arg name="level" type="INT8U" description="The level value to send with the add scene command" />
+  </command>
+  <command cli="zcl scenes set off" functionName="zclScenesSetCommand" group="scenes">
+    <description>
+      Sets the on-off value to off for the add scene command and sets the level control clusters level value also sent
+      with the add scene command.
+    </description>
+    <arg name="level" type="INT8U" description="The value to send with the add scene command " />
+  </command>
+  <command cli="zcl drlc lce" functionName="zclDrlcLoadControlEventCommand" group="demand-response-and-load-control">
+    <description>
+      Populate a buffer to send a static load control event with the following values:
+      all device classes, all uegs, criticality level: normal, 1.1c cooling temp offset, 
+      1.1c heating temp offset, cool temp set point 23.3c, heat temp set point, 
+      -10% avg load percent, duty cycle
+    </description>
+    <arg name="eventId" type="INT32U" description="4 byte event id for the load control event" />
+    <arg name="start" type="INT32U" description="Start time for the load control event" />
+    <arg name="duration" type="INT16U" description="Duration for the load control event" />
+    <arg name="event control" type="INT8U" description="Control byte for the load control event" />
+  </command>
+  <command cli="zcl bacnet transfer-npdu whois" functionName="zclBacnetTransferWhoisCommand" group="bacnet-protocol-tunnel">
+    <description>
+      Send a sample whois command. This was used for testing and should be modified for production use.
+    </description>
+  </command>
+  <command cli="zcl tunneling random-to-server" functionName="zclTunnelingRandomToServerCommand" group="tunneling">
+    <description>
+      Send a random amount of data through a tunnel to the server (used for testing)
+    </description>
+    <arg name="tunnel-id" type="INT16U" description="The two byte tunnel id" />
+    <arg name="length" type="INT16U" description="The two byte length of the random data to send" />
+  </command>
+  <command cli="zcl tunneling transfer-to-client" functionName="zclTunnelingRandomToServerCommand" group="tunneling">
+    <description>
+      Send a random amount of data through a tunnel to the server (used for testing)
+    </description>
+    <arg name="tunnel-id" type="INT16U" description="The two byte tunnel id" />
+    <arg name="data" type="OCTET_STRING" description="data to transfer to the client" />
+  </command>
+  <command cli="zcl tunneling random-to-client" functionName="zclTunnelingRandomToClientCommand" group="tunneling">
+    <description>
+      Send a random amount of data through a tunnel to the server (used for testing)
+    </description>
+    <arg name="tunnel-id" type="INT16U" description="The two byte tunnel id" />
+    <arg name="length" type="INT16U" description="the length of random data to send to the client" />
+  </command>
+  <command cli="send" functionName="emAfCliSendCommand" group="build-send-msg">
+    <description>
+      Send a pre-buffered message from a given endpoint to an endpoint on a device with a given short address.
+    </description>
+    <arg name="id" type="INT16U" description="short id of the device to send the message to" />
+    <arg name="src-endpoint" type="INT8U" description="The endpoint to send the message from" />
+    <arg name="dst-endpoint" type="INT8U" description="The endpoint to send the message to" />
+  </command>
+  <command cli="send_multicast" functionName="emAfCliSendCommand" group="build-send-msg">
+    <description>
+      Send a pre-buffered multicast message to a given group id from a given endpoint.
+    </description>
+    <arg name="groupId" type="INT16U" description="group id of the multicast group to send the message to" />
+    <arg name="src-endpoint" type="INT8U" description="The endpoint to send the message from" />
+  </command>
+  <command cli="bsend" functionName="emAfCliBsendCommand" group="build-send-msg">
+    <description>
+      send using a binding based on the clusterId in the globalApsFrame and the srcEndpoint specified (if the src endpoint is zero it only sends based on the clusterId)
+    </description>
+    <arg name="srcEndpoint" type="INT8U" description="source endpoint to send a binding based message from" />
+  </command>
+  <command cli="timesync" functionName="emAfCliTimesyncCommand" group="build-send-msg">
+    <description>
+      This sends a read attr for the time of the device specified. It sets a flag so when it gets the response it writes the time to its own time attr
+    </description>
+    <arg name="id" type="INT16U" description="two byte short id of the time server" />
+    <arg name="srcEndpoint" type="INT8U" description="source endpoint to send time sync from" />
+    <arg name="destEndpoint" type="INT8U" description="destination endpoint to expect response on" />
+  </command>
+  <command cli="raw" functionName="emAfCliRawCommand" group="build-send-msg">
+    <description>
+      Creates a message by specifying the raw bytes. Use "send" to send the message once it has been created. Ex: raw 0x000F {00 0A 00 11 22 33 44 55} sends a message to cluster 15 (0x000F) of length 8 which includes the ZCL header.
+    </description>
+    <arg name="clusterId" type="INT16U" description="two byte cluster id" />
+    <arg name="data" type="OCTET_STRING" description="two byte short id of the time server" />
+  </command>
+  <command cli="interpan group" functionName="interpanCommand" group="build-send-msg">
+    <description>
+      send an interpan message to a group id.
+    </description>
+    <arg name="groupId" type="INT16U" description="group id to send to" />
+    <arg name="destPan" type="INT16U" description="destination pan id" />
+    <arg name="destprofileID" type="INT16U" description="destination profile ID" />
+  </command>
+  <command cli="interpan short" functionName="interpanCommand" group="build-send-msg">
+    <description>
+      &lt;code&gt;Send an interpan message to a short id. Static data used is as follows:
+      interpan commands
+      mac is     : [FC 2; seq 1; dest PAN 2; dest addr 2|8; src pan 2; src addr 8]
+      stub nwk is: [Frame Control 2]
+      stub APS is: [FC 1; groupId 0|2; clusterId 2; appProfileId 2]
+      
+      MAC FC = bits 0,1,2: frame type (Data) 1
+                bit 3: security enabled = false (0)
+                bit 4: frame pending  = false (0)
+                bit 5: ack required = true (1)
+                bit 6: intra PAN = false (0)
+                bit 7,8,9: reserved (0)
+                bit 10,11: dest addr mode = group (1), short (2), long(3)
+                bit 12,13: reserved (0)
+                bit 14,15: src addr mode = long(3)
+         for GROUP_DEST FC is: 0xC421
+         for SHORT_DEST FC is: 0xC821
+         for LONG_DEST FC is : 0xCC21
+      
+       Stub NWK FC: bits 0,1: frame type 3 (0b11)
+                    bits 2-5: protocol version 2 (0b0010)
+                    bits 6-15: reserved (0)
+         this is always 0x000B
+      
+       stub APS FC: bits 0,1: 3 (0b11)
+                    bits 2,3: delivery mode unicast(0), bcast(2), group(3)
+                    bit 4: reserved (0)
+                    bit 5: security: none (0)
+                    bit 6: ack request: NO ack (0)
+                    bit 7: ext header present: No (0)
+         this is 03 for unicast, 0B for bcast, 0F for group&lt;/code&gt;
+    </description>
+    <arg name="shortId" type="INT16U" description="group id to send to" />
+    <arg name="destPan" type="INT16U" description="destination pan id" />
+    <arg name="destprofileID" type="INT16U" description="destination profile ID" />
+  </command>
+  <command cli="interpan long" functionName="interpanLongCommand" group="build-send-msg">
+    <description>
+      Send an interpan message to a long address (8 byte eui64)
+    </description>
+    <arg name="longId" type="IEEE_ADDRESS" description="long ieee address to send the interpan message to" />
+    <arg name="destPAN" type="INT16U" description="two byte destination PA ID" />
+    <arg name="destProfileID" type="INT16U" description="two byte destination profile ID" />
+  </command>
+  <command cli="read" functionName="emAfCliReadCommand" group="attribute">
+    <description>
+      Read an attribute from the local attribute table. The attribute is displayed on the command line.
+    </description>
+    <arg name="endpoint" type="INT8U" description="endpoint of the attribute to read" />
+    <arg name="cluster" type="INT16U" description="cluster id of the attribute to read" />
+    <arg name="attribute" type="INT16U" description="attribute id of the attribute to read" />
+    <arg name="mask" type="INT8U" description="direction mask of the attribute to read (client=0 or server=1)" />
+  </command>
+  <command cli="write" functionName="emAfCliWriteCommand" group="attribute">
+    <description>
+      Write an attribute value into the local attribute table
+    </description>
+    <arg name="endpoint" type="INT8U" description="endpoint of the attribute to write" />
+    <arg name="cluster" type="INT16U" description="cluster id of the attribute to write" />
+    <arg name="attribute" type="INT16U" description="attribute id of the attribute to write" />
+    <arg name="mask" type="INT8U" description="direction mask of the attribute to write (client=0 or server=1)" />
+    <arg name="dataType" type="INT8U" description="the attribute type as listed in the generated file attribute-type.h" />
+    <arg name="dataBytes" type="OCTET_STRING" description="string of bytes you wish to write into the attribute table." />
+  </command>
+  <command cli="info" functionName="emAfCliInfoCommand" group="info">
+    <description>
+      Gives information about the local node
+    </description>
+  </command>
+  <command cli="libs" functionName="printAllLibraryStatus" group="info">
+    <description>
+      Lists which optional libraries of the stack are implemented on this device
+    </description>
+  </command>
+  <command cli="option print-rx-msgs enable" functionName="optionPrintRxCommand" group="info">
+    <description>
+      Enable the printing of received messages.
+    </description>
+  </command>
+  <command cli="option print-rx-msgs disable" functionName="optionPrintRxCommand" group="info">
+    <description>
+      Disable the printing of received messages.
+    </description>
+  </command>
+  <command cli="option register" functionName="optionRegisterCommand" group="security">
+    <description>
+      Initiates Smart Energy Registration including Key Establishment. This command expects that the device has already joined a smart energy network.
+    </description>
+  </command>
+  <command cli="option disc" functionName="optionDiscoverCommand" group="network">
+    <description>
+      Sends a ZDO Match Descriptor Request for the server side of the specified cluster from the specified application profile. Match Descriptor Responses received are printed to the serial output.
+    </description>
+    <arg name="profileId" type="INT16U" description="the profile id to send with the discovery message" />
+    <arg name="clusterId" type="INT16U" description="cluster id to send with the discovery message" />
+  </command>
+  <command cli="option edb" functionName="optionEndDeviceBindCommand" group="network">
+    <description>
+      Sends a ZDO End Device Bind Request using the given local endpoint.
+    </description>
+    <arg name="endpoint" type="INT8U" description="The local endpoint whose simple descriptor will be used to create the request" />
+  </command>
+  <command cli="option binding-table print" functionName="optionBindingTablePrintCommand" group="info">
+    <description>
+      Prints out the binding table to the command line.
+    </description>
+  </command>
+  <command cli="option binding-table clear" functionName="optionBindingTableClearCommand" group="network">
+    <description>
+      Clear the binding table
+    </description>
+  </command>
+  <command cli="option binding-table set" functionName="optionBindingTableSetCommand" group="network">
+    <description>
+      Set a binding table entry for the arguments specified.
+    </description>
+    <arg name="bindingTableIndex" type="INT8U" description="one byte index into the binding table" />
+    <arg name="clusterId" type="INT16U" description="cluster id to send with the discovery message" />
+    <arg name="localEndpoint" type="INT8U" description="local endpoint to bind" />
+    <arg name="remoteEndpoint" type="INT8U" description="remote endpoint to bind" />
+    <arg name="ieeeAddress" type="IEEE_ADDRESS" description="8 byte IEEE address provided big endian" />
+  </command>
+  <command cli="option address-table print" functionName="optionAddressTablePrintCommand" group="info">
+    <description>
+      Prints the address table.
+    </description>
+  </command>
+  <command cli="option address-table set" functionName="optionAddressTableSetCommand" group="network">
+    <description>
+      Set an entry in the address table according to the arguments specified
+    </description>
+    <arg name="addressTableIndex" type="INT8U" description="one byte index into the address table" />
+    <arg name="ieeeAddress" type="IEEE_ADDRESS" description="IEEE address to enter into the address table" />
+    <arg name="nodeId" type="INT16U" description="two byte node id to enter into the address table" />
+  </command>
+  
+  <command cli="custom" functionName="none" group="general">
+    <description>
+      Executes the associated command as defined in the emberAfCustomCommands array of type EmberCommandEntry 
+    </description>
+  </command>
+  <command cli="option apsretry on" functionName="optionApsRetryCommand" group="network">
+    <description>
+      Forces the AppFramework to set/clear the APS Retry option (in APS Frame options mask) for all subsequent outgoing messages; Turns APS retry on.
+    </description>
+  </command>
+  <command cli="option apsretry off" functionName="optionApsRetryCommand" group="network">
+    <description>
+      Forces the AppFramework to set/clear the APS Retry option (in APS Frame options mask) for all subsequent outgoing messages; Turns APS retry off
+    </description>
+  </command>
+  <command cli="option apsretry default" functionName="optionApsRetryCommand" group="network">
+    <description>
+      Forces the AppFramework to set/clear the APS Retry option (in APS Frame options mask) for all subsequent outgoing messages; a value of "default" allows the AppFramework to use its own default logic to determine when the APS Retry option should be used.
+    </description>
+  </command>
+  <command cli="option security aps off" functionName="optionApsSecurityCommand" group="security">
+    <description>
+      Turns aps security off
+    </description>
+  </command>
+  <command cli="option security aps on" functionName="optionApsSecurityCommand" group="security">
+    <description>
+      Turns aps security on
+    </description>
+  </command>
+  <command cli="option link" functionName="optionLinkCommand" group="security">
+    <description>
+      Sets a link key in the link key table. Example: option link 0x00 { 06 00 ab 41 64 30 00 0a } {aa bb cc dd ee ff aa bb cc dd ee ff aa bb cc dd} 
+    </description>
+    <arg name="keyTableIndex" type="INT8U" description="index into the link key table" />
+    <arg name="ieeeAddress" type="IEEE_ADDRESS" description="IEEE address to enter into the link key table" />
+    <arg name="linkKey" type="OCTET_STRING" description="link key to enter into the table" />
+  </command>
+  <command cli="option install-code" functionName="optionInstallCodeCommand" group="security">
+    <description>
+      Derives a link key from an install code and sets it in the link key table.
+    </description>
+    <arg name="keyTableIndex" type="INT8U" description="index into the link key table" />
+    <arg name="ieeeAddress" type="IEEE_ADDRESS" description="IEEE address to enter into the link key table" />
+    <arg name="installCode" type="OCTET_STRING" description="install code including two-byte, little-endian CRC" />
+  </command>
+  <command cli="keys clear" functionName="keysClearCommand" group="security">
+    <description>
+      Clear all security keys
+    </description>
+  </command>
+  <command cli="keys print" functionName="keysPrintCommand" group="security">
+    <description>
+      Print all security keys out to the command line.
+    </description>
+  </command>
+  <command cli="keys delete" functionName="keysDeleteCommand" group="security">
+    <description>
+      Delete a security key from a given index
+    </description>
+    <arg name="index" type="INT8U" description="index into the security key table" />
+  </command>
+  <command cli="att-read-frag-resp" functionName="attributeReadCausingFragmentedResponseCommand" group="general">
+    <description>
+      A test command which solicits an attribute read which will force the responding node to send a response that uses fragmentation.
+    </description>
+  </command>
+  <command cli="print attr" functionName="emberAfPrintAttributeTable" group="info">
+    <description>
+      Print the attribute table.
+    </description>
+  </command>  
+  <command cli="print time" functionName="printTimeCommand" group="info">
+    <description>
+      Print out the time information
+    </description>
+  </command>
+  <command cli="debugprint status" functionName="emberAfPrintStatus" group="info">
+    <description>
+      Prints out the current settings for debug printing on the device
+    </description>
+  </command>
+  <command cli="debugprint all_on" functionName="emberAfPrintAllOn" group="info">
+    <description>
+      Turns on all compiled in debug printing
+    </description>
+  </command>
+  <command cli="debugprint all_off" functionName="emberAfPrintAllOff" group="info">
+    <description>
+      Turns off all debug printing
+    </description>
+  </command>
+  <command cli="debugprint on" functionName="printOnCommand" group="info">
+    <description>
+      Turns on compiled in debug printing for a specific debug printing area. Debug print areas are defined in the generated &lt;application&gt;.h header file. 
+    </description>
+     <arg name="area" type="INT8U" description="The debug area mask listed in the &lt;application&gt;.h file" />
+  </command>
+  <command cli="debugprint off" functionName="printOnCommand" group="info">
+    <description>
+      Turns off compiled in debug printing for a specific debug printing area. Debug print areas are defined in the generated &lt;application&gt;.h header file. 
+    </description>
+    <arg name="area" type="INT8U" description="The debug area mask listed in the &lt;application&gt;.h file" />
+  </command>
+  <command cli="version" functionName="emAfCliVersionCommand" group="info">
+    <description>
+      Shows the version of the software
+    </description>
+  </command>
+  <command cli="counters" functionName="emAfCliCountersCommand" group="info">
+    <description>
+      Prints out values for tracked stack counters
+    </description>
+  </command>
+  <command cli="help" functionName="helpCommand" group="info">
+    <description>
+      Prints out the cli command options for the device
+    </description>
+  </command>
+  <command cli="reset" functionName="resetCommand" group="general">
+    <description>
+      resets the device
+    </description>
+  </command>
+  <command cli="echo" functionName="echoCommand" group="general">
+    <description>
+      Turns echo on the command line on or off depending on the argument
+    </description>
+    <arg name="echoOn" type="INT8U" description="boolean indicating whether to turn echo on (1) or off (0)" />
+  </command>
+  <command cli="time-sync-local" functionName="timeSyncLocalCommand" group="general">
+    <description>
+      Used on a Unix based gateway or large host to sync current time known to the application with Unix time known to the host.
+    </description>
+  </command>
+  <command cli="network form" functionName="networkFormCommand" group="network">
+    <description>
+      Create a network on the given channel, power and panId.
+    </description>
+    <arg name="channel" type="INT8U" description="The channel on which to form the network" />
+    <arg name="power" type="INT8S" description="One byte signed value indicating the TX power that the radio should be set to" />
+    <arg name="panId" type="INT16U" description="Two byte pan id for the network" />
+  </command>
+  <command cli="network join" functionName="networkJoinCommand" group="network">
+    <description>
+      Join an existing network on the given channel, power and panId.
+    </description>
+    <arg name="channel" type="INT8U" description="The channel on which to form the network" />
+    <arg name="power" type="INT8S" description="One byte signed value indicating the TX power that the radio should be set to" />
+    <arg name="panId" type="INT16U" description="Two byte pan id for the network" />
+  </command>
+  <command cli="network rejoin" functionName="networkRejoinCommand" group="network">
+    <description>
+      Rejoin an existing network in a secure or insecure manner.
+    </description>
+    <arg name="haveCurrentNetworkKey" type="INT8U" description="Boolean indicating whether the device can rejoin secure or not. 1=rejoin with encryption, 0=rejoin without encryption" />
+    <arg name="channelMask" type="INT32U" description="4 byte channel mask which should be used to search for the network to rejoin." />
+  </command>
+  <command cli="network leave" functionName="networkLeaveCommand" group="network">
+    <description>
+      Leave the current network.
+    </description>
+  </command>
+  <command cli="network pjoin" functionName="networkPermitJoinCommand" group="network">
+    <description>
+      Permit joining on the network for a given number of seconds
+    </description>
+    <arg name="seconds" type="INT8U" description="Number of seconds during which devices will be allowed to join the network. A value of 0xff turns permit joining on permanently" />
+  </command>
+  <command cli="network broad-pjoin" functionName="networkPermitJoinCommand" group="network">
+    <description>
+      Permit joining on the network for a given number of seconds AND broadcast a ZDO Mgmt Permit Joining request to all routers.
+    </description>
+    <arg name="seconds" type="INT8U" description="Number of seconds during which devices will be allowed to join the network. A value of 0xff turns permit joining on permanently" />
+  </command>
+  <command cli="network extpanid" functionName="networkExtendedPanIdCommand" group="network">
+    <description>
+      Write the extended pan id for the device.
+    </description>
+    <arg name="extPanId" type="OCTET_STRING" description="The bytes for the extended pan id" />
+  </command>
+  <command cli="network find unused" functionName="findUnusedPanIdCommand" group="network">
+    <description>
+      Begins a search for an unused Channel and Pan Id. Will automatically form a network on the first unused Channel and Pan Id it finds.
+    </description>
+  </command>
+  <command cli="network find joinable" functionName="findUnusedPanIdCommand" group="network">
+    <description>
+      Begins a search for a joinable network. Will automatically attempt to join the first network that it finds.
+    </description>
+  </command>
+  <command cli="network change-channel" functionName="networkChangeChannelCommand" group="network">
+    <description>
+      Attempts to change device over to a different channel given in the channel argument
+    </description>
+    <arg name="channel" type="INT8U" description="The channel to change to." />
+  </command>
+  <command cli="network set" functionName="networkSetCommand" group="network">
+    <description>
+      Set the network index used by all future CLI commands.  Before executing a CLI command, the framework will switch to this network.  After the command finishes executing, the framework will switch back to the previous network.  The CLI uses the same network index until the device resets or it is changed through this command.
+    </description>
+    <arg name="networkIndex" type="INT8U" description="The network index to use for CLI commands" />
+  </command>
+     <command cli="changekey link" functionName="changeKeyCommand" group="security">
+       <description>
+         Change the link key to the one provided in the 16 byte array argument for this command.
+       </description>
+       <arg name="key" type="OCTET_STRING" description="The link key provided as a 16 byte array" />
+     </command>
+     <command cli="changekey network" functionName="changeKeyCommand" group="security">
+       <description>
+         Change the network key to the 16 byte array provided as an argument to this command.
+       </description>
+       <arg name="key" type="OCTET_STRING" description="The network key provided as a 16 byte array" />
+     </command>
+     <command cli="cbke start" functionName="cbkeStartCommand" group="security">
+       <description>
+         Start the Certificate Based Key Exchange process.
+       </description>
+       <arg name="partnerId" type="INT16U" description="The short address of the device with which to start cbke" />
+     </command>
+     <command cli="cbke interpan" functionName="cbkeInterPanCommand" group="security">
+       <description>
+         Perform Certificate Based Key Exchange over interpan
+       </description>
+       <arg name="panId" type="INT16U" description="The 2 byte pan id of the partner with whom to start cbke" />
+       <arg name="ieee" type="IEEE_ADDRESS" description="The ieee address (EmberEUI64) of the partner with whome to start cbke" />
+     </command>
+       <command cli="zdo in-cl-list add" functionName="zdoAddClusterCommand" group="zdo">
+         <description>
+           Add clusters to the known server (in) clusters on this device.
+         </description>
+         <arg name="clusterIds" type="OCTET_STRING" description="Array of two byte server cluster ids" />         
+       </command>
+       <command cli="zdo in-cl-list clear" functionName="zdoClearClusterCommand" group="zdo">
+         <description>
+           Clear the ZDO list of server (in) clusters.
+         </description>
+       </command>
+       <command cli="zdo out-cl-list add" functionName="zdoAddClusterCommand" group="zdo">
+          <description>
+            Add clusters to the known client (out) clusters on this device.
+          </description>
+        </command>
+        <command cli="zdo out-cl-list clear" functionName="zdoClearClusterCommand" group="zdo">
+          <description>
+            Clear the ZDO list of client (out) clusters.
+          </description>
+        </command>
+       <command cli="zdo nwk-upd chan" functionName="zdoNetworkUpdateChannelCommand" group="zdo">
+         <description>
+           Sends an update channel request.
+         </description>
+         <arg name="channel" type="INT8U" description="One byte channel to change to." />
+       </command>
+       <command cli="zdo nwk-upd scan" functionName="zdoNetworkUpdateScanCommand" group="zdo">
+         <description>
+           Performs an energy scan.
+         </description>
+         <arg name="targetNodeId" type="INT16U" description="Two byte short id of the target device" />
+         <arg name="scanDuration" type="INT8U" description="One byte scan duration. Must be in range 0 - 5" />
+         <arg name="scanCount" type="INT16U" description="Number of scans to perform. Must be in range 1 - 8" />
+       </command>
+       <command cli="zdo nwk-upd set" functionName="zdoNetworkUpdateSetCommand" group="zdo">
+         <description>
+           Sends a set network manager request for the given network manager node id and active channels provided in the 4 byte channel mask.
+         </description>
+         <arg name="nwkMgrId" type="INT16U" description="Two byte network manager id" />
+         <arg name="channelMask" type="INT32U" description="Four byte channel mask" />
+       </command>
+     <command cli="zdo nwk" functionName="zdoNwkAddressRequestCommand" group="zdo">
+       <description>
+         Sends a network address request for the given IEEE address.
+       </description>
+       <arg name="ieee" type="IEEE_ADDRESS" description="IEEE address for which a short address is being requested" />
+     </command>
+     <command cli="zdo ieee" functionName="zdoIeeeAddressRequestCommand" group="zdo">
+       <description>
+         Request an ieee address based on a given node id.
+       </description>
+       <arg name="nodeId" type="INT16U" description="Short address of the device for which a long address is requested" />
+     </command>
+     <command cli="zdo simple" functionName="zdoSimpleCommand" group="zdo">
+       <description>
+         Sends out a simple descriptor request for the short address and endpoint specified.
+       </description>
+       <arg name="dest" type="INT16U" description="Short address of the device where the simple descriptor request should be sent" />
+       <arg name="targetEndpoint" type="INT8U" description="The endpoint on the target device where the simple descriptor request will be sent" />
+     </command>
+     <command cli="zdo node" functionName="zdoNodeCommand" group="zdo">
+       <description>
+         Sends a node descriptor request to a given target device
+       </description>
+       <arg name="target" type="INT16U" description="Two byte address for the target device." />
+     </command>
+     <command cli="zdo match" functionName="zdoMatchCommand" group="zdo">
+       <description>
+         Sends a matchDescriptorsRequest to the given destination with the given profile.
+       </description>
+       <arg name="nodeId" type="INT16U" description="Two byte node id indicating wher" />
+       <arg name="profile" type="INT16U" description="Two byte profile id for the match descriptor request" />
+     </command>
+     <command cli="zdo bind" functionName="zdoBindCommand" group="zdo">
+       <description>
+         Send a ZDO Bind command to a device specified in the command arguments.
+         
+         NOTE: For simple bind requests, just put {} as the last argument More 
+         complex requests, you can actually specify the dest EUI64 the binding, 
+         which is NOT the same as the EUI64 of the destination of the device 
+         receiving the binding.  This allows for a user to set multiple bindings
+         on the destination for different devices.
+         
+         NOTE:  The source/dest EUI are relative to the context. In the case of the syntax of the CLI, 
+         we take "THEIR EUI64" to mean the recipient of the binding request message.  
+         However, when sending the bind request that EUI64 used by the ZDO command is
+         actually the source for the binding because we are telling the remote
+         device (the destination) to create a binding with a source of itself.
+         And the destination for that binding will be this local device.
+         This is also not to be confused with the (short) destination of the ZDO
+         request itself.
+       </description>
+       <arg name="destination" type="INT16U" description="Two byte destination node id" />
+       <arg name="localEndpoint" type="INT8U" description="Local endpoint to bind" />
+       <arg name="remoteEndpoint" type="INT8U" description="Remote endpoint to bind" />
+       <arg name="cluster" type="INT16U" description="Cluster on which to bind" />
+       <arg name="sourceIEEE" type="IEEE_ADDRESS" description="" />
+       <arg name="destIEEE" type="IEEE_ADDRESS" description="" />
+     </command>
+     <command cli="zdo active" functionName="zdoActiveEpCommand" group="zdo">
+       <description>
+         Send an active endpoint request to the device with the given short id.
+       </description>
+       <arg name="nodeId" type="INT16U" description="Two byte short id, destination for the active endpoint request" />
+     </command>     
+</cli>

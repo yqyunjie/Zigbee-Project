@@ -1,0 +1,691 @@
+<?xml version="1.0"?>
+<configurator>
+  <domain name="Closures" spec="zcl-1.0-07-5123-03" />
+  <domain name="HVAC" spec="zcl-1.0-07-5123-03" />
+  <domain name="Lighting" spec="zcl-1.0-07-5123-03" />
+  <domain name="Measurement &amp; Sensing" spec="zcl-1.0-07-5123-03" />
+  <domain name="Security &amp; Safety" spec="zcl-1.0-07-5123-03" />
+  <domain name="HA" spec="ha-1.2-11-5474-57" dependsOn="zcl-1.0-07-5123-03" certifiable="false">
+    <older spec="ha-1.2-11-5474-43" dependsOn="zcl-1.0-07-5123-03" certifiable="false"/>
+	<older spec="ha-1.2-11-5474-19" dependsOn="zcl-1.0-07-5123-03" certifiable="false"/>
+    <older spec="ha-1.2-11-5474-15" dependsOn="zcl-1.0-07-5123-03" certifiable="false"/>
+    <older spec="ha-1.1-05-3520-27" dependsOn="zcl-1.0-07-5123-03" certifiable="true"/>
+  </domain>
+  <cluster>
+    <name>Shade Configuration</name>
+    <domain>Closures</domain>
+    <description>Attributes and commands for configuring a shade.</description>
+    <code>0x0100</code>
+    <define>SHADE_CONFIG_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="SHADE_CONFIG_PHYSICAL_CLOSED_LIMIT" type="INT16U"  min="0x0001" max="0xFFFE" writable="false"                  optional="true" >physical closed limit</attribute> <!-- PHYSICAL_CLOSED_LIMIT -->
+    <attribute side="server" code="0x0001" define="SHADE_CONFIG_MOTOR_STEP_SIZE"       type="INT8U"   min="0x00"   max="0xFE"   writable="false"                  optional="true" >motor step size</attribute>       <!-- MOTOR_STEP_SIZE -->
+    <attribute side="server" code="0x0002" define="SHADE_CONFIG_STATUS"                type="BITMAP8" min="0x00"   max="0x0F"   writable="true"  default="0x00"   optional="false">status</attribute>                <!-- STATUS -->
+    <attribute side="server" code="0x0010" define="SHADE_CONFIG_CLOSED_LIMIT"          type="INT16U"  min="0x0001" max="0xFFFE" writable="true"  default="0x0001" optional="false">closed limit</attribute>          <!-- CLOSED_LIMIT -->
+    <attribute side="server" code="0x0011" define="SHADE_CONFIG_MODE"                  type="ENUM8"   min="0x00"   max="0xFE"   writable="true"  default="0x00"   optional="false">mode</attribute>                  <!-- MODE -->
+  </cluster>
+  <cluster>
+    <name>Pump Configuration and Control</name>
+    <domain>HVAC</domain>
+    <description>An interface for configuring and controlling pumps.</description>
+    <code>0x0200</code>
+    <define>PUMP_CONFIG_CONTROL_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="MAX_PRESSURE"             type="INT16S"   min="0x8001"     max="0x7FFF"     writable="false"                      optional="false">max pressure</attribute>
+    <attribute side="server" code="0x0001" define="MAX_SPEED"                type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="false">max speed</attribute>
+    <attribute side="server" code="0x0002" define="MAX_FLOW"                 type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="false">max flow</attribute>
+    <attribute side="server" code="0x0003" define="MIN_CONST_PRESSURE"       type="INT16S"   min="0x8001"     max="0x7FFF"     writable="false"                      optional="true" >min const pressure</attribute>
+    <attribute side="server" code="0x0004" define="MAX_CONST_PRESSURE"       type="INT16S"   min="0x8001"     max="0x7FFF"     writable="false"                      optional="true" >max const pressure</attribute>
+    <attribute side="server" code="0x0005" define="MIN_COMP_PRESSURE"        type="INT16S"   min="0x8001"     max="0x7FFF"     writable="false"                      optional="true" >min comp pressure</attribute>
+    <attribute side="server" code="0x0006" define="MAX_COMP_PRESSURE"        type="INT16S"   min="0x8001"     max="0x7FFF"     writable="false"                      optional="true" >max comp pressure</attribute>
+    <attribute side="server" code="0x0007" define="MIN_CONST_SPEED"          type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="true" >min const speed</attribute>
+    <attribute side="server" code="0x0008" define="MAX_CONST_SPEED"          type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="true" >max const speed</attribute>
+    <attribute side="server" code="0x0009" define="MIN_CONST_FLOW"           type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="true" >min const flow</attribute>
+    <attribute side="server" code="0x000A" define="MAX_CONST_FLOW"           type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="true" >max const flow</attribute>
+    <attribute side="server" code="0x000B" define="MIN_CONST_TEMP"           type="INT16S"   min="0x954D"     max="0x7FFF"     writable="false"                      optional="true" >min const temp</attribute>
+    <attribute side="server" code="0x000C" define="MAX_CONST_TEMP"           type="INT16S"   min="0x954D"     max="0x7FFF"     writable="false"                      optional="true" >max const temp</attribute>
+    <attribute side="server" code="0x0010" define="PUMP_STATUS"              type="BITMAP16"                                   writable="false"                      optional="true" >pump status</attribute>
+    <attribute side="server" code="0x0011" define="EFFECTIVE_OPERATION_MODE" type="ENUM8"    min="0x00"       max="0xFE"       writable="false"                      optional="false">effective operation mode</attribute>
+    <attribute side="server" code="0x0012" define="EFFECTIVE_CONTROL_MODE"   type="ENUM8"    min="0x00"       max="0xFE"       writable="false"                      optional="false">effective control mode</attribute>
+    <attribute side="server" code="0x0013" define="CAPACITY"                 type="INT16S"   min="0x0000"     max="0x7FFF"     writable="false"                      optional="false">capacity</attribute>
+    <attribute side="server" code="0x0014" define="SPEED"                    type="INT16U"   min="0x0000"     max="0xFFFE"     writable="false"                      optional="true" >speed</attribute>
+    <attribute side="server" code="0x0015" define="LIFETIME_RUNNING_HOURS"   type="INT24U"   min="0x000000"   max="0xFFFFFE"   writable="true"  default="0x000000"   optional="true" >lifetime running hours</attribute>
+    <attribute side="server" code="0x0016" define="PUMP_POWER"               type="INT24U"   min="0x000000"   max="0xFFFFFE"   writable="true"                       optional="true" >power</attribute>
+    <attribute side="server" code="0x0017" define="LIFETIME_ENERGY_CONSUMED" type="INT32U"   min="0x00000000" max="0xFFFFFFFE" writable="false" default="0x00000000" optional="true" >lifetime energy consumed</attribute>
+    <attribute side="server" code="0x0020" define="OPERATION_MODE"           type="ENUM8"    min="0x00"       max="0xFE"       writable="true"  default="0x00"       optional="false">operation mode</attribute>
+    <attribute side="server" code="0x0021" define="CONTROL_MODE"             type="ENUM8"    min="0x00"       max="0xFe"       writable="true"  default="0x00"       optional="true" >control mode</attribute>
+    <attribute side="server" code="0x0022" define="PUMP_ALARM_MASK"          type="BITMAP16"                                   writable="false"                      optional="true" >alarm mask</attribute> <!-- ALARM_MASK -->
+  </cluster>
+  <cluster>
+    <name>Thermostat</name>
+    <domain>HVAC</domain>
+    <description>An interface for configuring and controlling the functionality of a thermostat.</description>
+    <code>0x0201</code>
+    <define>THERMOSTAT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="LOCAL_TEMPERATURE"             type="INT16S"  min="0x954D" max="0x7FFF" writable="false"                  optional="false">local temperature</attribute>
+    <attribute side="server" code="0x0001" define="OUTDOOR_TEMPERATURE"           type="INT16S"  min="0x954D" max="0x7FFF" writable="false"                  optional="true" >outdoor temperature</attribute>
+    <attribute side="server" code="0x0002" define="THERMOSTAT_OCCUPANCY"          type="BITMAP8" min="0x00"   max="0x01"   writable="false" default="0x00"   optional="true" >occupancy</attribute>                     <!-- OCCUPANCY -->
+    <attribute side="server" code="0x0003" define="ABS_MIN_HEAT_SETPOINT_LIMIT"   type="INT16S"  min="0x954D" max="0x7FFF" writable="false" default="0x02BC" optional="true" >abs min heat setpoint limit</attribute>
+    <attribute side="server" code="0x0004" define="ABS_MAX_HEAT_SETPOINT_LIMIT"   type="INT16S"  min="0x954D" max="0x7FFF" writable="false" default="0x0BB8" optional="true" >abs max heat setpoint limit</attribute>
+    <attribute side="server" code="0x0005" define="ABS_MIN_COOL_SETPOINT_LIMIT"   type="INT16S"  min="0x954D" max="0x7FFF" writable="false" default="0x0640" optional="true" >abs min cool setpoint limit</attribute>
+    <attribute side="server" code="0x0006" define="ABS_MAX_COOL_SETPOINT_LIMIT"   type="INT16S"  min="0x954D" max="0x7FFF" writable="false" default="0x0C80" optional="true" >abs max cool setpoint limit</attribute>
+    <attribute side="server" code="0x0007" define="PI_COOLING_DEMAND"             type="INT8U"   min="0x00"   max="0x64"   writable="false"                  optional="true" >pi cooling demand</attribute>
+    <attribute side="server" code="0x0008" define="PI_HEATING_DEMAND"             type="INT8U"   min="0x00"   max="0x64"   writable="false"                  optional="true" >pi heating demand</attribute>
+    <attribute side="server" code="0x0010" define="LOCAL_TEMPERATURE_CALIBRATION" type="INT8S"   min="0xE7"   max="0x19"   writable="true"  default="0x00"   optional="true" >local temperature calibration</attribute>
+    <attribute side="server" code="0x0011" define="OCCUPIED_COOLING_SETPOINT"     type="INT16S"                            writable="true"  default="0x0a28" optional="false">occupied cooling setpoint</attribute>
+    <attribute side="server" code="0x0012" define="OCCUPIED_HEATING_SETPOINT"     type="INT16S"                            writable="true"  default="0x07d0" optional="false">occupied heating setpoint</attribute>
+    <attribute side="server" code="0x0013" define="UNOCCUPIED_COOLING_SETPOINT"   type="INT16S"                            writable="true"  default="0x0a28" optional="true" >unoccupied cooling setpoint</attribute>
+    <attribute side="server" code="0x0014" define="UNOCCUPIED_HEATING_SETPOINT"   type="INT16S"                            writable="true"  default="0x07d0" optional="true" >unoccupied heating setpoint</attribute>
+    <attribute side="server" code="0x0015" define="MIN_HEAT_SETPOINT_LIMIT"       type="INT16S"  min="0x954D" max="0x7FFF" writable="true"  default="0x02bc" optional="true" >min heat setpoint limit</attribute>
+    <attribute side="server" code="0x0016" define="MAX_HEAT_SETPOINT_LIMIT"       type="INT16S"  min="0x954D" max="0x7FFF" writable="true"  default="0x0bb8" optional="true" >max heat setpoint limit</attribute>
+    <attribute side="server" code="0x0017" define="MIN_COOL_SETPOINT_LIMIT"       type="INT16S"  min="0x954D" max="0x7FFF" writable="true"  default="0x02bc" optional="true" >min cool setpoint limit</attribute>
+    <attribute side="server" code="0x0018" define="MAX_COOL_SETPOINT_LIMIT"       type="INT16S"  min="0x954D" max="0x7FFF" writable="true"  default="0x0bb8" optional="true" >max cool setpoint limit</attribute>
+    <attribute side="server" code="0x0019" define="MIN_SETPOINT_DEAD_BAND"        type="INT8S"   min="0x0A"   max="0x19"   writable="true"  default="0x19"   optional="true" >min setpoint dead band</attribute>
+    <attribute side="server" code="0x001A" define="REMOTE_SENSING"                type="BITMAP8" min="0x00"   max="0x07"   writable="true"  default="0x00"   optional="true" >remote sensing</attribute>
+    <attribute side="server" code="0x001B" define="CONTROL_SEQUENCE_OF_OPERATION" type="ENUM8"   min="0x00"   max="0x05"   writable="true"  default="0x04"   optional="false">control sequence of operation</attribute>
+    <attribute side="server" code="0x001C" define="SYSTEM_MODE"                   type="ENUM8"   min="0x00"   max="0x07"   writable="true"  default="0x01"   optional="false">system mode</attribute>
+    <attribute side="server" code="0x001D" define="THERMOSTAT_ALARM_MASK"         type="BITMAP8" min="0x00"   max="0x07"   writable="false" default="0x00"   optional="true" >alarm mask</attribute>                    <!-- ALARM_MASK -->
+    <command source="client" code="0x00" name="SetpointRaiseLower" optional="false" cli="zcl tstat set">
+      <description>
+        Command description for SetpointRaiseLower
+      </description>
+      <arg name="mode"   type="SetpointAdjustMode"/>
+      <arg name="amount" type="INT8S"/>
+    </command>
+  </cluster>
+  <cluster>
+    <name>Fan Control</name>
+    <domain>HVAC</domain>
+    <description>An interface for controlling a fan in a heating/cooling system.</description>
+    <code>0x0202</code>
+    <define>FAN_CONTROL_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="FAN_CONTROL_FAN_MODE"          type="ENUM8" min="0x00" max="0x06" writable="true" default="0x05" optional="false">fan mode</attribute>          <!-- FAN_MODE -->
+    <attribute side="server" code="0x0001" define="FAN_CONTROL_FAN_MODE_SEQUENCE" type="ENUM8" min="0x00" max="0x04" writable="true" default="0x02" optional="false">fan mode sequence</attribute> <!-- FAN_MODE_SEQUENCE -->
+  </cluster>
+  <cluster>
+    <name>Dehumidification Control</name>
+    <domain>HVAC</domain>
+    <description>An interface for controlling dehumidification.</description>
+    <code>0x0203</code>
+    <define>DEHUMID_CONTROL_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="RELATIVE_HUMIDITY"            type="INT8U" min="0x00" max="0x64" writable="false"               optional="true" >relative humidity</attribute>
+    <attribute side="server" code="0x0001" define="DEHUMIDIFICATION_COOLING"     type="INT8U" min="0x00"            writable="false"               optional="false">dehumidification cooling</attribute>
+    <attribute side="server" code="0x0010" define="RH_DEHUMIDIFICATION_SETPOINT" type="INT8U" min="0x1E" max="0x64" writable="true" default="0x32" optional="false">RH dehumidification setpoint</attribute>
+    <attribute side="server" code="0x0011" define="RELATIVE_HUMIDITY_MODE"       type="ENUM8" min="0x00" max="0x01" writable="true" default="0x00" optional="true" >relative humidity mode</attribute>
+    <attribute side="server" code="0x0012" define="DEHUMIDIFICATION_LOCKOUT"     type="ENUM8" min="0x00" max="0x01" writable="true" default="0x01" optional="true" >dehumidification lockout</attribute>
+    <attribute side="server" code="0x0013" define="DEHUMIDIFICATION_HYSTERESIS"  type="INT8U" min="0x02" max="0x14" writable="true" default="0x02" optional="false">dehumidification hysteresis</attribute>
+    <attribute side="server" code="0x0014" define="DEHUMIDIFICATION_MAX_COOL"    type="INT8U" min="0x14" max="0x64" writable="true" default="0x14" optional="false">dehumidification max cool</attribute>
+    <attribute side="server" code="0x0015" define="RELATIVE_HUMIDITY_DISPLAY"    type="ENUM8" min="0x00" max="0x01" writable="true" default="0x00" optional="true" >relative humidity display</attribute>
+  </cluster>
+  <cluster>
+    <name>Thermostat User Interface Configuration</name>
+    <domain>HVAC</domain>
+    <description>An interface for configuring the user interface of a thermostat (which may be remote from the thermostat).</description>
+    <code>0x0204</code>
+    <define>THERMOSTAT_UI_CONFIG_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="TEMPERATURE_DISPLAY_MODE" type="ENUM8" min="0x00" max="0x01" writable="true" default="0x00" optional="false">temperature display mode</attribute>
+    <attribute side="server" code="0x0001" define="KEYPAD_LOCKOUT"           type="ENUM8" min="0x00" max="0x05" writable="true" default="0x00" optional="false">keypad lockout</attribute>
+  </cluster>
+  <cluster>
+    <name>Color Control</name>
+    <domain>Lighting</domain>
+    <description>Attributes and commands for controlling the color properties of a color-capable light.</description>
+    <code>0x0300</code>
+    <define>COLOR_CONTROL_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="COLOR_CONTROL_CURRENT_HUE"             type="INT8U"       min="0x00"   max="0xFE"                writable="false" default="0x00"   optional="true" >current hue</attribute>             <!-- CURRENT_HUE -->
+    <attribute side="server" code="0x0001" define="COLOR_CONTROL_CURRENT_SATURATION"      type="INT8U"       min="0x00"   max="0xFE"                writable="false" default="0x00"   optional="true" >current saturation</attribute>      <!-- CURRENT_SATURATION -->
+    <attribute side="server" code="0x0002" define="COLOR_CONTROL_REMAINING_TIME"          type="INT16U"      min="0x0000" max="0xFFFE"              writable="false" default="0x0000" optional="true" >remaining time</attribute>          <!-- REMAINING_TIME -->
+    <attribute side="server" code="0x0003" define="COLOR_CONTROL_CURRENT_X"               type="INT16U"      min="0x0000" max="0xFEFF"              writable="false" default="0x616B" optional="false">current x</attribute>               <!-- CURRENT_X -->
+    <attribute side="server" code="0x0004" define="COLOR_CONTROL_CURRENT_Y"               type="INT16U"      min="0x0000" max="0xFEFF"              writable="false" default="0x607D" optional="false">current y</attribute>               <!-- CURRENT_Y -->
+    <attribute side="server" code="0x0005" define="COLOR_CONTROL_DRIFT_COMPENSATION"      type="ENUM8"       min="0x00"   max="0x04"                writable="false"                  optional="true" >drift compensation</attribute>      <!-- DRIFT_COMPENSATION -->
+    <attribute side="server" code="0x0006" define="COLOR_CONTROL_COMPENSATION_TEXT"       type="CHAR_STRING"                           length="254" writable="false"                  optional="true" >compensation text</attribute>       <!-- COMPENSATION_TEXT -->
+    <attribute side="server" code="0x0007" define="COLOR_CONTROL_COLOR_TEMPERATURE"       type="INT16U"      min="0x0000" max="0xFEFF"              writable="false" default="0x00FA" optional="true" >color temperature</attribute>       <!-- COLOR_TEMPERATURE -->
+    <attribute side="server" code="0x0008" define="COLOR_CONTROL_COLOR_MODE"              type="ENUM8"       min="0x00"   max="0x02"                writable="false" default="0x01"   optional="true" >color mode</attribute>              <!-- COLOR_MODE -->
+    <attribute side="server" code="0x0010" define="COLOR_CONTROL_NUMBER_OF_PRIMARIES"     type="INT8U"       min="0x00"   max="0x06"                writable="false"                  optional="true" >number of primaries</attribute>     <!-- NUMBER_OF_PRIMARIES -->
+    <attribute side="server" code="0x0011" define="COLOR_CONTROL_PRIMARY_1_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 1 x</attribute>             <!-- PRIMARY_1_X -->
+    <attribute side="server" code="0x0012" define="COLOR_CONTROL_PRIMARY_1_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 1 y</attribute>             <!-- PRIMARY_1_Y -->
+    <attribute side="server" code="0x0013" define="COLOR_CONTROL_PRIMARY_1_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 1 intensity</attribute>     <!-- PRIMARY_1_INTENSITY -->
+    <attribute side="server" code="0x0015" define="COLOR_CONTROL_PRIMARY_2_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 2 x</attribute>             <!-- PRIMARY_2_X -->
+    <attribute side="server" code="0x0016" define="COLOR_CONTROL_PRIMARY_2_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 2 y</attribute>             <!-- PRIMARY_2_Y -->
+    <attribute side="server" code="0x0017" define="COLOR_CONTROL_PRIMARY_2_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 2 intensity</attribute>     <!-- PRIMARY_2_INTENSITY -->
+    <attribute side="server" code="0x0019" define="COLOR_CONTROL_PRIMARY_3_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 3 x</attribute>             <!-- PRIMARY_3_X -->
+    <attribute side="server" code="0x001A" define="COLOR_CONTROL_PRIMARY_3_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 3 y</attribute>             <!-- PRIMARY_3_Y -->
+    <attribute side="server" code="0x001B" define="COLOR_CONTROL_PRIMARY_3_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 3 intensity</attribute>     <!-- PRIMARY_3_INTENSITY -->
+    <attribute side="server" code="0x0020" define="COLOR_CONTROL_PRIMARY_4_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 4 x</attribute>             <!-- PRIMARY_4_X -->
+    <attribute side="server" code="0x0021" define="COLOR_CONTROL_PRIMARY_4_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 4 y</attribute>             <!-- PRIMARY_4_Y -->
+    <attribute side="server" code="0x0022" define="COLOR_CONTROL_PRIMARY_4_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 4 intensity</attribute>     <!-- PRIMARY_4_INTENSITY -->
+    <attribute side="server" code="0x0024" define="COLOR_CONTROL_PRIMARY_5_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 5 x</attribute>             <!-- PRIMARY_5_X -->
+    <attribute side="server" code="0x0025" define="COLOR_CONTROL_PRIMARY_5_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 5 y</attribute>             <!-- PRIMARY_5_Y -->
+    <attribute side="server" code="0x0026" define="COLOR_CONTROL_PRIMARY_5_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 5 intensity</attribute>     <!-- PRIMARY_5_INTENSITY -->
+    <attribute side="server" code="0x0028" define="COLOR_CONTROL_PRIMARY_6_X"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 6 x</attribute>             <!-- PRIMARY_6_X -->
+    <attribute side="server" code="0x0029" define="COLOR_CONTROL_PRIMARY_6_Y"             type="INT16U"      min="0x0000" max="0xFEFF"              writable="false"                  optional="true" >primary 6 y</attribute>             <!-- PRIMARY_6_Y -->
+    <attribute side="server" code="0x002A" define="COLOR_CONTROL_PRIMARY_6_INTENSITY"     type="INT8U"       min="0x00"   max="0xFF"                writable="false"                  optional="true" >primary 6 intensity</attribute>     <!-- PRIMARY_6_INTENSITY -->
+    <attribute side="server" code="0x0030" define="COLOR_CONTROL_WHITE_POINT_X"           type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >white point x</attribute>           <!-- WHITE_POINT_X -->
+    <attribute side="server" code="0x0031" define="COLOR_CONTROL_WHITE_POINT_Y"           type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >white point y</attribute>           <!-- WHITE_POINT_Y -->
+    <attribute side="server" code="0x0032" define="COLOR_CONTROL_COLOR_POINT_R_X"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point r x</attribute>         <!-- COLOR_POINT_R_X -->
+    <attribute side="server" code="0x0033" define="COLOR_CONTROL_COLOR_POINT_R_Y"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point r y</attribute>         <!-- COLOR_POINT_R_Y -->
+    <attribute side="server" code="0x0034" define="COLOR_CONTROL_COLOR_POINT_R_INTENSITY" type="INT8U"       min="0x00"   max="0xFF"                writable="true"                   optional="true" >color point r intensity</attribute> <!-- COLOR_POINT_R_INTENSITY -->
+    <attribute side="server" code="0x0036" define="COLOR_CONTROL_COLOR_POINT_G_X"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point g x</attribute>         <!-- COLOR_POINT_G_X -->
+    <attribute side="server" code="0x0037" define="COLOR_CONTROL_COLOR_POINT_G_Y"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point g y</attribute>         <!-- COLOR_POINT_G_Y -->
+    <attribute side="server" code="0x0038" define="COLOR_CONTROL_COLOR_POINT_G_INTENSITY" type="INT8U"       min="0x00"   max="0xFF"                writable="true"                   optional="true" >color point g intensity</attribute> <!-- COLOR_POINT_G_INTENSITY -->
+    <attribute side="server" code="0x003A" define="COLOR_CONTROL_COLOR_POINT_B_X"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point b x</attribute>         <!-- COLOR_POINT_B_X -->
+    <attribute side="server" code="0x003B" define="COLOR_CONTROL_COLOR_POINT_B_Y"         type="INT16U"      min="0x0000" max="0xFEFF"              writable="true"                   optional="true" >color point b y</attribute>         <!-- COLOR_POINT_B_Y -->
+    <attribute side="server" code="0x003C" define="COLOR_CONTROL_COLOR_POINT_B_INTENSITY" type="INT8U"       min="0x00"   max="0xFF"                writable="true"                   optional="true" >color point b intensity</attribute> <!-- COLOR_POINT_B_INTENSITY -->
+    <command source="client" code="0x00" name="MoveToHue" optional="true" cli="zcl colorcontrol movetohue">
+      <description>
+        Command description for MoveToHue
+      </description>
+      <arg name="hue"            type="INT8U"/>
+      <arg name="direction"      type="HueDirection"/>
+      <arg name="transitionTime" type="INT16U"/>
+    </command>
+    <command source="client" code="0x01" name="MoveHue" optional="true" cli="zcl colorcontrol movehue">
+      <description>
+        Command description for MoveHue
+      </description>
+      <arg name="moveMode" type="HueMoveMode"/>
+      <arg name="rate"     type="INT8U"/>
+    </command>
+    <command source="client" code="0x02" name="StepHue" optional="true" cli="zcl colorcontrol setphue">
+      <description>
+        Command description for StepHue
+      </description>
+      <arg name="stepMode"       type="HueStepMode"/>
+      <arg name="stepSize"       type="INT8U"/>
+      <arg name="transitionTime" type="INT8U"/>
+    </command>
+    <command source="client" code="0x03" name="MoveToSaturation" optional="true" cli="zcl colorcontrol movetostat">
+      <description>
+        Command description for MoveToSaturation
+      </description>
+      <arg name="saturation"     type="INT8U"/>
+      <arg name="transitionTime" type="INT16U"/>
+    </command>
+    <command source="client" code="0x04" name="MoveSaturation" optional="true" cli="zcl colorcontrol movesat">
+      <description>
+        Command description for MoveSaturation
+      </description>
+      <arg name="moveMode" type="SaturationMoveMode"/>
+      <arg name="rate"     type="INT8U"/>
+    </command>
+    <command source="client" code="0x05" name="StepSaturation" optional="true" cli="zcl colorcontrol stepsat">
+      <description>
+        Command description for StepSaturation
+      </description>
+      <arg name="stepMode"       type="SaturationStepMode"/>
+      <arg name="stepSize"       type="INT8U"/>
+      <arg name="transitionTime" type="INT8U"/>
+    </command>
+    <command source="client" code="0x06" name="MoveToHueAndSaturation" optional="true" cli="zcl colorcontrol movetohueandsat">
+      <description>
+        Command description for MoveToHueAndSaturation
+      </description>
+      <arg name="hue"            type="INT8U"/>
+      <arg name="saturation"     type="INT8U"/>
+      <arg name="transitionTime" type="INT16U"/>
+    </command>
+    <command source="client" code="0x07" name="MoveToColor" optional="false" cli="zcl colorcontrol movetocolor">
+      <description>
+        Moves the lighting to a specific color.
+      </description>
+      <arg name="colorX"         type="INT16U"/>
+      <arg name="colorY"         type="INT16U"/>
+      <arg name="transitionTime" type="INT16U"/>
+    </command>
+    <command source="client" code="0x08" name="MoveColor" optional="false" cli="zcl colorcontrol movecolor">
+      <description>
+        Moves the color.
+      </description>
+      <arg name="rateX" type="INT16S"/>
+      <arg name="rateY" type="INT16S"/>
+    </command>
+    <command source="client" code="0x09" name="StepColor" optional="false" cli="zcl colorcontrol stepcolor">
+      <description>
+        Steps the lighting to a specific color.
+      </description>
+      <arg name="stepX"          type="INT16S"/>
+      <arg name="stepY"          type="INT16S"/>
+      <arg name="transitionTime" type="INT16U"/>
+    </command>
+    <command source="client" code="0x0A" name="MoveToColorTemperature" optional="true" cli="zcl colorcontrol movetocolortemp">
+      <description>
+        Moves the lighting to a specific color temperature.
+      </description>
+      <arg name="colorTemperature" type="INT16U"/>
+      <arg name="transitionTime"   type="INT16U"/>
+    </command>
+  </cluster>
+  <cluster>
+    <name>Ballast Configuration</name>
+    <domain>Lighting</domain>
+    <description>Attributes and commands for configuring a lighting ballast.</description>
+    <code>0x0301</code>
+    <define>BALLAST_CONFIGURATION_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="PHYSICAL_MIN_LEVEL"         type="INT8U"       min="0x01"       max="0xFE"                 writable="false" default="0x01"     optional="true" >physical min level</attribute>
+    <attribute side="server" code="0x0001" define="PHYSICAL_MAX_LEVEL"         type="INT8U"       min="0x01"       max="0xFE"                 writable="false" default="0xFE"     optional="true" >physical max level</attribute>
+    <attribute side="server" code="0x0002" define="BALLAST_STATUS"             type="BITMAP8"     min="0x00"       max="0x03"                 writable="false" default="0x00"     optional="false">ballast status</attribute>
+    <attribute side="server" code="0x0010" define="MIN_LEVEL"                  type="INT8U"       min="0x01"       max="0xFE"                 writable="true"  default="0x01"     optional="true" >min level</attribute>
+    <attribute side="server" code="0x0011" define="MAX_LEVEL"                  type="INT8U"       min="0x01"       max="0xFE"                 writable="true"  default="0xFE"     optional="true" >max level</attribute>
+    <attribute side="server" code="0x0012" define="POWER_ON_LEVEL"             type="INT8U"       min="0x00"       max="0xFE"                 writable="true"  default="0xFE"     optional="true" >power on level</attribute>
+    <attribute side="server" code="0x0013" define="POWER_ON_FADE_TIME"         type="INT16U"      min="0x0000"     max="0xFFFE"               writable="true"  default="0x0000"   optional="true" >power on fade time</attribute>
+    <attribute side="server" code="0x0014" define="INTRINSIC_BALLAST_FACTOR"   type="INT8U"       min="0x00"       max="0xFE"                 writable="true"                     optional="true" >intrinsic ballast factor</attribute>
+    <attribute side="server" code="0x0015" define="BALLAST_FACTOR_ADJUSTMENT"  type="INT8U"       min="0x64"                                  writable="true"  default="0xFF"     optional="true" >ballast factor adjustment</attribute>
+    <attribute side="server" code="0x0020" define="LAMP_QUALITY"               type="INT8U"       min="0x00"       max="0xFE"                 writable="true"                     optional="true" >lamp quality</attribute>
+    <attribute side="server" code="0x0030" define="LAMP_TYPE"                  type="CHAR_STRING"                                 length="16" writable="true"                     optional="true" >lamp type</attribute>
+    <attribute side="server" code="0x0031" define="LAMP_MANUFACTURER"          type="CHAR_STRING"                                 length="16" writable="true"                     optional="true" >lamp manufacturer</attribute>
+    <attribute side="server" code="0x0032" define="LAMP_RATED_HOURS"           type="INT24U"      min="0x000000"   max="0xFFFFFE"             writable="true"  default="0xFFFFFF" optional="true" >lamp rated hours</attribute>
+    <attribute side="server" code="0x0033" define="LAMP_BURN_HOURS"            type="INT24U"      min="0x000000"   max="0xFFFFFE"             writable="true"  default="0x000000" optional="true" >lamp burn hours</attribute>
+    <attribute side="server" code="0x0034" define="LAMP_ALARM_MODE"            type="BITMAP8"     min="0x00"       max="0x01"                 writable="true"  default="0x00"     optional="true" >lamp alarm mode</attribute>
+    <attribute side="server" code="0x0035" define="LAMP_BURN_HOURS_TRIP_POINT" type="INT24U"      min="0x000000"   max="0xFFFFFE"             writable="true"  default="0xFFFFFF" optional="true" >lamp burn hours trip point</attribute>
+  </cluster>
+  <cluster>
+    <name>Illuminance Measurement</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the measurement of illuminance, and reporting illuminance measurements.</description>
+    <code>0x0400</code>
+    <define>ILLUM_MEASUREMENT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="ILLUM_MEASURED_VALUE"          type="INT16U"                            writable="false" default="0x00" optional="false">measured value</attribute>     <!-- MEASURED_VALUE -->
+    <attribute side="server" code="0x0001" define="ILLUM_MIN_MEASURED_VALUE"      type="INT16U"  min="0x0002" max="0xFFFD" writable="false"                optional="false">min measured value</attribute> <!-- MIN_MEASURED_VALUE -->
+    <attribute side="server" code="0x0002" define="ILLUM_MAX_MEASURED_VALUE"      type="INT16U"  min="0x0001" max="0xFFFE" writable="false"                optional="false">max measured value</attribute> <!-- MAX_MEASURED_VALUE -->
+    <attribute side="server" code="0x0003" define="ILLUM_TOLERANCE"               type="INT16U"  min="0x0000" max="0x0800" writable="false"                optional="true" >tolerance</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0004" define="MEASUREMENT_LIGHT_SENSOR_TYPE" type="ENUM8"   min="0x00"   max="0xFF"   writable="false"                optional="true" >light sensor type</attribute>  <!-- LIGHT_SENSOR_TYPE -->
+  </cluster>
+  <cluster>
+    <name>Illuminance Level Sensing</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the sensing of illuminance levels, and reporting whether illuminance is above, below, or on target.</description>
+    <code>0x0401</code>
+    <define>ILLUM_LEVEL_SENSING_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="LEVEL_STATUS"              type="ENUM8"  min="0x00"   max="0xFE"   writable="false" optional="false">level status</attribute>
+    <attribute side="server" code="0x0001" define="SENSING_LIGHT_SENSOR_TYPE" type="ENUM8"  min="0x00"   max="0xFE"   writable="false" optional="true" >light sensor type</attribute> <!-- LIGHT_SENSOR_TYPE -->
+    <attribute side="server" code="0x0010" define="ILLUMINANCE_TARGET_LEVEL"  type="INT16U" min="0x0000" max="0xFFFE" writable="true"  optional="false">illuminance level target</attribute>
+  </cluster>
+  <cluster>
+    <name>Temperature Measurement</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the measurement of temperature, and reporting temperature measurements.</description>
+    <code>0x0402</code>
+    <define>TEMP_MEASUREMENT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="TEMP_MEASURED_VALUE"     type="INT16S"                           writable="false" default="0x0000" optional="false">measured value</attribute>     <!-- MEASURED_VALUE -->
+    <attribute side="server" code="0x0001" define="TEMP_MIN_MEASURED_VALUE" type="INT16S" min="0x954D" max="0x7FFE" writable="false"                  optional="false">min measured value</attribute> <!-- MIN_MEASURED_VALUE -->
+    <attribute side="server" code="0x0002" define="TEMP_MAX_MEASURED_VALUE" type="INT16S" min="0x954E" max="0x7FFF" writable="false"                  optional="false">max measured value</attribute> <!-- MAX_MEASURED_VALUE -->
+    <attribute side="server" code="0x0003" define="TEMP_TOLERANCE"          type="INT16U" min="0x0000" max="0x0800" writable="false"                  optional="true" >tolerance</attribute>          <!-- TOLERANCE -->
+  </cluster>
+  <cluster>
+    <name>Pressure Measurement</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the measurement of pressure, and reporting pressure measurements.</description>
+    <code>0x0403</code>
+    <define>PRESSURE_MEASUREMENT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="PRESSURE_MEASURED_VALUE"     type="INT16S"                           writable="false" default="0x0000" optional="false">measured value</attribute>     <!-- MEASURED_VALUE -->
+    <attribute side="server" code="0x0001" define="PRESSURE_MIN_MEASURED_VALUE" type="INT16S" min="0x8001" max="0x7FFE" writable="false"                  optional="false">min measured value</attribute> <!-- MIN_MEASURED_VALUE -->
+    <attribute side="server" code="0x0002" define="PRESSURE_MAX_MEASURED_VALUE" type="INT16S" min="0x8002" max="0x7FFF" writable="false"                  optional="false">max measured value</attribute> <!-- MAX_MEASURED_VALUE -->
+    <attribute side="server" code="0x0003" define="PRESSURE_TOLERANCE"          type="INT16U" min="0x0000" max="0x0800" writable="false"                  optional="true" >tolerance</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0010" define="PRESSURE_SCALED_VALUE"       type="INT16S"                           writable="false" default="0x0000" optional="true" >scaled value</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0011" define="PRESSURE_MIN_SCALED_VALUE"   type="INT16S" min="0x8001" max="0x7FFE" writable="false"                  optional="true" >min scaled value</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0012" define="PRESSURE_MAX_SCALED_VALUE"   type="INT16S" min="0x8002" max="0x7FFF" writable="false"                  optional="true" >max scaled value</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0013" define="PRESSURE_SCALED_TOLERANCE"   type="INT16S" min="0x0000" max="0x0800" writable="false"                  optional="true" >scaled tolerance</attribute>          <!-- TOLERANCE -->
+    <attribute side="server" code="0x0014" define="PRESSURE_SCALE"              type="INT8S"  min="0x81"   max="0x7F"   writable="false"                  optional="true" >scale</attribute>          <!-- TOLERANCE -->
+  </cluster>
+  <cluster>
+    <name>Flow Measurement</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the measurement of flow, and reporting flow rates.</description>
+    <code>0x0404</code>
+    <define>FLOW_MEASUREMENT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="FLOW_MEASURED_VALUE"     type="INT16U"                           writable="false" default="0x0000" optional="false">measured value</attribute>     <!-- MEASURED_VALUE -->
+    <attribute side="server" code="0x0001" define="FLOW_MIN_MEASURED_VALUE" type="INT16U" min="0x0000" max="0xfffd" writable="false"                  optional="false">min measured value</attribute> <!-- MIN_MEASURED_VALUE -->
+    <attribute side="server" code="0x0002" define="FLOW_MAX_MEASURED_VALUE" type="INT16U" min="0x0001" max="0xfffe" writable="false"                  optional="false">max measured value</attribute> <!-- MAX_MEASURED_VALUE -->
+    <attribute side="server" code="0x0003" define="FLOW_TOLERANCE"          type="INT16U" min="0x0000" max="0x0800" writable="false"                  optional="true" >tolerance</attribute>          <!-- TOLERANCE -->
+  </cluster>
+  <cluster>
+    <name>Relative Humidity Measurement</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring the measurement of relative humidity, and reporting relative humidity measurements.</description>
+    <code>0x0405</code>
+    <define>RELATIVE_HUMIDITY_MEASUREMENT_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="RELATIVE_HUMIDITY_MEASURED_VALUE"     type="INT16U"                           writable="false" optional="false">measured value</attribute>     <!-- MEASURED_VALUE -->
+    <attribute side="server" code="0x0001" define="RELATIVE_HUMIDITY_MIN_MEASURED_VALUE" type="INT16U" min="0x0000" max="0x270F" writable="false" optional="false">min measured value</attribute> <!-- MIN_MEASURED_VALUE -->
+    <attribute side="server" code="0x0002" define="RELATIVE_HUMIDITY_MAX_MEASURED_VALUE" type="INT16U" min="0x0001" max="0x2710" writable="false" optional="false">max measured value</attribute> <!-- MAX_MEASURED_VALUE -->
+    <attribute side="server" code="0x0003" define="RELATIVE_HUMIDITY_TOLERANCE"          type="INT16U" min="0x0000" max="0x0800" writable="false" optional="true" >tolerance</attribute>          <!-- TOLERANCE -->
+  </cluster>
+  <cluster>
+    <name>Occupancy Sensing</name>
+    <domain>Measurement &amp; Sensing</domain>
+    <description>Attributes and commands for configuring occupancy sensing, and reporting occupancy status.</description>
+    <code>0x0406</code>
+    <define>OCCUPANCY_SENSING_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="half" init="false">true</server>
+    <attribute side="server" code="0x0000" define="OCCUPANCY"                                   type="BITMAP8" min="0x00"   max="0x01"   writable="false"                  optional="false">occupancy</attribute>
+    <attribute side="server" code="0x0001" define="OCCUPANCY_SENSOR_TYPE"                       type="ENUM8"   min="0x00"   max="0xFE"   writable="false"                  optional="false">occupancy sensor type</attribute>
+    <attribute side="server" code="0x0010" define="PIR_OCCUPIED_TO_UNOCCUPIED_DELAY"            type="INT16U"  min="0x0000" max="0xFFFE" writable="true"  default="0x0000" optional="true" >PIR occupied to unoccupied delay</attribute>
+    <attribute side="server" code="0x0011" define="PIR_UNOCCUPIED_TO_OCCUPIED_DELAY"            type="INT16U"  min="0x0000" max="0xFFFE" writable="true"  default="0x0000" optional="true" >PIR unoccupied to occupied delay</attribute>
+    <attribute side="server" code="0x0012" define="PIR_UNOCCUPIED_TO_OCCUPIED_THRESHOLD"        type="INT8U"   min="0x01"   max="0xFE"   writable="true"  default="0x01"   optional="true" >PIR unoccupied to occupied threshold</attribute>
+    <attribute side="server" code="0x0020" define="ULTRASONIC_OCCUPIED_TO_UNOCCUPIED_DELAY"     type="INT16U"  min="0x0000" max="0xFFFE" writable="true"  default="0x0000" optional="true" >ultrasonic occupied to unoccupied delay</attribute>
+    <attribute side="server" code="0x0021" define="ULTRASONIC_UNOCCUPIED_TO_OCCUPIED_DELAY"     type="INT16U"  min="0x0000" max="0xFFFE" writable="true"  default="0x0000" optional="true" >ultrasonic unoccupied to occupied delay</attribute>
+    <attribute side="server" code="0x0022" define="ULTRASONIC_UNOCCUPIED_TO_OCCUPIED_THRESHOLD" type="INT8U"   min="0x01"   max="0xFE"   writable="true"  default="0x01"   optional="true" >ultrasonic unoccupied to occupied threshold</attribute>
+  </cluster>
+  <cluster>
+    <name>IAS Zone</name>
+    <domain>Security &amp; Safety</domain>
+    <description>Attributes and commands for IAS security zone devices.</description>
+    <code>0x0500</code>
+    <define>IAS_ZONE_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="ZONE_STATE"      type="ENUM8"        writable="false" default="0x00"   optional="false">zone state</attribute>
+    <attribute side="server" code="0x0001" define="ZONE_TYPE"       type="ENUM16"       writable="false"                  optional="false">zone type</attribute>
+    <attribute side="server" code="0x0002" define="ZONE_STATUS"     type="BITMAP16"     writable="false" default="0x0000" optional="false">zone status</attribute>
+    <attribute side="server" code="0x0010" define="IAS_CIE_ADDRESS" type="IEEE_ADDRESS" writable="true"                   optional="false">IAS CIE address</attribute>
+    <attribute side="server" code="0x0011" define="ZONE_ID"         type="INT8U"        writable="false" default="0xff"   optional="false">Zone ID</attribute>
+    <command source="client" code="0x00" name="ZoneEnrollResponse" optional="false">
+      <description>
+        Command description for zoneEnrollResponse
+      </description>
+      <arg name="enrollResponseCode" type="IasEnrollResponseCode"/>
+      <arg name="zoneId"             type="INT8U"/>
+    </command>
+    <command source="server" code="0x00" name="ZoneStatusChangeNotification" optional="false" cli="zcl ias-zone sc">
+      <description>
+        Command description for zoneStatusChangeNotification
+      </description>
+      <arg name="zoneStatus"     type="IasZoneStatus"/>
+      <arg name="extendedStatus" type="BITMAP8"/>
+      <arg name="zoneId" type="INT8U" introducedIn="ha-1.2-11-5474-19"/>
+      <arg name="delay" type="INT16U" introducedIn="ha-1.2-11-5474-19"/>
+    </command>
+    <command source="server" code="0x01" name="ZoneEnrollRequest" optional="false" cli="zcl ias-zone enroll">
+      <description>
+        Command description for zoneEnrollRequest
+      </description>
+      <arg name="zoneType"         type="IasZoneType"/>
+      <arg name="manufacturerCode" type="INT16U"/>
+    </command>
+  </cluster>
+  <cluster>
+    <name>IAS ACE</name>
+    <domain>Security &amp; Safety</domain>
+    <description>Attributes and commands for IAS Ancillary Control Equipment.</description>
+    <code>0x0501</code>
+    <define>IAS_ACE_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <command source="client" code="0x00" name="Arm" optional="false" cli="zcl ias-ace a">
+      <description>
+        Command description for Arm
+      </description>
+      <arg name="armMode" type="IasAceArmMode"/>
+      <arg name="armDisarmCode" type="CHAR_STRING" introducedIn="ha-1.2-11-5474-19"/>
+      <arg name="zoneId"        type="INT8U"       introducedIn="ha-1.2-11-5474-19"/>
+    </command>
+    <command source="client" code="0x01" name="Bypass" optional="false" cli="zcl ias-ace b">
+      <description>
+        Command description for Bypass
+      </description>
+      <arg name="numberOfZones" type="INT8U"/>
+      <arg name="zoneIds"       type="INT8U" array="true"/>
+    </command>
+    <command source="client" code="0x02" name="Emergency" optional="false" cli="zcl ias-ace e">
+      <description>
+        Command description for Emergency
+      </description>
+    </command>
+    <command source="client" code="0x03" name="Fire" optional="false" cli="zcl ias-ace f">
+      <description>
+        Command description for Fire
+      </description>
+    </command>
+    <command source="client" code="0x04" name="Panic" optional="false" cli="zcl ias-ace p">
+      <description>
+        Command description for Panic
+      </description>
+    </command>
+    <command source="client" code="0x05" name="GetZoneIdMap" optional="false" cli="zcl ias-ace getzm">
+      <description>
+        Command description for GetZoneIdMap
+      </description>
+    </command>
+    <command source="client" code="0x06" name="GetZoneInformation" optional="false" cli="zcl ias-ace getzi">
+      <description>
+        Command description for GetZoneInformation
+      </description>
+      <arg name="zoneId" type="INT8U"/>
+    </command>
+    <command source="server" code="0x00" name="ArmResponse" optional="false">
+      <description>
+        Command description for ArmResponse
+      </description>
+      <arg name="armNotification" type="IasAceArmNotification"/>
+    </command>
+    <command source="server" code="0x01" name="GetZoneIdMapResponse" optional="false">
+      <description>
+        Command description for GetZoneIdMapResponse
+      </description>
+      <arg name="section0"  type="BITMAP16"/>
+      <arg name="section1"  type="BITMAP16"/>
+      <arg name="section2"  type="BITMAP16"/>
+      <arg name="section3"  type="BITMAP16"/>
+      <arg name="section4"  type="BITMAP16"/>
+      <arg name="section5"  type="BITMAP16"/>
+      <arg name="section6"  type="BITMAP16"/>
+      <arg name="section7"  type="BITMAP16"/>
+      <arg name="section8"  type="BITMAP16"/>
+      <arg name="section9"  type="BITMAP16"/>
+      <arg name="section10" type="BITMAP16"/>
+      <arg name="section11" type="BITMAP16"/>
+      <arg name="section12" type="BITMAP16"/>
+      <arg name="section13" type="BITMAP16"/>
+      <arg name="section14" type="BITMAP16"/>
+      <arg name="section15" type="BITMAP16"/>
+    </command>
+    <command source="server" code="0x02" name="GetZoneInformationResponse" optional="false">
+      <description>
+        Command description for GetZoneInformationResponse
+      </description>
+      <arg name="zoneId"      type="INT8U"/>
+      <arg name="zoneType"    type="IasZoneType"/>
+      <arg name="ieeeAddress" type="IEEE_ADDRESS"/>
+    </command>
+    <command source="server" code="0x03" name="ZoneStatusChanged" optional="false">
+      <description>
+        This command updates ACE clients in the system of changes to zone status recorded by the ACE server (e.g., IAS CIE device).
+      </description>
+      <arg name="zoneId"      type="INT8U"/>
+      <arg name="zoneStatus"  type="ENUM16"/>
+      <arg name="zoneLabel"   type="CHAR_STRING"/>
+    </command>
+    <command source="server" code="0x04" name="PanelStatusChanged" optional="false">
+        <description>
+          This command updates ACE clients in the system of changes to panel status recorded by the ACE server (e.g., IAS CIE device).
+        </description>
+        <arg name="panelStatus"       type="ENUM8"/>
+        <arg name="secondsRemaining"  type="INT8U"/>
+    </command>
+  </cluster>
+  <cluster>
+    <name>IAS WD</name>
+    <domain>Security &amp; Safety</domain>
+    <description>Attributes and commands for IAS Warning Devices.</description>
+    <code>0x0502</code>
+    <define>IAS_WD_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" tickFrequency="quarter" init="false">true</server>
+    <attribute side="server" code="0x0000" define="MAX_DURATION" type="INT16U" min="0x0000" max="0xFFFE" writable="true" default="240" optional="false">max duration</attribute>
+    <command source="client" code="0x00" name="StartWarning" optional="false">
+      <description>
+        Command description for StartWarning
+      </description>
+      <arg name="warningInfo"     type="WarningInfo"/>
+      <arg name="warningDuration" type="INT16U"/>
+      <arg name="strobeDutyCycle" type="INT8U" introducedIn="ha-1.2-11-5474-19"/>
+      <arg name="strobeLevel"     type="ENUM8" introducedIn="ha-1.2-11-5474-19"/>
+    </command>
+    <command source="client" code="0x01" name="Squawk" optional="false">
+      <description>
+        Command description for Squawk
+      </description>
+      <arg name="squawkInfo" type="SquawkInfo"/>
+    </command>
+  </cluster>
+  <cluster>
+    <name>Door Lock</name>
+    <domain>Closures</domain>
+    <description>Provides an interface into a generic way to secure a door. </description>
+    <code>0x0101</code>
+    <define>DOOR_LOCK_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="LOCK_STATE"         type="ENUM8"   writable="false" optional="false">lock state</attribute>
+    <attribute side="server" code="0x0001" define="LOCK_TYPE"          type="ENUM8"   writable="false" optional="false">lock type</attribute>
+    <attribute side="server" code="0x0002" define="ACTUATOR_ENABLED"   type="BOOLEAN" writable="false" optional="false">actuator enabled</attribute>
+    <attribute side="server" code="0x0003" define="DOOR_STATE"         type="ENUM8"   writable="false" optional="true" >door state</attribute>
+    <attribute side="server" code="0x0004" define="DOOR_OPEN_EVENTS"   type="INT32U"  writable="true"  optional="true" >door open events</attribute>
+    <attribute side="server" code="0x0005" define="DOOR_CLOSED_EVENTS" type="INT32U"  writable="true"  optional="true" >door closed events</attribute>
+    <attribute side="server" code="0x0006" define="OPEN_PERIOD"        type="INT16U"  writable="true"  optional="true" >open period</attribute>
+    <command source="client" code="0x00" name="LockDoor" optional="false" cli="zcl lock lock">
+      <description>
+        Locks the door
+      </description>
+      <arg name="PIN" type="CHAR_STRING" introducedIn="ha-1.2-11-5474-19"/>
+    </command>
+    <command source="client" code="0x01" name="UnlockDoor" optional="false" cli="zcl lock unlock">
+      <description>
+        Unlocks the door
+      </description>
+      <arg name="PIN" type="CHAR_STRING" introducedIn="ha-1.2-11-5474-19"/>
+    </command>
+    <command source="server" code="0x00" name="LockDoorResponse" optional="false">
+      <description>
+        Indicates lock success or failure
+      </description>
+      <arg name="status" type="INT8U" />
+    </command>
+    <command source="server" code="0x01" name="UnlockDoorResponse" optional="false">
+      <description>
+        Indicates unlock success or failure
+      </description>
+      <arg name="status" type="INT8U" />
+    </command>
+  </cluster>
+  <cluster>
+    <name>Window Covering</name>
+    <domain>Closures</domain>
+    <description>Provides an interface for controlling and adjusting automatic window coverings. </description>
+    <code>0x0102</code>
+    <define>WINDOW_COVERING_CLUSTER</define>
+    <client tick="false" init="false">true</client>
+    <server tick="false" init="false">true</server>
+    <attribute side="server" code="0x0000" define="COVERING_TYPE"           type="ENUM8"        min="0x00"   max="0x09"                writable="false" default="0x00"     optional="false">window covering type</attribute>
+    <attribute side="server" code="0x0001" define="LIMIT_LIFT"              type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >physical closed limit - lift</attribute>
+    <attribute side="server" code="0x0002" define="LIMIT_TILT"              type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >physical closed limit - tilt</attribute>
+    <attribute side="server" code="0x0003" define="CURRENT_LIFT"            type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >current position - lift</attribute>
+    <attribute side="server" code="0x0004" define="CURRENT_TILT"            type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >current position - tilt</attribute>
+    <attribute side="server" code="0x0005" define="NUMBER_LIFT"             type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >number of actuations - lift</attribute>
+    <attribute side="server" code="0x0006" define="NUMBER_TILT"             type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="true" >number of actuations - tilt</attribute>
+    <attribute side="server" code="0x0007" define="CONFIG_STATUS"           type="BITMAP8"      min="0x00"   max="0x7F"                writable="false" default="0x03"     optional="false">config status</attribute>
+    <attribute side="server" code="0x0008" define="CURRENT_LIFT_PERCENTAGE" type="INT8U"        min="0x00"   max="0x64"                writable="false" default="0x00"     optional="true" >current position lift percentage</attribute>
+    <attribute side="server" code="0x0009" define="CURRENT_TILT_PERCENTAGE" type="INT8U"        min="0x00"   max="0x64"                writable="false" default="0x00"     optional="true" >current position tilt percentage</attribute>
+    <attribute side="server" code="0x0010" define="OPEN_LIMIT_LIFT"         type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="false">installed open limit - lift</attribute>
+    <attribute side="server" code="0x0011" define="CLOSED_LIMIT_LIFT"       type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0xFFFF"   optional="false">installed closed limit - lift</attribute>
+    <attribute side="server" code="0x0012" define="OPEN_LIMIT_TILT"         type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0x0000"   optional="false">installed open limit - tilt</attribute>
+    <attribute side="server" code="0x0013" define="CLOSED_LIMIT_TILT"       type="INT16U"       min="0x0000" max="0xFFFF"              writable="false" default="0xFFFF"   optional="false">installed closed limit - tilt</attribute>
+    <attribute side="server" code="0x0014" define="VELOCITY_LIFT"           type="INT16U"       min="0x0000" max="0xFFFF"              writable="true"  default="0x0000"   optional="true" >velocity - lift</attribute>
+    <attribute side="server" code="0x0015" define="ACCELERATION_LIFT"       type="INT16U"       min="0x0000" max="0xFFFF"              writable="true"  default="0x0000"   optional="true" >acceleration time - lift</attribute>
+    <attribute side="server" code="0x0016" define="DECELERATION_LIFT"       type="INT16U"       min="0x0000" max="0xFFFF"              writable="true"  default="0x0000"   optional="true" >deceleration time - lift</attribute>
+    <attribute side="server" code="0x0017" define="MODE"                    type="BITMAP8"      min="0x00"   max="0xE0"                writable="true"  default="0x14"     optional="false">mode</attribute>
+    <attribute side="server" code="0x0018" define="SETPOINTS_LIFT"          type="OCTET_STRING"                           length="254" writable="true"  default="1,0x0000" optional="true" >intermediate setpoints - lift</attribute>
+    <attribute side="server" code="0x0019" define="SETPOINTS_TILT"          type="OCTET_STRING"                           length="254" writable="true"  default="1,0x0000" optional="true" >intermediate setpoints - tilt</attribute>
+    <command source="client" code="0x00" name="WindowCoveringUpOpen" optional="false">
+      <description>
+        Moves window covering to InstalledOpenLimit - Lift and InstalledOpenLimit - Tilt
+      </description>
+    </command>
+    <command source="client" code="0x01" name="WindowCoveringDownClose" optional="false">
+      <description>
+        Moves window covering to InstalledClosedLimit - Lift and InstalledCloseLimit - Tilt
+      </description>
+    </command>
+    <command source="client" code="0x02" name="WindowCoveringStop" optional="false">
+      <description>
+        Stop any adjusting of window covering
+      </description>
+    </command>
+    <command source="client" code="0x03" name="WindowCoveringGoToLiftSetpoint" optional="true">
+      <description>
+        Goto lift to value specified
+      </description>
+      <arg name="indexOfLiftSetpoint" type="INT8U" />
+    </command>
+    <command source="client" code="0x04" name="WindowCoveringGoToLiftValue" optional="true">
+      <description>
+        Goto lift value specified
+      </description>
+      <arg name="liftValue" type="INT16U" />
+    </command>
+    <command source="client" code="0x05" name="WindowCoveringGoToLiftPercentage" optional="false">
+      <description>
+        Goto lift percentage specifiec
+      </description>
+      <arg name="percentageLiftValue" type="INT8U" />
+    </command>
+    <command source="client" code="0x06" name="WindowCoveringGoToTiltSetpoint" optional="true">
+      <description>
+        Goto tilt setpoint
+      </description>
+      <arg name="indexOfTiltSetpoint" type="INT8U" />
+    </command>
+    <command source="client" code="0x07" name="WindowCoveringGoToTiltValue" optional="true">
+      <description>
+        Goto tilt value specified
+      </description>
+      <arg name="tiltValue" type="INT16U" />
+    </command>
+    <command source="client" code="0x08" name="WindowCoveringGoToTiltPercentage" optional="false">
+      <description>
+        Goto tilt percentage specified
+      </description>
+      <arg name="percentageTiltValue" type="INT8U" />
+    </command>
+    <command source="client" code="0x09" name="WindowCoveringGoToProgramSetpoint" optional="true">
+      <description>
+      </description>
+      <arg name="setpointType"  type="ENUM8" />
+      <arg name="setpointIndex" type="INT8U" />
+      <arg name="setpointValue" type="INT16U" />
+    </command>
+    <command source="client" code="0x0A" name="ProgramCurrentSetpoint" optional="true">
+      <description>
+	    Sets the current setting as the setpoint for the device with a given index value.
+      </description>
+      <arg name="setpointIndex" type="INT8U" />
+    </command>
+
+  </cluster>
+</configurator>

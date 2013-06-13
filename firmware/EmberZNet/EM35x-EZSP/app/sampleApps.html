@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>EmberZNet 5.0 EM35x EZSP Sample Applications</title>
+
+</head><body>
+
+<h2>EmberZNet 5.0 EM35x EZSP Sample Applications</h2>
+
+<h3>NOTE:</h3>
+<p><b>
+The sample applications described below are NOT based on the Ember ZigBee application framework nor are they configured via AppBuilder.  These are intended to serve as more basic examples of stack-level functionality outside of the Ember ZigBee application framework.  For sample applications built upon the Ember ZigBee application framework with the aid of AppBuilder configuration files, please see the subdirectories and README.txt files within the app/sample-apps/..." directory tree of your EmberZNet installation.
+</b></p>
+<p><br></p>
+<h3> Explanations of included example code </h3>
+Click on the links below to read a description of each sample application:<br>
+<ul>
+<li> <a href = "#zigbeeAppFramework">Ember ZigBee Application Framework </a> (<i>Ember ZigBee Application Framework</i>)
+<li> <a href = "#nodetest">Nodetest</a> (<i>nodetest</i>)
+<li> <a href = "#sensor-host">Sensor Application for Host processor</a> (<i>sensor</i>)
+<li> <a href = "#mfg">Manufacturing Library Sample</a> (<i>mfg-sample-app</i>)
+<li> <a href = "#uart-tests">EZSP-UART Tests</a> (<i>uart-test-1,-2</i>)
+<li> <a href = "#standalone-bootloader-demo-host">Standalone Bootloader Demo for Host processor</a> (<i>standalone-bootloader-demo-host</i>)
+<li> <a href = "#superParent">Super Parent</a> (<i>sp-parent</i>)
+<li> <a href = "#util">Utility libraries</a> (<i>util</i>)
+</ul>
+
+
+<h3> List of included application workspaces </h3>
+Click on the link below to open the sample application:<br>
+<ul>
+<li> <a href = "sensor-host/ewb/sensor-host.eww">Sensor for STM32F103RET host</a> (<i>sensor</i>)
+<li> <a href = "sensor-host/ewb/sink-host.eww">Sink for STM32F103RET host</a> (<i>sink</i>)
+<li> <a href = "sensor-host/ewb/sleepy-sensor-host.eww">Sleepy Sensor for STM32F103RET host</a> (<i>sleepy-sensor</i>)
+<li> <a href = "sensor-host/ewb/mobile-sensor-host.eww">Mobile Sensor for STM32F103RET host</a> (<i>mobile-sensor</i>)
+<li> <a href = "mfglib-host/ewb/mfg-sample-host.eww">Manufacturing Library for STM32F103RET host</a> (<i>mfg-sample</i>)
+<li> <a href = "standalone-bootloader-demo-host/ewb/standalone-bootloader-demo-host.eww">Standalone Bootloader Demo for STM32F103RET host</a> (<i>standalone-bootloader-demo-host</i>)
+</ul>
+
+<hr>
+<br>
+<a name = "zigbeeAppFramework"></a> <b>Ember ZigBee Application Framework </b><br>
+<a href = "../documentation/120-3023-000_AF_V2_API/group__cli.html"> Application Framework (Device/Application) Command Line Interface </a>
+<br>
+
+<hr>
+<a name = "nodetest"></a> <b>Nodetest</b><br>
+<i>Synopsis:</i> A low-level test program meant for functional testing of RF modules (either your own custom-manufactured devices or those provided in the kits from Ember), including token viewing/programming, range testing, RSSI measurement, and special test modes of transmission as required for FCC and CE certification. <br>
+<br>
+<i>Roles:</i>
+<ul>
+<li> Device Under Test (DUT) -- The primary device undergoing functional testing.  You will probably want to also load Nodetest to a node that you are sure is working correctly (often called the "Golden Node") so that you can verify proper communication and comparison between the DUT and the Golden Node when each are running Nodetest.
+</ul>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+The EM35x version of Nodetest runs at 115200 bps. Active serial port is auto-detected; whichever of the UART or virtual UART first detects a Carrier Return (\r), Line Feed (\n), or asterisk ('*') character will become the port used until the application is reset.
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+This application supports different commands depending on the hardware platform being used.  Use the <b>HELP</b> or <b>?</b> command to get a listing of all supported commands on the current device's platform.
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+<li>This application is provided in pre-built form only.
+<li>The packets transmitted by Nodetest are raw packets sent by the radio without the aid of a networking stack, so 802.15.4 and ZigBee conventions, such as CSMA-CA algorithms, random backoffs, transmission retries and MAC and Network Layer packet headers, do not apply in this context.  Such test conditions can produce very different results when comparing reliability of communication to a test case involving two (or more) devices running a full ZigBee networking stack.  Therefore, it is recommended that you perform interference testing, coexistence testing and reliability testing with your own application (based on the networking stack) in addition to any similar testing done with Rangetest, so that your results are more representative of a true networking scenario.
+<li>Packets transmitted by Nodetest are of a fixed size (the minimum size allowed by the radio) and are always transmitted at a fixed rate.  (This rate may be different for different radios; see program output for details.)
+<li>This application is not intended for use in operating networks.  Use by nodes in a network will result in packet collisions and lost traffic.  This application can be used by multiple nodes at the same time where one node sends packets and multiple other nodes receive the traffic.
+<li> This application is defined with NULL_BTL (no bootloader) by default.
+</ul>
+<hr>
+<a name = "sensor-host"></a> <b>Sensor-host & Sink-host</b><br>
+<i>Synopsis:</i> An example of a complete application that implements a distributed sensor network with 1 or more data collection points (called "sensors") and 1 or more data storage points (called "sinks").  Each Sink broadcasts its identity (EUI64 address) via a Transport-layer multicast message (the SINK_ADVERTISE message in this application), along with a temporary reply route, to nearby Sensor nodes, who can then set up a binding to the Sink and send a request (the SENSOR_SELECT_SINK message) for attachment to that Sink.  If the Sink agrees to accept data from a particular Sensor, the Sensor recieves a confirmation message (SINK_READY) and begins transmitting data reports (DATA) to the Sink at fixed intervals (as set by SEND_DATA_RATE). Sleepy-sensors and Mobile-sensors can request a SINK_ADVERTISE message by sending a SINK_QUERY to their parent, since they may be sleeping when the SINK_ADVERTISE multicast is sent out.<br>
+<br>
+<i>Roles:</i> 
+<ul>
+	<li>Sensor -- A device that takes data readings from some input source and passes these readings to a particular collection point.  Many Sensors report to a single Sink.
+	<li>Sink -- A device that serves as a collection point for 1 or more Sensor devices.  In this example, the Sink is set up to be the ZigBee Coordinator device, and it forms the network automatically on first startup and retains this settings across reboots.  (See Notes section below if wanting to use multiple Sinks in a network.)
+        <li>Sleepy-Sensor -- A sleeping version of the Sensor application. Battery powered devices must sleep in order to extend their battery life. 
+        <li>Mobile-Sensor -- A sleeping and mobile version of the Sensor application.
+</ul>
+<i>Buttons used:</i> <br>
+<ul>
+<li>BUTTON 0: If the device is not joined to a network, pressing this causes the device to search for an available network and join it if possible.  After it has successfully joined a network, pressing this button will cause the device to permit joining (accepting other devices into the network) for the next 60 seconds. Note that sink devices form networks automatically if they are not part of a network and this button will only permit joining on a sink.
+<li>BUTTON 1: Causes the device to leave the ZigBee network.
+</ul>
+<br>
+<i>Serial baud rates, ports used:</i><br>
+115200 bps on UART1 for all devices
+<br>
+<br>
+<i>Serial commands supported on all:</i><br>
+<ul>
+	<li><b>?</b> - prints the help menu
+	<li><b>i</b> - prints info about this node including channel, power, and app
+	<li><b>l</b> - tells the node to send a multicast hello packet.
+	<li><b>a</b> - print address table
+	<li><b>m</b> - print multicast table
+	<li><b>0</b> - simulate button 0: attempt join or if already joined, turn on permit join for 60 sec (note sinks form and this button does not attempt to join)
+	<li><b>1</b> - simulate button 1: leave ZigBee network
+	<li><b>r</b> - reset node
+	<li><b>k</b> - print the security keys
+	<li><b>b</b> - put the host processor into bootloader
+</ul>
+<i>Serial commands supported on sensor and sink only:</i><br>
+<ul>
+	<li><b>c</b> - print child table
+</ul>
+<i>Serial commands supported on sink only:</i><br>
+<ul>
+	<li><b>f</b> - force the sink to advertise
+	<li><b>*</b> - switch the network key: send the key followed by a switch key command 30 seconds later
+	<li><b>&</b> - send a switch key command. This is needed only if the device sent a new key and then reset before it was able to send the switch key command
+</ul>
+<i>Serial commands supported on sleepy-sensor and mobile-sensor only:</i><br>
+<ul>
+	<li><b>s</b> - turn on sleeping when not joined
+</ul>
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+	<li>This application defaults to using a fixed set of network parameters, with a default channel setting of 26.  (Remove the <b>#define USE_HARDCODED_NETWORK_SETTINGS</b> line in the common.h header file to allow the application to dynamically select its network parameters.)
+<li>Although the example portrays a single Sink node that acts as a ZigBee Coordinator, the application could be easily adapted to allow a variant of the Sink node that joins the network as an ordinary ZigBee Router so that multiple Sinks can be supported.
+<li>This application uses a "push" style of communication, where the Sensor sends reports to the Sink without needing to be asked for this data.  This is more efficient than a "pull" model, where a device only transmits data when asked to do so by another device, because it cuts the amount of traffic in half, thereby reducing the number of collisions and routing burden in the network.
+<br>
+<li>The data reports used in this example are fixed size packets (of a size defined by SEND_DATA_SIZE).  The data contents are simply a 16-bit random pattern (generated for each message) that is repeated as many times as necessary to fill the packet to its required size.
+<li>The application uses a constant called MISS_PACKET_TOLERANCE as a threshold for fault tolerance.  On the Sensor, this controls how many message timeouts can be permitted between the Sensor and Sink before the Sensor decides to attach itself to a different Sink.  For a Sink, this controls how many data reports can be missed from a Sensor before the Sink "forgets" about the Sensor (stops maintaining a record of its attachment).  Although bindings are kept on the Sink node to track the attached Sensors, these could easily be made temporary (used only for the SINK_READY message) to allow the Sink application to support more nodes without englarging the binding table, assuming that the Sink application does not care which Sensors and how many Sensors are attached to it.
+<li>The sensor advertisement is a broadcast.  The behavior of such a broadcast in the network depends on the network topology and density.  Zigbee limits the number of broadcasts that can be active in a network to 10 to minimize the network disruption and loss of bandwidth.  As this network increases in size or density, the rate of the sensor advertisement should be reduced in frequency.
+</ul>
+<hr>
+<a name = "mfg"></a> <b>Manufacturing Library Sample</b><br>
+<i>Synopsis:</i> an example of how to use the manufacturing library
+<br>
+<br>
+<i>Roles:</i>
+<ul>
+<li> Manufacturing Library Device
+</ul>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+115200 bps on UART1 for all devices 
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+<li>help
+<li>version
+<li>info
+<li>reset
+<li>network form [channel] [power] [panid in hex]
+<li>network join [channel] [power] [panid in hex]
+<li>network leave
+<li>network pjoin [time]
+<li>network
+<li>mfg start [want callback, 0=False, 1=True]
+<li>mfg end
+<li>mfg tone start
+<li>mfg tone stop
+<li>mfg stream start
+<li>mfg stream stop
+<li>mfg send [numPackets] test-packet [length]
+<li>mfg send [numPackets] random [length] 
+<li>mfg send [numPackets] message [first 8 bytes] [second 8 bytes]
+<li>mfg chan set [channel]
+<li>mfg chan get
+<li>mfg power set [power]
+<li>mfg power get
+<br>
+<br>
+<i>Notes and Limitations:</i> 
+<ul>
+<li> This is meant as a simple example of using the Manufacturing Library calls and is not designed as a fully featured application.
+</ul>
+<hr>
+<a name = "uart-tests"></a> <b>EZSP-UART Tests</b><br>
+<i>Synopsis:</i><br>
+Three test programs, uart-test-1, uart-test-2, and uart-test-3 are intended to trouble shoot the connection between a PC host computer and an NCP. The PC can be running either Linux or Windows with the Cygwin development tools installed.
+
+<UL>
+	<LI>The PC needs a 115200 bps serial connection to the NCP. This can be a standard UART, an external USB to RS232 adapter or the USB-RS232 adapter on the NCP EZSP-UART Breakout Board.
+	<LI>To build the executables, go to the app/ezsp-uart-host/ directory and type:<BR>
+	make uart-test-1 uart-test-2
+	<LI>To run the programs, you must specify the PC serial port using the command line option -p followed by the name or number of the port. For example:<BR>
+	./uart-test-1 -p COM5 <I>(Windows)</I><BR>
+	./uart-test-1 -p 4 <I>(Linux)</I>
+	<LI> uart-test-1 tests if there is basic connectivity between the host and the NCP
+        <LI> uart-test-2 tests if EZSP frames can be exchanged between the host and the NCP
+        <LI> uart-test-3 tests basic flow control: if the NCP can hold off the host by sending a frame that will overflow the NCP UART receive buffer unless flow control is working
+
+<br>
+<br>
+More information about using these test programs is in the application note <B><I>EZSP-UART Host Interfacing Guide</I></B>
+</UL>
+<hr>
+<a name = "standalone-bootloader-demo-host"></a> <b>Standalone Bootloader Demo for Host processor</b><br>
+<i>Synopsis:</i><br>
+A sample application demonstrates over-the-air standalone bootloading feature and provides ability to upload new firmware to the network co-processor (NCP).  The application can be compiled and run on linux, cygwin (for window machines) or STM32F103RET microcontroller via provided Makefile and IAR project files. Only over-the-air passthru (remote) bootloading is supported in the application.  
+<br>
+<br>
+<i>Buttons Used:</i> None
+<br>
+<br>
+<i>Serial baud rates, ports used:</i> <br>
+The standalone bootloader demo host application runs at 38400 bps and uses serial port 1 on the STM32F103RET microcontroller.  To initiate the application on the linux or cygwin (for window), the executable needs to first be copied or ftp onto the host machine. 
+<br>
+<br>
+<i>Application Option and Usage:</i> <br>
+Usage: standalone-bootloader-demo-gateway {ncp type} {options}
+<br> use "-h" to see the available options
+<br>
+<br>
+<i>Serial commands supported:</i> <br>
+Once the application is running on the host processor, following serial commands can be used.  Use the <b>help</b> command to get a listing of all supported commands.  The command list is also printed here:
+<ul>
+	<li><b>help</b> - Prints this help menu
+	<li><b>query network</b> - Send network wide query message
+	<li><b>query neighbor</b> - Send query message to its neighbors only
+	<li><b>query node [EUI in hex]</b> - Send query message to specified node
+	<li><b>bootload serial-menu</b> - Enter bootload menu
+	<li><b>bootload remote [target EUI]</b> - Perform over-the-air bootload on specified node
+	<li><b>bootload recover [target EUI]</b> - Perform over-the-air bootload recovery on specified node on current channel
+	<li><b>bootload default-recover</b> - Perform over-the-air bootload recovery on default channel 13
+	<li><b>network form (args are optional) [channel] [power] [panid in hex]</b> - Form network
+	<li><b>network join (args are optional) [channel] [power] [panid in hex]</b> - Join to network
+	<li><b>network leave</b> - Leave network
+	<li><b>info</b> - Display node information
+	<li><b>reboot</b> - Reset host processor
+</ul>
+<br>
+<i>Bootload Menu commands supported:</i> <br>
+To get into bootload menu, enter serial command "bootload serial-menu" from the main application.  From this menu, user can put the network co-processor into bootload mode in order to upload new firmware.  The option list is also printed here:
+<ul>
+	<li><b>1</b> - Upload ncp app image(.ebl)
+	<li><b>2</b> - Switch network co-processor to running bootloader via ESZP
+	<li><b>3</b> - Switch network co-processor to running bootloader via reset
+	<li><b>4</b> - Switch network co-processor to running NCP image via reset
+	<li><b>5</b> - Get running stack version if NCP image is running or bootloader version if bootloader is running
+	<li><b>6</b> - Exit bootload menu
+<br>
+</ul>
+<i>Notes and Limitations:</i> 
+<ul>
+<li>This application assumes default bootload channel of 13 (decimal).
+<li>This application only supports over-the-air remote bootloading via XMODEM protocol, cloning is not supported.
+<li>EUI64 arguments are given as 16-character hexadecimal strings (with no enclosing characters), specified in LSB (least significant byte first) format.
+<li>The application correctly reports on lack of over-the-air support on certain network co-processors (naming em35x-ezsp-uart and em35x-ezsp-spi) when the node is attempting to act as target node in the bootload process.  Message "NCP via EZSP-UART does not support OtA. Refusing to launch bootloader." is displayed when above network co-processors receive requests to go into bootload mode.
+<li>If user attempts to send EZSP cmd to network co-processor while it is running bootloader, message "unsupported spi cmd" with  EZSP_SPI_ERR_UNSUPPORTED_SPI_COMMAND (0x1D) is displayed.  For EZSP UART network co-processor, the host will get ASH ack timeout error.
+</ul>
+<hr>
+<a name = "superParent"></a> <b>Super Parent</b><br>
+<i>Synopsis:</i> An application that demonstrates super parent feature.  The feature provides the ability for the parent (router) node to add and remove node to and from its child table.  This is to enable parent node to have more than the maximum of 32 children.  To accomplish this, parent node will no longer store its children information itself instead it will upload all the information to a gateway.  The gateway is typically a host processor (ex. window/linux machine) that communicates to em260 via UART interface.  The gateway node will maintain a database that contains information regarding all end devices in the network as well as information regarding their parents.  This ultimately allows parent node to support as many children as it wishes.<br>
+<br>
+<i>Roles:</i> 
+<ul>
+	<li>End device -- A device that sends in report periodically.  It also sends application level notification to its parent every time it joins or rejoins.  Parent then forwards all messages from end devices to gateway node.
+	<li>Parent -- A device that acts as a communication proxy between end devices and gateway.  It adds end device to its child table when it needs to communicate to it.  It then removes the end device from the table after the communication is completed.  Messages are sent to end devices using either Just In Time (JIT) mechanism or indirect transmission.
+	<li>Gateway -- A device that maintains database of all end devices in the network.  It also queries all end devices periodically and processes reports received from end devices and messages received from their parents.
+</ul>
+<i><b>Buttons used:</b></i> <br>
+End device:
+<ul>
+<li>BUTTON 0: If the device is not joined to a network, pressing this causes the device to search for an available network and join it if possible.  
+</ul>
+Parent:
+<ul>
+<li>BUTTON 0: If the device is not joined to a network, pressing this causes the device to search for an available network and join it if possible.  If the device is already joined, this will cause the device to turn on permit joining for SP_PERMIT_JOIN_SEC (defined in app/util/super-parent-util/sp-util.h)
+</ul>
+<br>
+</ul>
+<i>Serial baud rates, ports used:</i><br>
+115200 bps on UART1 for all parent and end devices.
+<br>
+<br>
+<i>Common Serial commands supported:</i><br>
+<ul>
+	<li><b>help</b> - Prints all commands with short description
+	<li><b>info</b> - Prints EUI, shortID, channel, radio power, short PAN ID, extended PAN ID, stack version, app version, and security level
+	<li><b>security</b> - Prints security parameters including preconfigured link key, network key and their corresponding frame counters
+	<li><b>reboot</b> - Resets device
+	<li><b>leave</b> - Leave network
+	<li><b>init</b> - Initialize network stack after a reset
+</ul>
+<i>End Device Serial commands supported:</i><br>
+<ul>
+	<li><b>join_ed</b> - Join the network.
+  <li><b>rejoin</b> - Rejoin the network with or without security.
+</ul>
+<i>Parent Serial commands supported:</i><br>
+<ul>
+	<li><b>join</b> - Join the network, if not already joined.  Or turn on permit join if already joined.
+	<li><b>neighbor</b> - Print neighbor table
+	<li><b>child</b> - Print local child table on super parent
+	<li><b>jitQ</b> - Print JIT message queue
+	<li><b>address</b> - Print address table
+</ul>
+<i>Gateway Serial commands supported:</i><br>
+<ul>
+	<li><b>form</b> - Form the network
+  <li><b>join</b> - Turn on permit joining if already part of the network.
+	<li><b>database</b> - Print database on the gateway node
+  <li><b>query</b> - Send query message to specified EUI64 address
+  <li><b>key</b> - Switch network encryption key to randomly selected value.
+  <li><b>broadcast</b> - Send broadcast message to all end devices.
+</ul>
+<br>
+<i>Quick Start Guide:</i>
+<ul>
+<li>For gatewaay, use the gateway.mak to create sp-gateway object/executable. To start the application, do "sp-gateway.exe -n 0 -p [COM port]" such as "sp-gateway.exe -n 0 -p COM1"
+<li>For parent and end device, build corresponding applications, sp-parent and sp-end-device appropriately.  Note that gateway is running on em260 UART platform while parent and end devices are running on em250 platform.
+<li>On gateway node, do "form" to form a network and then do "join" to turn permit joining on for 60 seconds.
+<li>On parent node, do "join" to join a network and then do "join" again to turn permit joining on for 60 seconds.
+<li>On end device, do "join_ed" to join to a parent. Once the end device is joined, it will send a JOIN message to its parent who forwards it to the gateway.
+<li>Note that parent and gateway are communicating via many-to-one route discovery and source routing.
+<li>Gateway node sends periodic query message to query each end device in the network.  End devices then reply back with report messages.
+<li>Default maximum end devices supported in the network (SP_MAX_END_DEVICES) is currently set to 50.  This value can be changed to desired value.  Note that other parameters that may need to be modified as well are SP_GW_QUERY_INTERVAL_SEC, and SP_GW_QUERY_RATE_SEC.
+</ul>
+<i>Notes and Limitations:</i> 
+<ul>
+	<li>The application suite is verified against 200 end devices per super parent.
+</ul>
+<hr>
+<a name = "util"></a> <b>Utility libraries</b><br>
+<i>Synopsis:</i><br>
+A collection of useful functions used in Ember's sample applications and for common ZigBee tasks that you may wish to re-use in your custom project.  You are welcome to use and modify this code as you see fit, as our goal is to reduce the amount of time you spend creating code for common network tasks. Note that some libraries have a "-host" version for use on a host processor connected to an EZSP device. The SoC version of this library will not have the "-host" in the name or have "-onboard" in the name. Libraries with "-common" in the name apply to EZSP hosts as well as SoC devices.
+<br><br>
+<i>Included collections (by directory name):</i>
+<ul>
+	<li><b>bootload -- <i> (app/util/bootload/*)</i></b>: supporting bootloading new application image using standalone bootloader via over-the-air and uart (serial) port
+  <li><b>command interpreter -- <i>(app/util/serial/command-interpreter2.[ch])</i></b>: processes commands coming from the serial port (Application Framework).
+	<li><b>command-line-interface (CLI) -- <i>(app/util/serial/cli.[ch])</i></b>: a simple command interpreter for processing serial input and calling application functions
+  <li><b>common -- <i>(app/util/common/common.[ch])</i></b>: common code for applications.
+  <li><b>concentrator -- <i>(app/util/concentrator/concentrator.[ch])</i></b>: provides support for standard route maintenance activities that must be performed by a concentrator.
+	<li><b>counters -- <i>(app/util/counters-ota.[ch])</i></b>: library for retrieving Ember stack counters over the air.
+	<li><b>ezsp -- <i>(app/util/ezsp/*)</i></b>: The EmberZNet Serial Protocol (EZSP) has been defined to allow an application to be written on a host microcontroller of choice.
+	<li><b>fragment -- <i>(app/util/zigbee-framework/fragment*)</i></b>: breaks long messages into smaller blocks for transmission and reassembles received blocks.
+	<li><b>inter-PAN -- <i>(app/util/zigbee-framework/ami-inter-pan*)</i></b>: Utilities for sending and receiving ZigBee AMI InterPAN messages
+  <li><b>library status -- <i>(app/util/common/library.[ch])</i></b>: code to displayor retrieve the presence or absence of Ember stack libraries on the device.
+  <li><b>linux serial utils -- <i>(app/util/serial/linux-serial.[ch])</i></b>: simulates serial I/O for Linux EZSP UART applications.
+	<li><b>network manager -- <i>(app/util/zigbee-framework/network-manager*)</i></b>: Utilities for use by the ZigBee network manager
+  <li><b>print stack tables -- <i>(app/util/common/print-stack-tables.[ch])</i></b>: functions to print stack tables for use in troubleshooting.
+	<li><b>security -- <i>(app/util/security/*)</i></b>: implementation for setting up security on a Trust Center device and a non Trust Center device
+	<li><b>serial -- <i> (app/util/serial/serial.[ch])</i></b>: the high-level serial drivers used by the stack for I/O processing
+	<li><b>source-route -- <i>(app/util/source-route*)</i></b>: Example code for managing source routes on a gateway
+  <li><b>super parent utils -- <i>(app/util/super-parent-util/sp-util.h)</i></b>: provides the ability for the parent (router) node to add and remove node to and from its child table.
+  <li><b>unix uart gateway utils -- <i>(app/util/gateway/*)</i></b>: functions for gateway-specifc behavior for a host application.
+	<li><b>zigbee device object (ZDO) TX functions -- <i>(app/util/zigbee-framework/zigbee-device*)</i></b>: The ZDO library provides functions that construct and send several common ZDO requests. It also provides a function for extracting the two addresses from  a ZDO address response.
+
+</ul>
+<hr>
+</body>
+</html>
