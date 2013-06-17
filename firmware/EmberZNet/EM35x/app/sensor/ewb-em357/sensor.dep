@@ -2,9 +2,981 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>4124453223</fileChecksum>
+  <fileChecksum>3751365862</fileChecksum>
   <configuration>
     <name>Normal</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\node.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\micro-common.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\buzzer.o</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\zll-types.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\button.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ember-configuration.o</file>
+      <file>$PROJ_DIR$\..\..\util\security\security-common.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\sim-eeprom.c</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\bootload.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\security-library-link-keys-stub-cortexm3-iar-em357-em3xx-debug\security-library-link-keys-stub.a</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\micro.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\memmap-fat.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-size.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\zll-stub-library-cortexm3-iar-em357-em3xx\zll-stub-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sim-eeprom.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\regs.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\spi.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sleep.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\serial.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\button.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\diagnostic.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mfg-token.o</file>
+      <file>$PROJ_DIR$\..\..\util\serial\serial.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-standalone.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\mpu.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\bootloader-interface.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\network-formation.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\random.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\diagnostic.lst</file>
+      <file>$PROJ_DIR$\..\..\util\bootload\bootload-utils.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\system-timer.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\binding-table.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\hal.h</file>
+      <file>$PROJ_DIR$\..\..\util\serial\serial.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\message.h</file>
+      <file>$PROJ_DIR$\..\..\util\security\security-common.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\..\..\bootloader\iar-cfg-boot.icf</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\isr-stubs.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\cstartup-iar-common.h</file>
+      <file>$PROJ_DIR$\..\..\util\common\form-and-join.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\endian.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-adapter.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\random.c</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\stack-info.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\common.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\..\..\loader\flashloader\iar-cfg-flashloader.icf</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-callbacks.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\faults.s79</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\zll-api.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\compiler\asm.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\random.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\faults.lst</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\security.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\button.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\bootloader-interface-standalone.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\zigbee-pro-stack-cortexm3-iar-em357-em3xx-debug\zigbee-pro-stack.a</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\config\token-stack.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\buzzer.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro-common.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\diagnostic.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\iar-cfg.icf</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootload-utils.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token-def.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\adc.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\buzzer.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\memmap-tables.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\crc.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader\bootloader-common.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\child.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.s37</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sim-eeprom.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-standalone.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\event.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mpu.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\led.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\uart.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\crc.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\button.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\buzzer.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ember-configuration.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-app.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.out</file>
+      <file>$PROJ_DIR$\..\..\util\common\form-and-join-adapter.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\faults.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mfg-token.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\zigbee-device-stack.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\led.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-adapter.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\sim-eeprom-size.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-callbacks.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-callbacks.lst</file>
+      <file>$PROJ_DIR$\..\..\util\bootload\bootload-utils.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sleep.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\end-device-bind-stub-library-cortexm3-iar-em357-em3xx\end-device-bind-stub-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\micro-types.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro-common.c</file>
+      <file>$PROJ_DIR$\..\..\util\common\form-and-join-node-callbacks.c</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\trust-center.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\sim-eeprom.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\sim-eeprom.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\flash.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\crc.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-standalone.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\security-common.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\diagnostic.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token-def.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\cstartup-iar-common.c</file>
+      <file>$PROJ_DIR$\..\..\util\security\security.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\raw-message.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\security-common.lst</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\ember-types.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\symbol-timer.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\..\..\bootloader\iar-cfg-fib.icf</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\led.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\random.pbi</file>
+      <file>$PROJ_DIR$\..\..\util\common\form-and-join.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\adc.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\node.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\regs.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token-manufacturing.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\packet-buffer.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\ember-static-struct.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\library.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro-common.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\common.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\ember.h</file>
+      <file>$PROJ_DIR$\..\sensor.c</file>
+      <file>$PROJ_DIR$\..\..\util\security\node.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\token.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token.lst</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\error.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\cstartup-iar-common.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\adc.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader\fib-bootloader.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\uart.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mpu.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\compiler\platform-common.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-app.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\crc.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\..\..\iar-cfg-common-ramexe.icf</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\serial.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootload-utils.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\regs-internal.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\multi-network-stub-library-cortexm3-iar-em357-em3xx\multi-network-stub-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\build\cbke-stub-library-cortexm3-iar-em357-em3xx\cbke-stub-library.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\config\config.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mpu.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token-def.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\endian.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\uart.c</file>
+      <file>$PROJ_DIR$\..\sensor-configuration.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\mfg-token.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\diagnostic.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\memmap.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\multi-network.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\security-common.o</file>
+      <file>$PROJ_DIR$\..\..\util\bootload\bootload-utils-internal.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\install-code-library-stub-cortexm3-iar-em357-em3xx\install-code-library-stub.a</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ember-configuration.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\buzzer.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\common.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\button.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\error-def.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader\bootloader-ccm.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-app.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mem-util.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\alarm-library-cortexm3-iar-em357-em3xx-debug\alarm-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\random.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\isr-stubs.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\bootloader-interface-app.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\sleep.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\security-library-core-cortexm3-iar-em357-em3xx-debug\security-library-core.a</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\aes-mmo.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sleep.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootload-utils.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\adc.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\crc.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\isr-stubs.s79</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token-def.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-app.o</file>
+      <file>$PROJ_DIR$\..\common.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\em2xx-reset-defs.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\serial.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\uart.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro-common.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sim-eeprom.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\token.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\hal-library-cortexm3-iar-em357-em3xx-debug\hal-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\packet-validate-library-cortexm3-iar-em357-em3xx-debug\packet-validate-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\mem-util.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\binding-table-library-cortexm3-iar-em357-em3xx-debug\binding-table-library.a</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\led.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\cstartup-iar-common.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\compiler\iar.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\include\ember-debug.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mem-util.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\stack\config\ember-configuration-defaults.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\..\..\iar-cfg-common.icf</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\form-and-join-node-adapter.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\nvic-config.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\memmap.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\usb.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mem-util.o</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\generic\endian.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\bootloader-eeprom.h</file>
+      <file>$PROJ_DIR$\..\..\..\stack\config\token-phy.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\..\..\util\common\form-and-join-node-adapter.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader\ebl.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\ember-configuration.c</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\mfg-token.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\board\dev0680.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\cstartup-iar-common.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\mpu.h</file>
+      <file>$PROJ_DIR$\..\common.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\micro-common.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\endian.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\reset-def.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\led.o</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\serial.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.pbd</file>
+      <file>$PROJ_DIR$\..\..\util\zigbee-framework\zigbee-device-library.h</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\endian.lst</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\internal-storage.h</file>
+      <file>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\diagnostic.c</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\bootloader-interface-standalone.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\node.lst</file>
+      <file>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\mfg-token.lst</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\generic\sim-eeprom.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 209</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 77</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 113 114 173 227 72 236 74 186 11 152 115 102</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\serial\serial.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 159</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 206</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 138 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\mpu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 82 166</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 154</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 241 10 205 109 1 61 245 64 225</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\bootload\bootload-utils.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 67 198</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 160</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 115 173 227 72 236 74 186 11 152 36 249 176 105</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 115 173 227 72 236 74 186 11 152 36 249 176 105</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\security\security-common.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 127 175</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 118</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\generic\random.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 55 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 132</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\faults.s79</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 96 56</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 54</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\button.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 184</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\generic\crc.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 116 200</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 157</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 88</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-app.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 156 203</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 187</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 74 236 186 173 227 72 11 152</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\sensor.out</name>
+      <outputs>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 76</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 66 50 158 39 130 223 189 216 163 107 211 180 162 213 195</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 179 119</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 28 192 232 59 173 227 72 236 74 186 11 152</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 28 192 232 59 173 227 72 236 74 186 11 152</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 212 87</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 80</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 120 173 227 72 236 74 186 11 152 115</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro-common.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 208 142</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 243</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 149 185 1 64 225 239</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\common\form-and-join-node-callbacks.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 104 103</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 51</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 43</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-standalone.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 253 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 79</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 47 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 173 227 72 236 74 186 11 152 120</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 47 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 173 227 72 236 74 186 11 152 120</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\cstartup-iar-common.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 218 240</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 150</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 120 241 10 205 109 1 61 245 64 225 173 227 72 236 74 186 11 152 42 251 13 102 128 222 170 139 3 28 192 232 59 165</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 120 241 10 205 109 1 61 245 64 225 173 227 72 236 74 186 11 152 42 251 13 102 128 222 170 139 3 28 192 232 59 165</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\led.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 217 246</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 99</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 10 205 109 1 61 245 64 225 239 84</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\common\form-and-join.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 121 86</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 194</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 43 95</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\sensor.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 71 230</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 177</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 242 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 43 105</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\security\node.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 254 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 135</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 6</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\adc.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 134 69</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 199</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 149 185 1 64 225 12 91</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 149 185 1 64 225 12 91</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\uart.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 153 85</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 207</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 228</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\mfg-token.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 255 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 97</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 149 185 115 173 227 72 236 74 186 11 152 238 137</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 148 210</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 122</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 113 114 173 227 72 236 74 186 11 152 115 102</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\buzzer.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 70 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 63</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\sleep.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 197 106</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 1 10 205 109 61 245 64 225 173 227 72 236 74 186 11 152 239 241 120</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 94</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\isr-stubs.s79</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 191 40</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 54 225</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token-def.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 68 167</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 123</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 62 233</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\common.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 48 183</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 143</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 242 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 43 105 125</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 242 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 43 105 125</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\generic\mem-util.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 188 229</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 221</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 128 222 170 139 3 149 185 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\generic\endian.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 250 44</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 168</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 244 128 222 170 139 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 244 128 222 170 139 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\util\common\form-and-join-node-adapter.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 224 101</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 45</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 43 95</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 43 95</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\ember-configuration.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 181 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 92</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 10 205 109 1 61 245 64 225 113 114 173 227 72 236 74 186 11 152 115 102</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 10 205 109 1 61 245 64 225 113 114 173 227 72 236 74 186 11 152 115 102</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\diagnostic.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 120 241</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 219 234 164 141 25 226 78 83 49 215 136 16 161 155 144 128 222 170 139 3 47 29 138 37 126 75 57 112 196 34 8 149 185 98 81 220 140 174 53 165 35 10 205 109 1 61 245 64 225 239 12 91 89 90 88 244 84 190 247 17 33 232 28 192 59 172 147 21 238 137 62 233 129 36 120 241</file>
+        </tool>
+      </inputs>
+    </file>
   </configuration>
 </project>
 
