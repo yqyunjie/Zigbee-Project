@@ -124,7 +124,7 @@ extern EmberEUI64 broadcastEui64;
 
 // Debug Print: this should come in handy during development
 // To enable debug prints, #define ENABLE_DEBUG.  The printing is off by default.  
-//#define ENABLE_DEBUG  
+#define ENABLE_DEBUG  
 #ifdef ENABLE_DEBUG
   #define debug(...)                                  \
   do {                                                \

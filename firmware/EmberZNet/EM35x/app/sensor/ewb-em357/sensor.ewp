@@ -1066,7 +1066,7 @@
     <name>$PROJ_DIR$\..\..\..\build\security-library-core-cortexm3-iar-em357-em3xx-debug\security-library-core.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\..\..\..\build\security-library-link-keys-stub-cortexm3-iar-em357-em3xx-debug\security-library-link-keys-stub.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\security-library-link-keys-stub-cortexm3-iar-em357-em3xx\security-library-link-keys-stub.a</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\sensor.c</name>

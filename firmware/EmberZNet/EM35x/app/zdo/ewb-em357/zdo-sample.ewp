@@ -12,7 +12,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>16</version>
+        <version>21</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -33,8 +33,8 @@
         </option>
         <option>
           <name>Variant</name>
-          <version>8</version>
-          <state>32</state>
+          <version>20</version>
+          <state>38</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -42,8 +42,8 @@
         </option>
         <option>
           <name>Input variant</name>
-          <version>1</version>
-          <state>0</state>
+          <version>3</version>
+          <state>1</state>
         </option>
         <option>
           <name>Input description</name>
@@ -51,8 +51,8 @@
         </option>
         <option>
           <name>Output variant</name>
-          <version>0</version>
-          <state>0</state>
+          <version>2</version>
+          <state>1</state>
         </option>
         <option>
           <name>Output description</name>
@@ -64,12 +64,12 @@
         </option>
         <option>
           <name>FPU</name>
-          <version>0</version>
+          <version>2</version>
           <state>0</state>
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -86,12 +86,8 @@
           <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
-          <name>RTConfigPath</name>
-          <state>$TOOLKIT_DIR$\INC\DLib_Config_Normal.h</state>
-        </option>
-        <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>5.20.0.50986</state>
+          <state>6.40.5.54273</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -103,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>default	None</state>
+          <state>EM357	Ember EM357</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -126,13 +122,44 @@
           <version>0</version>
           <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
+        <option>
+          <name>GeneralMisraVer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>RTConfigPath2</name>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
+        </option>
+        <option>
+          <name>GFPUCoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>GBECoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>OGUseCmsis</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OGUseCmsisDspLib</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>20</version>
+        <version>28</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -265,10 +292,6 @@
           <state>$FILE_BNAME$.o</state>
         </option>
         <option>
-          <name>CCLangSelect</name>
-          <state>0</state>
-        </option>
-        <option>
           <name>CCLibConfigHeader</name>
           <state>1</state>
         </option>
@@ -291,10 +314,6 @@
         <option>
           <name>CCStdIncCheck</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>CCStdIncludePath</name>
-          <state>$TOOLKIT_DIR$\INC\</state>
         </option>
         <option>
           <name>CCCodeSection</name>
@@ -326,13 +345,74 @@
           <version>0</version>
           <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
+        <option>
+          <name>CompilerMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>CCPosIndRopi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndRwpi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndNoDynInit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccLang</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccAllowVLA</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCppDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccExceptions</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccRTTI</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccStaticDestr</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccCppInlineSemantics</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccFloatSemantics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationNoSizeConstraints</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>7</version>
+        <version>8</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -488,10 +568,6 @@
           <state>0</state>
         </option>
         <option>
-          <name>AStdIncludes</name>
-          <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
           <name>AUserIncludes</name>
           <state>$FILE_DIR$\</state>
           <state>$PROJ_DIR$\..\..\..\</state>
@@ -564,7 +640,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>6</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -708,10 +784,6 @@
           <state>halEntryPoint</state>
         </option>
         <option>
-          <name>IlinkNXPLPCChecksum</name>
-          <state>0</state>
-        </option>
-        <option>
           <name>DoFill</name>
           <state>0</state>
         </option>
@@ -734,10 +806,6 @@
         </option>
         <option>
           <name>CrcAlign</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CrcAlgo</name>
           <state>1</state>
         </option>
         <option>
@@ -774,6 +842,84 @@
           <name>IlinkStdoutInterfaceSlave</name>
           <state>1</state>
         </option>
+        <option>
+          <name>CrcFullSize</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkIElfToolPostProcess</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogAutoLibSelect</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogRedirSymbols</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogUnusedFragments</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcReverseByteOrder</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcUseAsInput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptInline</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsAllow</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsForce</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptMergeDuplSections</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptUseVfe</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptForceVfe</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackAnalysisEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackControlFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkStackCallGraphFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CrcAlgorithm</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcUnitSize</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -804,151 +950,151 @@
     </settings>
   </configuration>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/adc.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\adc.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/alarm-stub-library-cortexm3-iar-em357-em3xx/alarm-stub-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\alarm-stub-library-cortexm3-iar-em357-em3xx\alarm-stub-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/binding-table-library-cortexm3-iar-em357-em3xx/binding-table-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\binding-table-library-cortexm3-iar-em357-em3xx\binding-table-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/bootloader-interface-app.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-app.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/bootloader-interface-standalone.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface-standalone.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/bootloader-interface.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\bootloader-interface.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/button.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\button.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/buzzer.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\buzzer.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/cbke-stub-library-cortexm3-iar-em357-em3xx/cbke-stub-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\cbke-stub-library-cortexm3-iar-em357-em3xx\cbke-stub-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/serial/cli.c</name>
+    <name>$PROJ_DIR$\..\..\util\serial\cli.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/counters/counters-ota.c</name>
+    <name>$PROJ_DIR$\..\..\util\counters\counters-ota.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/counters/counters.c</name>
+    <name>$PROJ_DIR$\..\..\util\counters\counters.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/generic/crc.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\generic\crc.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/cstartup-iar-common.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\cstartup-iar-common.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/diagnostic.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\diagnostic.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/ember-configuration.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\ember-configuration.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/end-device-bind-stub-library-cortexm3-iar-em357-em3xx/end-device-bind-stub-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\end-device-bind-stub-library-cortexm3-iar-em357-em3xx\end-device-bind-stub-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/generic/endian.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\generic\endian.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/faults.s79</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\faults.s79</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/common/form-and-join-node-adapter.c</name>
+    <name>$PROJ_DIR$\..\..\util\common\form-and-join-node-adapter.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/common/form-and-join-node-callbacks.c</name>
+    <name>$PROJ_DIR$\..\..\util\common\form-and-join-node-callbacks.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/common/form-and-join.c</name>
+    <name>$PROJ_DIR$\..\..\util\common\form-and-join.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/hal-library-cortexm3-iar-em357-em3xx/hal-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\hal-library-cortexm3-iar-em357-em3xx\hal-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/install-code-library-stub-cortexm3-iar-em357-em3xx/install-code-library-stub.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\install-code-library-stub-cortexm3-iar-em357-em3xx\install-code-library-stub.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/isr-stubs.s79</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\isr-stubs.s79</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/led.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\led.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/generic/mem-util.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\generic\mem-util.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/mfg-token.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\mfg-token.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/micro-common.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro-common.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/micro.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\micro.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/em35x/em357/mpu.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\em35x\em357\mpu.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/multi-network-stub-library-cortexm3-iar-em357-em3xx/multi-network-stub-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\multi-network-stub-library-cortexm3-iar-em357-em3xx\multi-network-stub-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/zigbee-framework/network-manager-lite.c</name>
+    <name>$PROJ_DIR$\..\..\util\zigbee-framework\network-manager-lite.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/packet-validate-library-cortexm3-iar-em357-em3xx/packet-validate-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\packet-validate-library-cortexm3-iar-em357-em3xx\packet-validate-library.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/common/print-stack-tables.c</name>
+    <name>$PROJ_DIR$\..\..\util\common\print-stack-tables.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/generic/random.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\generic\random.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/security-library-core-cortexm3-iar-em357-em3xx/security-library-core.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\security-library-core-cortexm3-iar-em357-em3xx\security-library-core.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/security-library-link-keys-stub-cortexm3-iar-em357-em3xx/security-library-link-keys-stub.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\security-library-link-keys-stub-cortexm3-iar-em357-em3xx\security-library-link-keys-stub.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/serial/serial.c</name>
+    <name>$PROJ_DIR$\..\..\util\serial\serial.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/generic/sim-eeprom.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\generic\sim-eeprom.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/sleep.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\sleep.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/token-def.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token-def.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/token.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\token.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../hal/micro/cortexm3/uart.c</name>
+    <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\uart.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/zdo/zdo-sample.c</name>
+    <name>$PROJ_DIR$\..\zdo-sample.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/zigbee-framework/zigbee-device-common.c</name>
+    <name>$PROJ_DIR$\..\..\util\zigbee-framework\zigbee-device-common.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../app/util/zigbee-framework/zigbee-device-library.c</name>
+    <name>$PROJ_DIR$\..\..\util\zigbee-framework\zigbee-device-library.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/zigbee-pro-stack-cortexm3-iar-em357-em3xx/zigbee-pro-stack.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\zigbee-pro-stack-cortexm3-iar-em357-em3xx\zigbee-pro-stack.a</name>
   </file>
   <file>
-    <name>$PROJ_DIR$/../../../build/zll-stub-library-cortexm3-iar-em357-em3xx/zll-stub-library.a</name>
+    <name>$PROJ_DIR$\..\..\..\build\zll-stub-library-cortexm3-iar-em357-em3xx\zll-stub-library.a</name>
   </file>
 </project>
 
