@@ -1,0 +1,152 @@
+/**
+ * @file ember-debug.h
+ * See @ref debug for documentation.
+ *
+ * <!--Copyright 2004-2007 by Ember Corporation. All rights reserved.    *80*-->
+ */
+
+#ifndef __EMBER_DEBUG_H__
+#define __EMBER_DEBUG_H__
+
+/**
+ * @addtogroup debug
+ * @brief EmberZNet debugging utilities.
+ *
+ * See ember-debug.h for source code.
+ * @{
+ */
+
+// Define the values for DEBUG_LEVEL
+#define NO_DEBUG    0
+#define BASIC_DEBUG 1
+#define FULL_DEBUG  2
+
+/** @brief This function is obsolete and no longer required to
+ *  initialize the debug system. 
+ *
+ * @param port Ignored because the port used for debug communication
+ *  is automatically determined for each platform.
+ */
+#define emberDebugInit(port) do {} while(FALSE)
+ 
+#if (DEBUG_LEVEL >= BASIC_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+ /** @brief Prints the filename and line number to the debug serial port.
+  *
+  * @param filename    The name of the file where the assert occurred.
+  * 
+  * @param linenumber  The line number in the file where the assert occurred.
+  */
+ void emberDebugAssert(PGM_P filename, int linenumber);
+ 
+
+ /** @brief Prints the contents of RAM to the debug serial port.
+  *
+  * @param start  The start address of the block of RAM to dump.
+  * 
+  * @param end    The end address of the block of RAM to dump (address of the 
+  *  last byte).
+  */
+ void emberDebugMemoryDump(int8u *start, int8u *end);
+
+  /** @brief Printf command for use with debug channel 2.0.  This
+   * function enables you to develop user-based debug output.  
+   *
+   * It differs
+   * from ::emberDebugPrintf() in that the output is a stream of binary data,
+   * it does not use the normal printf format conventions, and non-format
+   * characters should not be included in the string.  The advantage is that
+   * the output stream is more compact:  bytes are a single character vs.
+   * up to 4 characters (including space).  
+   *
+   * Format String Parameters:
+   * - B - constant, Eight bit Byte
+   * - W - constant, Sixteen bit Word, LS byte first
+   * - D - constant, Thirty-two bit Double-word, LS byte first
+   * - xxxp - RAM pointer, xxx is length (max 255) ex: 8p - pointer to 8 bytes
+   * - lp - RAM pointer, length is in arg list
+   * - lf - pointer to flash (PGM_P), length is in arg list
+   * - b - packetBuffer
+   * - F - flash string pointer (null terminated)
+   * - xxxf - pointer to flash (PGM_P), xxx is length
+   * 
+   * @par Examples: 
+   * @code  emberDebugBinaryPrintf("F","string example");
+   *
+   * emberDebugBinaryPrintf("lf",5,"abcde");
+   * @endcode
+   *
+   * @param formatString  The format of the binary output.
+   *
+   * @param ...           The list of arguments to be output.
+   */
+ void emberDebugBinaryPrintf(PGM_P formatString, ...);
+ 
+ /** @brief internal debug command used by the HAL to send vuart 
+   * data out the the debug channel
+   * 
+   * @param buff  pointer to the data to send
+   *
+   * @param len   lenght of the data to send
+   */
+ void emDebugSendVuartMessage(int8u *buff, int8u len);
+
+#else // (DEBUG_LEVEL >= BASIC_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+  #define emberDebugAssert(filename, linenumber) do {} while(FALSE)
+  #define emberDebugMemoryDump(start, end) do {} while(FALSE)
+  #define emberDebugBinaryPrintf(formatstring, ...) do {} while(FALSE)
+  #define emDebugSendVuartMessage(buff, len) do {} while(FALSE)
+#endif // (DEBUG_LEVEL >= BASIC_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+
+#if (DEBUG_LEVEL == FULL_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+/** @brief Prints an ::EmberStatus return code to the serial port.
+  *
+  * @param code  The ::EmberStatus code to print.
+  */
+ void emberDebugError(EmberStatus code);
+
+ /** @brief Turns off all debug output.  
+  * 
+  * @return The current state (TRUE for on, FALSE for off).
+  */
+ boolean emberDebugReportOff(void);
+
+ /** @brief Restores the state of the debug output.
+  *
+  * @param state  The state returned from ::emberDebugReportOff().
+  * This is done so that debug output is not blindly turned on.
+  */
+ void emberDebugReportRestore(boolean state);
+
+// Format: Same as emberSerialPrintf
+// emberDebugPrintf("format string"[, parameters ...])
+/** @brief Prints text debug messages.
+ *
+ * @param formatString  Takes the following:
+ *
+ * <table border=0>
+ * <tr><td align="right">%%</td><td>Percent sign</td></tr>
+ * <tr><td align="right">%%c</td><td>Single-byte char</td></tr>
+ * <tr><td align="right">%%s</td><td>RAM string</td></tr>
+ * <tr><td align="right">%%p</td><td>Flash string (does not follow the printf standard)</td></tr>
+ * <tr><td align="right">%%u</td><td>Two-byte unsigned decimal</td></tr>
+ * <tr><td align="right">%%d</td><td>Two-byte signed decimal</td></tr>
+ * <tr><td align="right">%%x, %%2x, %%4x </td><td>1-, 2-, 4-byte hex value (always 0 padded;
+ *         does not follow the printf standard)</td></tr>
+ * </table>
+ */
+void emberDebugPrintf(PGM_P formatString, ...);
+
+#else // (DEBUG_LEVEL == FULL_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+  #define emberDebugError(code) do {} while(FALSE)
+  // Note the following doesn't have a do{}while(FALSE) 
+  //   because it has a return value
+  #define emberDebugReportOff() (FALSE)
+  #define emberDebugReportRestore(state) do {} while(FALSE)
+  #define emberDebugPrintf(...) do {} while(FALSE)
+#endif // (DEBUG_LEVEL == FULL_DEBUG) || defined(DOXYGEN_SHOULD_SKIP_THIS)
+
+/** @} END addtogroup */
+
+
+#endif // __EMBER_DEBUG_H__
+
