@@ -951,7 +951,7 @@
         </option>
         <option>
           <name>DDFile</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\Config\iom128.ddf</state>
         </option>
         <option>
           <name>CInput</name>
@@ -2839,7 +2839,7 @@
         </option>
         <option>
           <name>CDynDriver</name>
-          <state>SIMAVR</state>
+          <state>JTAGICEMKIIAVR</state>
         </option>
         <option>
           <name>DebuggerUseUbrofResetVector</name>
@@ -3431,15 +3431,15 @@
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagDebugEeprom</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagDebugReset</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagDebugFuses</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OJTAGICEMKIIAVRJtagIcedownloadToData</name>

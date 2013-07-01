@@ -54,15 +54,15 @@
 //        this allows other nodes to join to this node
 //  ('1') simulate button 1 press - leave the network
 //  ('e') reset the node
-//  ('B') attempts a passthru bootload of the first device in the address 
-//        table. This is meant to show how standalone bootloader is 
-//        integrated into an application and not meant as a full solution. 
+//  ('B') attempts a passthru bootload of the first device in the address
+//        table. This is meant to show how standalone bootloader is
+//        integrated into an application and not meant as a full solution.
 //        All necessary code is defined'ed under USE_BOOTLOADER_LIB.
 //  ('C') attempts a passthru bootload of the first device in the child table
 //  ('Q') sends a bootload query message.
 //  ('*') switch the network key: send the key followed by a switch key
 //        command 30 seconds later
-//  ('&') send a switch key command. This is needed only if the device 
+//  ('&') send a switch key command. This is needed only if the device
 //        sent a new key and then reset before it was able to send the
 //        switch key command
 //  ('?') prints the help menu
@@ -80,7 +80,7 @@
 // In EmberZNet 2.x and earlier a node sending this type of request
 // was referred to as an "aggregator". In the ZigBee specification and
 // EmberZNet 3 it is referred to as a "concentrator".
-// 
+//
 // EMBER_HIGH_RAM_CONCENTRATOR is used when the caller has enough
 // memory to store source routes for the whole network.
 // EMBER_LOW_RAM_CONCENTRATOR is used when the concentrator has
@@ -108,7 +108,7 @@ int16u timeBeforeSinkAdvertise = TIME_BEFORE_SINK_ADVERTISE;
 // buffer for organizing data before we send a message
 int8u globalBuffer[100];
 
-// keeps track of the last time a sink node heard from a sensor. If it doesn't 
+// keeps track of the last time a sink node heard from a sensor. If it doesn't
 // hear from a sensor in (MISS_PACKET_TOLERANCE * SEND_DATA_RATE) - meaning
 // it missed MISS_PACKET_TOLERANCE data packets, it deletes the address
 // table entry.
@@ -133,8 +133,8 @@ int8u PGM tune[] = {
 };
 
 // a timer to remind us to send the network key update after we have sent
-// out the network key. We must wait a period equal to the broadcast 
-// timeout so that all routers have a chance to receive the broadcast 
+// out the network key. We must wait a period equal to the broadcast
+// timeout so that all routers have a chance to receive the broadcast
 // of the new network key
 int8u sendNetworkKeyUpdateTimer;
 #define SENSORAPP_NETWORK_KEY_UPDATE_TIME 120; // 30 seconds
@@ -159,7 +159,7 @@ void sinkInit(void);
 
 
 // these are defines used for the variable networkFormMethod. This variable
-// affects the serial output when a network is formed. 
+// affects the serial output when a network is formed.
 #define SINK_FORM_NEW_NETWORK 1
 #define SINK_USE_NETWORK_INIT 2
 #define SINK_USE_SCAN_UTILS   3
@@ -192,13 +192,13 @@ int main(void)
   // inititialize the serial port
   // good to do this before emberInit, that way any errors that occur
   // can be printed to the serial port.
-  if(emberSerialInit(APP_SERIAL, BAUD_115200, PARITY_NONE, 1) 
+  if(emberSerialInit(APP_SERIAL, BAUD_115200, PARITY_NONE, 1)
      != EMBER_SUCCESS) {
-    emberSerialInit(APP_SERIAL, BAUD_19200, PARITY_NONE, 1);
+    emberSerialInit(APP_SERIAL, BAUD_38400, PARITY_NONE, 1);
   }
 
   // print the reason for the reset
-  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n", 
+  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
                               (PGM_P)halGetResetString());
 
   // emberInit must be called before other EmberNet stack functions
@@ -223,15 +223,15 @@ int main(void)
   // needed to keep track of shortID-to-EUI mappings. The mapping is
   // needed during the key exchanges that happen immediately after a join.
   // This function is found in app/util/security/security-address-cache.c.
-  // The sink allocates address table entries from 0 to 
-  // (SINK_ADDRESS_TABLE_SIZE-1) for the use of the sink app. It allocates 
-  // entries from SINK_ADDRESS_TABLE_SIZE to (SINK_ADDRESS_TABLE_SIZE + 
-  // SINK_TRUST_CENTER_ADDRESS_CACHE_SIZE) for the trust center use. 
+  // The sink allocates address table entries from 0 to
+  // (SINK_ADDRESS_TABLE_SIZE-1) for the use of the sink app. It allocates
+  // entries from SINK_ADDRESS_TABLE_SIZE to (SINK_ADDRESS_TABLE_SIZE +
+  // SINK_TRUST_CENTER_ADDRESS_CACHE_SIZE) for the trust center use.
   // The defines used here are defined in app/sensor/sensor-configuration.h
   securityAddressCacheInit(SINK_ADDRESS_TABLE_SIZE,
                            SINK_TRUST_CENTER_ADDRESS_CACHE_SIZE);
 
- 
+
   // print a startup message
   emberSerialPrintf(APP_SERIAL,
                     "\r\nINIT : sink app ");
@@ -241,7 +241,7 @@ int main(void)
   emberSerialWaitSend(APP_SERIAL);
 
   #ifdef USE_BOOTLOADER_LIB
-    // Using the same port for application serial print and passthru 
+    // Using the same port for application serial print and passthru
     // bootloading.  User must be careful not to print anything to the port
     // while doing passthru bootload since that can interfere with the data
     // stream.  Also the port's baud rate will be set to 115200 kbps in order
@@ -257,8 +257,8 @@ int main(void)
       (nodeType != EMBER_COORDINATOR) ||
       (emberNetworkInit() != EMBER_SUCCESS))
   {
-    // Set the security keys and the security state - specific to this 
-    // application, all variants of this application (sink, sensor, 
+    // Set the security keys and the security state - specific to this
+    // application, all variants of this application (sink, sensor,
     // sleepy-sensor, mobile-sensor) need to use the same security setup.
     // This function is in app/sensor/common.c. This function should only
     // be called when a network is formed as the act of setting the key
@@ -309,7 +309,7 @@ int main(void)
       // emberUnusedPanIdFoundHandler.
       emberScanForUnusedPanId(EMBER_ALL_802_15_4_CHANNELS_MASK, 5);
     #endif
-  } 
+  }
   // don't need an else clause. The else clause means the emberNetworkInit
   // worked and the stackStatusHandler will be called.
 
@@ -378,24 +378,24 @@ void bootloadUtilQueryResponseHandler(boolean bootloaderActive,
 {
   emberSerialPrintf(APP_SERIAL,"RX [BL QUERY RESP] eui: ");
   printEUI64(APP_SERIAL, (EmberEUI64*)targetEui);
-  emberSerialPrintf(APP_SERIAL," running %p\r\n", 
+  emberSerialPrintf(APP_SERIAL," running %p\r\n",
                     bootloaderActive ? "bootloader":"stack");
   emberSerialWaitSend(APP_SERIAL);
 }
 
-// This function is called by the bootloader-util library 
+// This function is called by the bootloader-util library
 // to ask the application if it is ok to start the bootloader.
 // This happens when the device is meant to be the target of
-// a bootload. The application could compare the manufacturerId 
-// and/or hardwareTag arguments to known values to enure that 
+// a bootload. The application could compare the manufacturerId
+// and/or hardwareTag arguments to known values to enure that
 // the correct image will be bootloaded to this device.
 boolean bootloadUtilLaunchRequestHandler(int16u manufacturerId,
                                          int8u *hardwareTag,
                                          EmberEUI64 sourceEui) {
   // TODO: Compare arguments to known values.
-  
+
   // TODO: Check for minimum required radio signal strength (RSSI).
-  
+
   // TODO: Do not agree to launch the bootloader if any of the above conditions
   // are not met.  For now, always agree to launch the bootloader.
   return TRUE;
@@ -425,7 +425,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
   // make sure this is a valid packet of sensor/sink app
   // it must have a EUI64 address (8 bytes minimum)
   if (length < 8) {
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
                       "RX [bad packet] cluster 0x%2x of length %x\r\n",
                       apsFrame->clusterId,
                       length);
@@ -445,7 +445,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
       printEUI64(APP_SERIAL, &eui);
       emberSerialPrintf(APP_SERIAL, "\r\n");
       return;
-    } 
+    }
 
     // ignore own multicast advertisements
     if (!(emberIsLocalEui64(eui))) {
@@ -483,7 +483,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
     emberSerialPrintf(APP_SERIAL, "; processing message\r\n");
     handleSinkQuery(sender);
     break;
-    
+
   case MSG_DATA:
     // we just heard from this remote node so clear ticks since last heard
     addressTableIndex = findAddressTableLocation(eui);
@@ -563,7 +563,7 @@ void emberStackStatusHandler(EmberStatus status)
     }
 
 
-    // Add the multicast group to the multicast table - this is done 
+    // Add the multicast group to the multicast table - this is done
     // after the stack comes up
     addMulticastGroup();
     break;
@@ -603,7 +603,7 @@ void emberStackStatusHandler(EmberStatus status)
 void emberScanErrorHandler(EmberStatus status)
 {
   emberSerialGuaranteedPrintf(APP_SERIAL,
-    "EVENT: could not find an available channel and panid - status: 0x%x\r\n", 
+    "EVENT: could not find an available channel and panid - status: 0x%x\r\n",
     status);
 }
 
@@ -611,7 +611,7 @@ void emberUnusedPanIdFoundHandler(EmberPanId panId, int8u channel)
 {
   EmberNetworkParameters parameters;
   int8u extendedPanId[8] = APP_EXTENDED_PANID;
-  MEMCOPY(parameters.extendedPanId, 
+  MEMCOPY(parameters.extendedPanId,
           extendedPanId,
           EXTENDED_PAN_ID_SIZE);
   parameters.panId = panId;
@@ -640,7 +640,7 @@ static void applicationTick(void) {
   int16u time;
   int8u i;
   EmberStatus status = 0;
-  
+
   #if EMBER_SECURITY_LEVEL == 5
     static int16u permitJoinsTimer; // quarter second timer
   #endif // EMBER_SECURITY_LEVEL == 5
@@ -648,18 +648,18 @@ static void applicationTick(void) {
   // set the join timeout to 60 seconds
   // this is used as the value passed to emberPermitJoining. It is also
   // used to determine when to turn off joining at the trust center
-  int16u joinTimeout = 60; 
+  int16u joinTimeout = 60;
 
   #ifdef USE_BOOTLOADER_LIB
     bootloadUtilTick();
   #endif // USE_BOOTLOADER_LIB
-    
+
   time = halCommonGetInt16uMillisecondTick();
 
-  // Application timers are based on quarter second intervals, where each 
-  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks. 
+  // Application timers are based on quarter second intervals, where each
+  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks.
   // Only service the timers (decrement and check if they are 0) after each
-  // quarter second. TICKS_PER_QUARTER_SECOND is defined in 
+  // quarter second. TICKS_PER_QUARTER_SECOND is defined in
   // app/sensor/common.h.
   if ( (int16u)(time - lastBlinkTime) > TICKS_PER_QUARTER_SECOND ) {
     lastBlinkTime = time;
@@ -684,7 +684,7 @@ static void applicationTick(void) {
       // *******************
       if ( trustCenterIsPermittingJoins() ) {
         permitJoinsTimer++;
-        
+
         // permitJoinsTimer is in quarter-seconds, joinTimeout is in seconds
         if ( permitJoinsTimer > (joinTimeout * 4)) {
           trustCenterPermitJoins(FALSE);
@@ -819,14 +819,14 @@ void sendMulticastHello(void) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_NONE; // none for multicast
-  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app 
+  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app
   apsFrame.sequence = 0;                    // use seq of 0
 
   // send the message
   status = emberSendMulticast(&apsFrame, // multicast ID & cluster
                               10,        // radius
                               6,         // non-member radius
-                              buffer);   // message to send 
+                              buffer);   // message to send
 
   // done with the packet buffer
   emberReleaseMessageBuffer(buffer);
@@ -862,14 +862,14 @@ void sinkAdvertise(void) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_NONE; // none for multicast
-  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app 
+  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app
   apsFrame.sequence = 0;                    // use seq of 0
 
   // send the message
   status = emberSendMulticast(&apsFrame, // multicast ID & cluster
                               10,        // radius
                               6,         // non-member radius
-                              buffer);   // message to send 
+                              buffer);   // message to send
 
   // done with the packet buffer
   emberReleaseMessageBuffer(buffer);
@@ -890,10 +890,10 @@ void handleSensorSelectSink(EmberEUI64 eui,
   EmberMessageBuffer buffer;
   EmberStatus status = 0;
 
-  // check for a duplicate message, if duplicate then 
+  // check for a duplicate message, if duplicate then
   // we've already added the sender's addresses to the
   // address table so just skip over that logic.  We
-  // still need to do the sendReply because the sender 
+  // still need to do the sendReply because the sender
   // never received to previous reply.
   // unicast messages do not guarantee no duplicates
   // because of this, the node must check to make sure it
@@ -944,7 +944,7 @@ void handleSensorSelectSink(EmberEUI64 eui,
   if (buffer == EMBER_NULL_MESSAGE_BUFFER) {
     emberSerialPrintf(APP_SERIAL,
                       "TX ERROR [sink ready], OUT OF BUFFERS\r\n");
-    emberSetAddressTableRemoteNodeId(addressTableIndex, 
+    emberSetAddressTableRemoteNodeId(addressTableIndex,
                                      EMBER_TABLE_ENTRY_UNUSED_NODE_ID);
     emberSerialPrintf(APP_SERIAL,
                       "deleting address table index %x, status %x\r\n",
@@ -969,11 +969,11 @@ int8u findFreeAddressTableLocation(void) {
   int8u i;
 
   // note that this uses SINK_ADDRESS_TABLE_SIZE for the address table size
-  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are 
-  // reserved for use by the trust center code. 
+  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are
+  // reserved for use by the trust center code.
   // See "app/sensor/sensor-configuration.h" for more details.
   for (i=0; i<SINK_ADDRESS_TABLE_SIZE; i++) {
-    if (emberGetAddressTableRemoteNodeId(i) 
+    if (emberGetAddressTableRemoteNodeId(i)
         == EMBER_TABLE_ENTRY_UNUSED_NODE_ID) {
       return i;
     }
@@ -982,17 +982,17 @@ int8u findFreeAddressTableLocation(void) {
   return EMBER_NULL_ADDRESS_TABLE_INDEX;
 }
 
-// find an existing address table entry that matches the EUI64 passed in 
+// find an existing address table entry that matches the EUI64 passed in
 int8u findAddressTableLocation(EmberEUI64 eui64) {
   int8u i;
 
 
   // note that this uses SINK_ADDRESS_TABLE_SIZE for the address table size
-  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are 
-  // reserved for use by the trust center code. 
+  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are
+  // reserved for use by the trust center code.
   // See "app/sensor/sensor-configuration.h" for more details.
   for (i=0; i<SINK_ADDRESS_TABLE_SIZE; i++) {
-    if (emberGetAddressTableRemoteNodeId(i) 
+    if (emberGetAddressTableRemoteNodeId(i)
         != EMBER_TABLE_ENTRY_UNUSED_NODE_ID) {
       EmberEUI64 remoteEui64;
       emberGetAddressTableRemoteEui64(i, remoteEui64);
@@ -1011,7 +1011,7 @@ int8u findAddressTableLocation(EmberEUI64 eui64) {
 // Callback from the HAL when a button state changes
 // WARNING: this callback is an ISR so the best approach is to set a
 // flag here when an action should be taken and then perform the action
-// somewhere else. In this case the actions are serviced in the 
+// somewhere else. In this case the actions are serviced in the
 // applicationTick function
 void halButtonIsr(int8u button, int8u state)
 {
@@ -1050,7 +1050,7 @@ void sinkAppSwitchNetworkKey(void)
   EmberStatus status;
   EmberKeyData newKey;
 
-  // generate a random key  
+  // generate a random key
   emberSerialPrintf(APP_SERIAL, "keyswitch: generating new key\r\n");
   status = emberGenerateRandomKey(&newKey);
 
@@ -1068,11 +1068,11 @@ void sinkAppSwitchNetworkKey(void)
   status = emberBroadcastNextNetworkKey(&newKey);
   emberSerialPrintf(APP_SERIAL, "keyswitch: bcast new key status %x\r\n",
                     status);
-  
+
   // if the broadcast key succeeded, set the flag for sending the key
   // switch command
   if (status == EMBER_SUCCESS) {
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
          "keyswitch: waiting 30 seconds to send key switch command\r\n");
     // set a flag so we know to send the key switch at a later time
     sendNetworkKeyUpdateTimer = SENSORAPP_NETWORK_KEY_UPDATE_TIME;
@@ -1080,16 +1080,16 @@ void sinkAppSwitchNetworkKey(void)
   // if the broadcast key failed with INVALID CALL that could mean we
   // have sent a key update but not a switch key. Inform the user
   else if (status == EMBER_INVALID_CALL) {
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
              "ERROR: this status could mean that the key update was sent\r\n");
     emberSerialWaitSend(APP_SERIAL);
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
              "       out but that the switch key wasnt sent out. Use the\r\n");
     emberSerialWaitSend(APP_SERIAL);
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
              "       command \"&\" to send the switch key command\r\n");
     emberSerialWaitSend(APP_SERIAL);
-  } 
+  }
 
 }
 
@@ -1097,11 +1097,11 @@ void sinkAppSwitchNetworkKey(void)
 void sinkInit(void) {
   int8u i;
 
-  // init the address table and the table that keeps track of when 
+  // init the address table and the table that keeps track of when
   // we last heard from an address in the address table.
   // note that this uses SINK_ADDRESS_TABLE_SIZE for the address table size
-  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are 
-  // reserved for use by the trust center code. 
+  // instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries are
+  // reserved for use by the trust center code.
   // See "app/sensor/sensor-configuration.h" for more details.
   for (i=0; i<SINK_ADDRESS_TABLE_SIZE; i++) {
     ticksSinceLastHeard[i] = 0xFFFF;
@@ -1139,7 +1139,7 @@ void processSerialInput(void) {
     case '?':
       printHelp();
       break;
-      
+
 #if EMBER_SECURITY_LEVEL == 5
      // print keys
     case 'k':
@@ -1167,7 +1167,7 @@ void processSerialInput(void) {
       {
         int8u index;
         EmberEUI64 eui;
-        if (emberGetAddressTableRemoteNodeId(0) 
+        if (emberGetAddressTableRemoteNodeId(0)
             == EMBER_TABLE_ENTRY_UNUSED_NODE_ID) {
           // error
           emberSerialPrintf(APP_SERIAL,
@@ -1179,12 +1179,12 @@ void processSerialInput(void) {
         emberSerialPrintf(APP_SERIAL, "INFO : attempt BL\r\n");
         if (isMyChild(eui, &index)) {
           bootloadMySleepyChild(eui);
-        } 
+        }
         else if (isMyNeighbor(eui)) {
           bootloadMyNeighborRouter(eui);
-        } 
+        }
         else {
-          // error  
+          // error
           emberSerialPrintf(APP_SERIAL,
                             "ERROR: can't bootload device whose address is "
                             " stored at location 0 of the address table,"
@@ -1202,12 +1202,12 @@ void processSerialInput(void) {
         EmberStatus status;
         status = emberGetChildData(0, eui, &type);
         if (status != EMBER_SUCCESS) {
-          emberSerialPrintf(APP_SERIAL, 
+          emberSerialPrintf(APP_SERIAL,
                             "ERROR: first slot in child table is empty\r\n");
           break;
         }
 
-        bootloadMySleepyChild(eui);    
+        bootloadMySleepyChild(eui);
       }
       break;
 
@@ -1224,8 +1224,8 @@ void processSerialInput(void) {
       // print address table
     case 'a':
       // note that this uses SINK_ADDRESS_TABLE_SIZE for the address table
-      // size instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries 
-      // are reserved for use by the trust center code. 
+      // size instead of the usual EMBER_ADDRESS_TABLE_SIZE, as some entries
+      // are reserved for use by the trust center code.
       // See "app/sensor/sensor-configuration.h" for more details.
       printAddressTable(SINK_ADDRESS_TABLE_SIZE);
       break;
@@ -1272,7 +1272,7 @@ void processSerialInput(void) {
       break;
 
       // send the switch key command. This is only necessary if the device
-      // sent out the new key and then reset before it was able to send 
+      // sent out the new key and then reset before it was able to send
       // out the switch key command
     case '&':
       emberSerialPrintf(APP_SERIAL,
@@ -1303,7 +1303,7 @@ void printHelp(void)
 {
   PRINT("? = help\r\n");
   PRINT("i = print node info\r\n");
-#if EMBER_SECURITY_LEVEL == 5  
+#if EMBER_SECURITY_LEVEL == 5
   PRINT("k = print keys\r\n");
 #endif //EMBER_SECURITY_LEVEL == 5
   PRINT("b = bootloader\r\n");
