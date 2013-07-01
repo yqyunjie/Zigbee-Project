@@ -9,7 +9,7 @@
 //  central collection point. In a real environment the sensor nodes
 //  would collect their data from the environment around them: an electric
 //  meter, a light panel, or a temperature sensor. In this example the
-//  sensor nodes use a reading from the ADC attached to a temperature 
+//  sensor nodes use a reading from the ADC attached to a temperature
 //  sensor.
 //
 //  There are three types of sensor nodes: line powered sensors, sleepy
@@ -57,9 +57,9 @@
 //        this allows other nodes to join to this node
 //  ('1') simulate button 1 press - leave the network
 //  ('e') reset the node
-//  ('B') attempts a passthru bootload of the first device in the address 
-//        table. This is meant to show how standalone bootloader is 
-//        integrated into an application and not meant as a full solution. 
+//  ('B') attempts a passthru bootload of the first device in the address
+//        table. This is meant to show how standalone bootloader is
+//        integrated into an application and not meant as a full solution.
 //        All necessary code is defined'ed under USE_BOOTLOADER_LIB.
 //  ('C') attempts a passthru bootload of the first device in the child table
 //  ('Q') sends a bootload query message.
@@ -120,19 +120,19 @@ int8u timeToWaitForSinkReadyMessage = TIME_TO_WAIT_FOR_SINK_READY;
 int8u sendDataCountdown = SEND_DATA_RATE;
 
 // "dataMode" controls what type of data the sensor sends to the sink.
-// This can be changed using the serial input commands. The default 
-// is MODE_BCD_TEMP (Binary coded data temperature), which means the reading 
-// comes across as a human readable temperature number, for instance a 
-// reading of 0x3019 means 30.19 degress celsius. 
+// This can be changed using the serial input commands. The default
+// is MODE_BCD_TEMP (Binary coded data temperature), which means the reading
+// comes across as a human readable temperature number, for instance a
+// reading of 0x3019 means 30.19 degress celsius.
 // sensor sends random data
 
-#define DATA_MODE_RANDOM   0   // send random data 
-#define DATA_MODE_VOLTS    1   // send the volts reading from the ADC 
+#define DATA_MODE_RANDOM   0   // send random data
+#define DATA_MODE_VOLTS    1   // send the volts reading from the ADC
 #define DATA_MODE_TEMP     2   // send the temp reading as a value
 #define DATA_MODE_BCD_TEMP 3   // send the temp reading as binary coded data
 
 // default to human readable format: i.e. 0x3019 means 30.19 celsius
-int8u dataMode = DATA_MODE_BCD_TEMP; 
+int8u dataMode = DATA_MODE_BCD_TEMP;
 
 
 // buffer for organizing data before we send a message
@@ -230,7 +230,7 @@ void main(void)
   status = emberInit();
 
   // print the reason for the reset
-  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n", 
+  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
                               (PGM_P)halGetResetString());
 #ifdef  PHY_BRIDGE
   #ifdef CORTEXM3
@@ -241,6 +241,9 @@ void main(void)
     }
   #endif
 #endif//PHY_BRIDGE
+
+  emberSerialGuaranteedPrintf(APP_SERIAL,
+							  "Build on: "__TIME__" "__DATE__"\r\n");
 
   if (status != EMBER_SUCCESS) {
     // report status here
@@ -455,7 +458,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
   // make sure this is a valid packet of sensor/sink app
   // it must have a EUI64 address (8 bytes minimum)
   if (length < 8) {
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
                       "RX [bad packet] cluster 0x%2x of length %x\r\n",
                       apsFrame->clusterId,
                       length);
@@ -518,7 +521,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
     emberSerialPrintf(APP_SERIAL, "; processing message\r\n");
     handleSinkQuery(emberGetSender());
     break;
-    
+
   case MSG_DATA:
     emberSerialPrintf(APP_SERIAL, "RX [DATA] from: ");
     printEUI64(APP_SERIAL, &eui);
@@ -566,7 +569,7 @@ void emberStackStatusHandler(EmberStatus status)
     }
 #endif
 
-    // Add the multicast group to the multicast table - this is done 
+    // Add the multicast group to the multicast table - this is done
     // after the stack comes up
     addMulticastGroup();
     break;
@@ -630,8 +633,8 @@ void emberJoinableNetworkFoundHandler(EmberZigbeeNetwork *networkFound,
   EmberNetworkParameters parameters;
 
   MEMSET(&parameters, 0, sizeof(EmberNetworkParameters));
-  MEMCOPY(parameters.extendedPanId, 
-          networkFound->extendedPanId, 
+  MEMCOPY(parameters.extendedPanId,
+          networkFound->extendedPanId,
           EXTENDED_PAN_ID_SIZE);
   parameters.panId = networkFound->panId;
   parameters.radioTxPower = APP_POWER;
@@ -662,10 +665,10 @@ static void applicationTick(void) {
   #endif
   time = halCommonGetInt16uMillisecondTick();
 
-  // Application timers are based on quarter second intervals, where each 
-  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks. 
+  // Application timers are based on quarter second intervals, where each
+  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks.
   // Only service the timers (decrement and check if they are 0) after each
-  // quarter second. TICKS_PER_QUARTER_SECOND is defined in 
+  // quarter second. TICKS_PER_QUARTER_SECOND is defined in
   // app/sensor/common.h.
   if ( (int16u)(time - lastBlinkTime) > TICKS_PER_QUARTER_SECOND ) {
     lastBlinkTime = time;
@@ -742,15 +745,15 @@ void checkButtonEvents(void) {
         emberSerialPrintf(APP_SERIAL, "BUTTON0: join network\r\n");
         emberSerialWaitSend(APP_SERIAL);
 
-        // Set the security keys and the security state - specific to this 
-        // application, all variants of this application (sink, sensor, 
+        // Set the security keys and the security state - specific to this
+        // application, all variants of this application (sink, sensor,
         // sleepy-sensor, mobile-sensor) need to use the same security setup.
         // This function is in app/sensor/common.c. This function should only
         // be called when a network is formed as the act of setting the key
         // sets the frame counters to 0. On reset and networkInit this should
         // not be called.
         sensorCommonSetupSecurity();
-        
+
         #ifdef USE_HARDCODED_NETWORK_SETTINGS
 
           MEMSET(&networkParams, 0, sizeof(EmberNetworkParameters));
@@ -758,8 +761,8 @@ void checkButtonEvents(void) {
           networkParams.panId = APP_PANID;
           networkParams.radioTxPower = APP_POWER;
           networkParams.radioChannel = APP_CHANNEL;
-          MEMCOPY(networkParams.extendedPanId, 
-                  extendedPanId, 
+          MEMCOPY(networkParams.extendedPanId,
+                  extendedPanId,
                   EXTENDED_PAN_ID_SIZE);
           networkParams.joinMethod = EMBER_USE_MAC_ASSOCIATION;
 
@@ -769,7 +772,7 @@ void checkButtonEvents(void) {
           printNetInfo(&networkParams);
 
           // attempt to join the network
-          status = emberJoinNetwork(EMBER_ROUTER, 
+          status = emberJoinNetwork(EMBER_ROUTER,
                                     &networkParams);
           if (status != EMBER_SUCCESS) {
             emberSerialPrintf(APP_SERIAL,
@@ -780,10 +783,10 @@ void checkButtonEvents(void) {
 
           // the else case means we are NOT using hardcoded settings and are
           // picking a random PAN ID and channel and either using
-          // APP_EXTENDED_PANID (from app/sensor/common.h) for the 
+          // APP_EXTENDED_PANID (from app/sensor/common.h) for the
           // extended PAN ID or picking a random one if APP_EXTENDED_PANID
           // is "0".
-        #else 
+        #else
 
           // tell the user what is going on
           emberSerialPrintf(APP_SERIAL,
@@ -794,7 +797,7 @@ void checkButtonEvents(void) {
           // 1) allow join=TRUE
           // 2) matches the stack profile that the app is using
           // 3) matches the extended PAN ID passed in unless "0" is passed
-          // Once a beacon match is found, emberJoinableNetworkFoundHandler 
+          // Once a beacon match is found, emberJoinableNetworkFoundHandler
           // is called.
           emberScanForJoinableNetwork(EMBER_ALL_802_15_4_CHANNELS_MASK,
                                       (int8u*) extendedPanId);
@@ -804,13 +807,13 @@ void checkButtonEvents(void) {
 
       // if in the middle of joining, do nothing
       case EMBER_JOINING_NETWORK:
-        emberSerialPrintf(APP_SERIAL, 
+        emberSerialPrintf(APP_SERIAL,
                           "BUTTON0: app already trying to join\r\n");
         break;
 
       // if already joined, turn allow joining on
       case EMBER_JOINED_NETWORK:
-        emberSerialPrintf(APP_SERIAL, 
+        emberSerialPrintf(APP_SERIAL,
                           "BUTTON0: turn permit join ON for 60 seconds\r\n");
 
         // turn allow join on
@@ -930,7 +933,7 @@ void sendData(void) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_RETRY; // Default to retry
-  //apsFrame.groupId = 0;        // multicast ID not used for unicasts 
+  //apsFrame.groupId = 0;        // multicast ID not used for unicasts
   //apsFrame.sequence = 0;       // the stack sets this to the seq num it uses
 
 
@@ -1003,14 +1006,14 @@ void sendMulticastHello(void) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_NONE; // none for multicast
-  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app 
+  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app
   //apsFrame.sequence = 0;                  // seq not used for multicast
 
   // send the message
   status = emberSendMulticast(&apsFrame, // multicast ID & cluster
                               10,        // radius
                               6,         // non-member radius
-                              buffer);   // message to send 
+                              buffer);   // message to send
 
   // done with the packet buffer
   emberReleaseMessageBuffer(buffer);
@@ -1071,7 +1074,7 @@ void handleSinkAdvertise(int8u* data) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_RETRY; // Default to retry
-  //apsFrame.groupId = 0;        // multicast ID not used for unicasts 
+  //apsFrame.groupId = 0;        // multicast ID not used for unicasts
   //apsFrame.sequence = 0;       // the stack sets this to the seq num it uses
 
 
@@ -1243,7 +1246,7 @@ void processSerialInput(void) {
       {
         int8u index;
         EmberEUI64 eui;
-        if (emberGetAddressTableRemoteNodeId(0) 
+        if (emberGetAddressTableRemoteNodeId(0)
             == EMBER_TABLE_ENTRY_UNUSED_NODE_ID) {
           // error
           emberSerialPrintf(APP_SERIAL,
@@ -1381,9 +1384,9 @@ void printHelp(void)
 {
   PRINT("? = help\r\n");
   PRINT("i = print node info\r\n");
-#if EMBER_SECURITY_LEVEL == 5  
+#if EMBER_SECURITY_LEVEL == 5
   PRINT("k = print keys\r\n");
-#endif //EMBER_SECURITY_LEVEL == 5  
+#endif //EMBER_SECURITY_LEVEL == 5
   PRINT("b = send node into bootloader\r\n");
   PRINT("l = send multicast [hello]\r\n");
   PRINT("t = play tune\r\n");
@@ -1417,8 +1420,8 @@ void printHelp(void)
 #endif//PHY_BRIDGE
 }
 
-// Function to read data from the ADC, do conversions to volts and 
-// BCD temp and print to the serial port 
+// Function to read data from the ADC, do conversions to volts and
+// BCD temp and print to the serial port
 
 void readAndPrintSensorData()
 {
@@ -1427,13 +1430,13 @@ void readAndPrintSensorData()
   int32s tempC, tempF;
   int8u str[20];
   EmberStatus readStatus;
-  
+
   emberSerialPrintf(APP_SERIAL, "Printing sensor data...\r\n");
   halStartAdcConversion(ADC_USER_APP, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
                         ADC_CONVERSION_TIME_US_256);
   emberSerialWaitSend(APP_SERIAL);
   readStatus = halReadAdcBlocking(ADC_USER_APP, &value);
-  
+
   if( readStatus == EMBER_ADC_CONVERSION_DONE) {
     fvolts = halConvertValueToVolts(value / TEMP_SENSOR_SCALE_FACTOR);
     formatFixed(str, (int32s)fvolts, 5, 4, TRUE);
@@ -1480,7 +1483,7 @@ int16u toBCD(int16u number)
   return number;
 }
 
-void printDataMode(void) 
+void printDataMode(void)
 {
   switch (dataMode) {
   case DATA_MODE_RANDOM:

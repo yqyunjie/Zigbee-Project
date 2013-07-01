@@ -111,7 +111,7 @@ boolean waitingForDataAck = FALSE;
 // from responding to other sink advertisement meassages
 boolean waitingForSinkReadyMessage = FALSE;
 int8u timeToWaitForSinkReadyMessage = TIME_TO_WAIT_FOR_SINK_READY;
-// TRUE when waiting to receive a sink_advertise message, this prevents the 
+// TRUE when waiting to receive a sink_advertise message, this prevents the
 // sensor from resending the sink_query
 boolean waitingForSinkAdvMessage = FALSE;
 int8u timeToWaitForSinkAdvMessage = TIME_TO_WAIT_FOR_SINK_ADVERTISE;
@@ -159,11 +159,11 @@ int8u PGM tune[] = {
 // (if the first rejoin worked). It is counted down in appTick and this
 // is where the second rejoin is called from
 int8u findAndRejoinTimer = 0;
-#define FIND_AND_REJOIN_TIMEOUT 50 
+#define FIND_AND_REJOIN_TIMEOUT 50
 
 #define DATA_MODE_DEFAULT 0
 #define DATA_MODE_TEST    1
-int8u dataMode = DATA_MODE_DEFAULT; 
+int8u dataMode = DATA_MODE_DEFAULT;
 
 // End application specific constants and globals
 // *******************************************************************
@@ -223,15 +223,17 @@ void main(void)
   // inititialize the serial port
   // good to do this before emberInit, that way any errors that occur
   // can be printed to the serial port.
-  if(emberSerialInit(APP_SERIAL, BAUD_115200, PARITY_NONE, 1) 
+  if(emberSerialInit(APP_SERIAL, BAUD_115200, PARITY_NONE, 1)
      != EMBER_SUCCESS) {
     emberSerialInit(APP_SERIAL, BAUD_19200, PARITY_NONE, 1);
   }
 
   // print the reason for the reset
-  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n", 
+  emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
                               (PGM_P)halGetResetString());
- 
+  emberSerialGuaranteedPrintf(APP_SERIAL,
+							  "Build on: "__TIME__" "__DATE__"\r\n");
+
   // emberInit must be called before other EmberZNet stack functions
   status = emberInit();
   if (status != EMBER_SUCCESS) {
@@ -257,7 +259,7 @@ void main(void)
   sensorInit();
 
   #ifdef USE_BOOTLOADER_LIB
-    // Using the same port for application serial print and passthru 
+    // Using the same port for application serial print and passthru
     // bootloading.  User must be careful not to print anything to the port
     // while doing passthru bootload since that can interfere with the data
     // stream.  Also the port's baud rate will be set to 115200 kbps in order
@@ -288,7 +290,7 @@ void main(void)
       (emberNetworkInit() == EMBER_SUCCESS))
   {
     // emberNetworkInit returning success on an end device means an orphan
-    // scan was initiated. We can't use emberGetNetworkParameters yet (to 
+    // scan was initiated. We can't use emberGetNetworkParameters yet (to
     // print the network params) until the emberStackStatusHandler returns
     // a status of EMBER_JOINED_NETWORK
     emberSerialPrintf(APP_SERIAL,
@@ -301,7 +303,7 @@ void main(void)
   emberSerialWaitSend(APP_SERIAL);
 
   emberTaskEnableIdling(TRUE);
-  
+
   // event loop
   while(TRUE) {
 
@@ -422,19 +424,19 @@ void bootloadUtilQueryResponseHandler(boolean bootloaderActive,
 
 }
 
-// This function is called by the bootloader-util library 
+// This function is called by the bootloader-util library
 // to ask the application if it is ok to start the bootloader.
 // This happens when the device is meant to be the target of
-// a bootload. The application could compare the manufacturerId 
-// and/or hardwareTag arguments to known values to enure that 
+// a bootload. The application could compare the manufacturerId
+// and/or hardwareTag arguments to known values to enure that
 // the correct image will be bootloaded to this device.
 boolean bootloadUtilLaunchRequestHandler(int16u manufacturerId,
                                          int8u *hardwareTag,
                                          EmberEUI64 sourceEui) {
   // TODO: Compare arguments to known values.
-  
+
   // TODO: Check for minimum required radio signal strength (RSSI).
-  
+
   // TODO: Do not agree to launch the bootloader if any of the above conditions
   // are not met.  For now, always agree to launch the bootloader.
   return TRUE;
@@ -453,7 +455,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
   // make sure this is a valid packet of sensor/sink app
   // it must have a EUI64 address (8 bytes minimum)
   if (length < 8) {
-    emberSerialPrintf(APP_SERIAL, 
+    emberSerialPrintf(APP_SERIAL,
                       "RX [bad packet] cluster 0x%2x of length %x\r\n",
                       apsFrame->clusterId,
                       length);
@@ -474,7 +476,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
       printEUI64(APP_SERIAL, &eui);
       emberSerialPrintf(APP_SERIAL, "\r\n");
       return;
-    } 
+    }
 
     emberSerialPrintf(APP_SERIAL, "RX [sink advertise] from: ");
     printEUI64(APP_SERIAL, &eui);
@@ -531,7 +533,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
     break;
 
   default:
-    emberSerialPrintf(APP_SERIAL, "RX [unknown (%2x)] from: ", 
+    emberSerialPrintf(APP_SERIAL, "RX [unknown (%2x)] from: ",
                       apsFrame->clusterId);
     printEUI64(APP_SERIAL, &eui);
     emberSerialPrintf(APP_SERIAL, "; ignoring\r\n");
@@ -565,7 +567,7 @@ void emberStackStatusHandler(EmberStatus status)
     // since the 1st rejoin has just succeeded
     findAndRejoinTimer = 0;
 
-    // Add the multicast group to the multicast table - this is done 
+    // Add the multicast group to the multicast table - this is done
     // after the stack comes up
     addMulticastGroup();
     break;
@@ -639,8 +641,8 @@ void emberJoinableNetworkFoundHandler(EmberZigbeeNetwork *networkFound,
   EmberNetworkParameters parameters;
 
   MEMSET(&parameters, 0, sizeof(EmberNetworkParameters));
-  MEMCOPY(parameters.extendedPanId, 
-          networkFound->extendedPanId, 
+  MEMCOPY(parameters.extendedPanId,
+          networkFound->extendedPanId,
           EXTENDED_PAN_ID_SIZE);
   parameters.panId = networkFound->panId;
   parameters.radioTxPower = APP_POWER;
@@ -699,9 +701,9 @@ void emberPollCompleteHandler(EmberStatus status)
     if (numQsParentGone > 239) {
       status = emberRejoinNetwork(TRUE);  // Assume we have the current NWK Key
       emberSerialPrintf(APP_SERIAL, "rejoin: %x\r\n", status);
-      // set a timer to try a rejoin insecurely if we dont get a 
+      // set a timer to try a rejoin insecurely if we dont get a
       // stackStatus call of network up in a reasonable amount of time
-      findAndRejoinTimer = FIND_AND_REJOIN_TIMEOUT; 
+      findAndRejoinTimer = FIND_AND_REJOIN_TIMEOUT;
     }
     break;
   }
@@ -876,8 +878,8 @@ static void applicationTick(void) {
         appPoll();
       } else {
         emberMarkTaskIdle(appTask);
-        // since ideally we want to deep sleep make sure no other task 
-        //   allows the processor to idle before we get to check if its 
+        // since ideally we want to deep sleep make sure no other task
+        //   allows the processor to idle before we get to check if its
         //   ok to deep sleep again or not.
         emberMarkTaskActive(appTask);
       }
@@ -923,8 +925,8 @@ static void applicationTick(void) {
               break;
             } else {
               emberMarkTaskIdle(appTask);
-              // since ideally we want to deep sleep make sure no other task 
-              //   allows the processor to idle before we get to check if its 
+              // since ideally we want to deep sleep make sure no other task
+              //   allows the processor to idle before we get to check if its
               //   ok to deep sleep again or not.
               emberMarkTaskActive(appTask);
             }
@@ -934,8 +936,8 @@ static void applicationTick(void) {
         }
       } else {
         emberMarkTaskIdle(appTask);
-        // since ideally we want to deep sleep make sure no other task 
-        //   allows the processor to idle before we get to check if its 
+        // since ideally we want to deep sleep make sure no other task
+        //   allows the processor to idle before we get to check if its
         //   ok to deep sleep again or not.
         emberMarkTaskActive(appTask);
       }
@@ -944,11 +946,11 @@ static void applicationTick(void) {
 
   // if we are not joined and should sleep (which is turned on with
   // a serial cmd) then sleep here. We still check emberOkToHibernate()
-  // since it is possible that the stack is performing an energy or active 
-  // scan during this time, in which case the NetworkStatus is still 
-  // NO_NETWORK, but the MAC is actively doing something, so putting the 
-  // device to sleep without checking emberOkToHibernate() will cause the 
-  // MAC to assert in zigbee-stack.c in emberStackPowerDown(). The 
+  // since it is possible that the stack is performing an energy or active
+  // scan during this time, in which case the NetworkStatus is still
+  // NO_NETWORK, but the MAC is actively doing something, so putting the
+  // device to sleep without checking emberOkToHibernate() will cause the
+  // MAC to assert in zigbee-stack.c in emberStackPowerDown(). The
   // application sleeps more aggressively here, hard coding
   // to 60 seconds and not basing the sleep time on the SEND_DATA_RATE
   ATOMIC(
@@ -971,17 +973,17 @@ void appEventHandler(void)
   static int16u lastRunTime = 0;
   int16u thisRunTime;
 
-  // After the device sleeps, application ticks need to be taken off of 
-  // the timers that handle events in an amount that equals the amount of 
-  // time the device slept. This variable is used to keep track of the 
-  // number of quarter-seconds that the device successfully slept 
+  // After the device sleeps, application ticks need to be taken off of
+  // the timers that handle events in an amount that equals the amount of
+  // time the device slept. This variable is used to keep track of the
+  // number of quarter-seconds that the device successfully slept
   // (interrupts could wake it before it was done)
   int8u qsTicksToTakeOff;
 
-  // Application timers are based on quarter second intervals, where each 
-  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks. 
+  // Application timers are based on quarter second intervals, where each
+  // quarter second is equal to TICKS_PER_QUARTER_SECOND millisecond ticks.
   // Only service the timers (decrement and check if they are 0) after each
-  // quarter second. TICKS_PER_QUARTER_SECOND is defined in 
+  // quarter second. TICKS_PER_QUARTER_SECOND is defined in
   // app/sensor/common.h.
   emberEventControlSetDelayMS(appEvent, TICKS_PER_QUARTER_SECOND);
 
@@ -1010,7 +1012,7 @@ void appEventHandler(void)
     // make sure we don't send the timer negative
     if (qsTicksToTakeOff > timeToWaitForSinkAdvMessage)
       qsTicksToTakeOff = timeToWaitForSinkAdvMessage;
-    timeToWaitForSinkAdvMessage = timeToWaitForSinkAdvMessage - 
+    timeToWaitForSinkAdvMessage = timeToWaitForSinkAdvMessage -
                                           qsTicksToTakeOff;
 
     if (timeToWaitForSinkAdvMessage == 0) {
@@ -1030,7 +1032,7 @@ void appEventHandler(void)
     // make sure we don't send the timer negative
     if (qsTicksToTakeOff > timeToWaitForSinkReadyMessage)
       qsTicksToTakeOff = timeToWaitForSinkReadyMessage;
-    timeToWaitForSinkReadyMessage = timeToWaitForSinkReadyMessage - 
+    timeToWaitForSinkReadyMessage = timeToWaitForSinkReadyMessage -
                                           qsTicksToTakeOff;
 
     if (timeToWaitForSinkReadyMessage == 0) {
@@ -1073,7 +1075,7 @@ void appEventHandler(void)
   }
 
   // **************************************
-  // if we get into a state where our parent is not responding, we look 
+  // if we get into a state where our parent is not responding, we look
   // for a new parent. We try to rejoin securely, if that fails (meaning
   // we dont get an emberStackStatusHandler call with status NETWORK_UP)
   // we attempt an insecure rejoin
@@ -1082,9 +1084,9 @@ void appEventHandler(void)
     findAndRejoinTimer--;
     if (findAndRejoinTimer == 0) {
       // try unsecure since secure failed
-      EmberStatus status = emberRejoinNetwork(FALSE); 
+      EmberStatus status = emberRejoinNetwork(FALSE);
       emberSerialPrintf(APP_SERIAL,
-                    "secure rejoin failed, trying unsecure rejoin: %x\r\n", 
+                    "secure rejoin failed, trying unsecure rejoin: %x\r\n",
                         status);
     }
   }
@@ -1110,8 +1112,8 @@ void checkButtonEvents(void) {
         emberSerialPrintf(APP_SERIAL, "BUTTON0: join network\r\n");
         emberSerialWaitSend(APP_SERIAL);
 
-        // Set the security keys and the security state - specific to this 
-        // application, all variants of this application (sink, sensor, 
+        // Set the security keys and the security state - specific to this
+        // application, all variants of this application (sink, sensor,
         // sleepy-sensor, mobile-sensor) need to use the same security setup.
         // This function is in app/sensor/common.c. This function should only
         // be called when a network is formed as the act of setting the key
@@ -1122,12 +1124,12 @@ void checkButtonEvents(void) {
         #ifdef USE_HARDCODED_NETWORK_SETTINGS
         {
           MEMSET(&networkParams, 0, sizeof(EmberNetworkParameters));
-          // use the settings from app/sensor/common.h          
+          // use the settings from app/sensor/common.h
           networkParams.panId = APP_PANID;
           networkParams.radioTxPower = APP_POWER;
           networkParams.radioChannel = APP_CHANNEL;
-          MEMCOPY(networkParams.extendedPanId, 
-                  extendedPanId, 
+          MEMCOPY(networkParams.extendedPanId,
+                  extendedPanId,
                   EXTENDED_PAN_ID_SIZE);
           networkParams.joinMethod = EMBER_USE_MAC_ASSOCIATION;
 
@@ -1140,8 +1142,8 @@ void checkButtonEvents(void) {
           emberSerialWaitSend(APP_SERIAL);
 
           // attempt to join the network
-          status = emberJoinNetwork(applicationType, 
-                                    &networkParams); 
+          status = emberJoinNetwork(applicationType,
+                                    &networkParams);
           if (status != EMBER_SUCCESS) {
             emberSerialPrintf(APP_SERIAL,
               "error returned from emberJoinNetwork: 0x%x\r\n", status);
@@ -1152,7 +1154,7 @@ void checkButtonEvents(void) {
 
         // the else case means we are NOT using hardcoded settings and are
         // picking a random PAN ID and channel and either using
-        // APP_EXTENDED_PANID (from app/sensor/common.h) for the 
+        // APP_EXTENDED_PANID (from app/sensor/common.h) for the
         // extended PAN ID or picking a random one if APP_EXTENDED_PANID
         // is "0".
         #else
@@ -1167,7 +1169,7 @@ void checkButtonEvents(void) {
           // 3) matches the extended PAN ID passed in unless "0" is passed
           // Once a beacon match is found, emberJoinableNetworkFoundHandler
           // is called.
-          emberScanForJoinableNetwork(EMBER_ALL_802_15_4_CHANNELS_MASK, 
+          emberScanForJoinableNetwork(EMBER_ALL_802_15_4_CHANNELS_MASK,
                                       (int8u *) extendedPanId);
 
         #endif // USE_HARDCODED_NETWORK_SETTINGS
@@ -1175,13 +1177,13 @@ void checkButtonEvents(void) {
 
       // if in the middle of joining, do nothing
       case EMBER_JOINING_NETWORK:
-        emberSerialPrintf(APP_SERIAL, 
+        emberSerialPrintf(APP_SERIAL,
                           "BUTTON0: app already trying to join\r\n");
         break;
 
       // if already joined, do nothing
       case EMBER_JOINED_NETWORK:
-        emberSerialPrintf(APP_SERIAL, 
+        emberSerialPrintf(APP_SERIAL,
                           "BUTTON0: already joined, no action\r\n");
         break;
 
@@ -1230,17 +1232,17 @@ void sendData(void) {
   maximumPayloadLength = emberMaximumApsPayloadLength();
 
   // make sure the size of the data we are sending is not too large,
-  // if it is too large then print a warning and chop it to a size 
-  // that fits. The max payload isn't a constant size since it 
-  // changes depending on if security is being used or not. 
+  // if it is too large then print a warning and chop it to a size
+  // that fits. The max payload isn't a constant size since it
+  // changes depending on if security is being used or not.
   if ((sendDataSize + EUI64_SIZE) > maximumPayloadLength) {
 
     // the payload is data plus the eui64
     sendDataSize = maximumPayloadLength - EUI64_SIZE;
 
-    emberSerialPrintf(APP_SERIAL, 
-                   "WARN: SEND_DATA_SIZE (%d) too large, changing to %d\r\n", 
-                   SEND_DATA_SIZE, sendDataSize); 
+    emberSerialPrintf(APP_SERIAL,
+                   "WARN: SEND_DATA_SIZE (%d) too large, changing to %d\r\n",
+                   SEND_DATA_SIZE, sendDataSize);
   }
 
   // we are doing things slightly different for DATA_MODE_TEST by sending 27
@@ -1261,7 +1263,7 @@ void sendData(void) {
     for (i=0; i<(sendDataSize / 2); i++) {
       globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
       globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
-    }  
+    }
     // copy the data into a packet buffer
     buffer = emberFillLinkedBuffers(globalBuffer,
                                   EUI64_SIZE + sendDataSize);
@@ -1290,7 +1292,7 @@ void sendData(void) {
                             SINK_ADDRESS_TABLE_INDEX,
                             &apsFrame,
                             buffer /* data to send */);
-                            
+
   if (status != EMBER_SUCCESS) {
     numberOfFailedDataMessages++;
     emberSerialPrintf(APP_SERIAL,
@@ -1402,14 +1404,14 @@ void sendMulticastHello(void) {
   apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
   apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
   apsFrame.options = EMBER_APS_OPTION_NONE; // none for multicast
-  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app 
+  apsFrame.groupId = MULTICAST_ID;          // multicast ID unique to this app
   apsFrame.sequence = 0;                    // use seq of 0
 
   // send the message
   status = emberSendMulticast(&apsFrame, // multicast ID & cluster
                               10,        // radius
                               6,         // non-member radius
-                              buffer);   // message to send 
+                              buffer);   // message to send
 
   // done with the packet buffer
   emberReleaseMessageBuffer(buffer);
@@ -1497,7 +1499,7 @@ void handleSinkAdvertise(int8u* data) {
 // Callback from the HAL when a button state changes
 // WARNING: this callback is an ISR so the best approach is to set a
 // flag here when an action should be taken and then perform the action
-// somewhere else. In this case the actions are serviced in the 
+// somewhere else. In this case the actions are serviced in the
 // applicationTick function
 void halButtonIsr(int8u button, int8u state)
 {
@@ -1644,7 +1646,7 @@ void processSerialInput(void) {
       emberSerialWaitSend(APP_SERIAL);
 
       // check which stack tasks are currently preventing sleep
-      { 
+      {
         int16u tasks = emberCurrentStackTasks();
         emberSerialPrintf(APP_SERIAL, "curr tasks 0x%2x\r\n", tasks);
         emberSerialWaitSend(APP_SERIAL);
@@ -1670,9 +1672,9 @@ void processSerialInput(void) {
       // send test data
     case 'T':
       dataMode = DATA_MODE_TEST;
-      // Enabling the internal variable emRadioAlwaysUseZeroBackoff puts the 
-      //  MAC into a mode were only CSMA backoffs of zero are used.  
-      //  This is intended only to remove variability when doing power 
+      // Enabling the internal variable emRadioAlwaysUseZeroBackoff puts the
+      //  MAC into a mode were only CSMA backoffs of zero are used.
+      //  This is intended only to remove variability when doing power
       //  consumption measurements and eases comparison between different
       //  scenarios.
       // Enabling this variable in a normal application will have a negative
