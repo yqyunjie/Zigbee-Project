@@ -1,0 +1,14 @@
+Error: Target not recognized as an Ember device
+
+Question
+    Error: Target not recognized as an Ember device
+
+Answer
+
+    There are a number of errors that fall under this category.  But they all have the following common elements:
+
+    1) Getting an error when attempting to use em3xx_load
+
+    2) part of the error message says "Target not recognized as an Ember device."   This problem often arises if the EM35x has been interrupted during a programming/erasing operation via the ISA3.  Examples of interruptions would include pulling the power or pulling on the reset line while the chip is programming/erasing.  It is recommended that other chips interfacing to the EM35x be locked down during programming operations.
+
+    If you find your EM35x in this state, there is a general recovery mechanism.  You will need to short the nBOOTMODE pin (PA5) to ground, execute an em3xx_load command (such as "--erase"), then release the PA5 pin.  After this procedure, the EM35x part should function as normal.  

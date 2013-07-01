@@ -21,15 +21,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug</state>
+          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug</state>
+          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug</state>
+          <state>..\..\..\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Lst</state>
         </option>
         <option>
           <name>Variant</name>
