@@ -21,15 +21,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680</state>
+          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680</state>
+          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680</state>
+          <state>..\..\..\build\mobile-sensor-cortexm3-iar-em357-em3xx-dev0680\Lst</state>
         </option>
         <option>
           <name>Variant</name>
