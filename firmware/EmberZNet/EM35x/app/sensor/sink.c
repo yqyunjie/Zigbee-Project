@@ -223,6 +223,13 @@ int main(void)
   #endif
 #endif//PHY_BRIDGE
 
+#if defined CORTEXM3_EM357
+  emberSerialGuaranteedPrintf(APP_SERIAL, "EM357 ");
+#elif defined CORTEXM3_EM351
+  emberSerialGuaranteedPrintf(APP_SERIAL, "EM351 ");
+#else
+    #error Unknown CORTEXM3 micro
+#endif
   emberSerialGuaranteedPrintf(APP_SERIAL,
 							  "Build on: "__TIME__" "__DATE__"\r\n");
   if (status != EMBER_SUCCESS) {
@@ -237,6 +244,12 @@ int main(void)
     emberSerialPrintf(APP_SERIAL, "EVENT: emberInit passed\r\n");
     emberSerialWaitSend(APP_SERIAL);
   }
+
+  // turn allow join on
+  emberPermitJoining(0xFF);
+#if EMBER_SECURITY_LEVEL == 5
+  trustCenterPermitJoins(TRUE);
+#endif // EMBER_SECURITY_LEVEL == 5
 
   // init application state
   sinkInit();
@@ -704,6 +717,7 @@ static void applicationTick(void) {
       // Increment our timer for joining.  Turn off joining at the trust
       // center when it has reached the join timeout.
       // *******************
+#if 0
       if ( trustCenterIsPermittingJoins() ) {
         permitJoinsTimer++;
 
@@ -713,7 +727,8 @@ static void applicationTick(void) {
           permitJoinsTimer = 0;
         }
       }
-#endif
+#endif//#if 0
+#endif//#if EMBER_SECURITY_LEVEL == 5
 
       // ******************************************
       // see if it is time to advertise
@@ -787,10 +802,10 @@ static void applicationTick(void) {
       emberSerialPrintf(APP_SERIAL, "BUTTON0: turn permit join ON for 60 seconds\r\n");
 
       // turn allow join on
-      emberPermitJoining(joinTimeout);
+      //emberPermitJoining(joinTimeout);
 #if EMBER_SECURITY_LEVEL == 5
-      trustCenterPermitJoins(TRUE);
-      permitJoinsTimer = 0;
+      //trustCenterPermitJoins(TRUE);
+      //permitJoinsTimer = 0;
 #endif // EMBER_SECURITY_LEVEL == 5
     }
 

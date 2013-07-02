@@ -231,6 +231,14 @@ void main(void)
   // print the reason for the reset
   emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
                               (PGM_P)halGetResetString());
+
+#if defined CORTEXM3_EM357
+  emberSerialGuaranteedPrintf(APP_SERIAL, "EM357 ");
+#elif defined CORTEXM3_EM351
+  emberSerialGuaranteedPrintf(APP_SERIAL, "EM351 ");
+#else
+    #error Unknown CORTEXM3 micro
+#endif
   emberSerialGuaranteedPrintf(APP_SERIAL,
 							  "Build on: "__TIME__" "__DATE__"\r\n");
 
