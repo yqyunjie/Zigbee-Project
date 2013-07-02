@@ -1,0 +1,1440 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.40.4.54170/W32 for ARM     02/Jul/2013  21:36:32 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\ember #
+#                    -configuration.c                                         #
+#    Command line =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\ember #
+#                    -configuration.c -D DEBUG -D                             #
+#                    "BOARD_HEADER=\"hal/micro/cortexm3/em35x/board/dev0680.h #
+#                    \"" -D "PLATFORM_HEADER=\"hal/micro/cortexm3/compiler/ia #
+#                    r.h\"" -D HAL_MICRO -D CORTEXM3 -D CORTEXM3_EM357 -D     #
+#                    PHY_EM3XX -D BOARD_DEV0680 -D                            #
+#                    "CONFIGURATION_HEADER=\"app/sensor/sensor-configuration. #
+#                    h\"" -D SINK_APP -D EMBER_SERIAL1_MODE=EMBER_SERIAL_FIFO #
+#                     -D EMBER_SERIAL1_TX_QUEUE_SIZE=128 -D                   #
+#                    EMBER_SERIAL1_RX_QUEUE_SIZE=16 -D EMBER_SERIAL0_DEBUG    #
+#                    -D EMBER_SERIAL0_MODE=EMBER_SERIAL_FIFO -D               #
+#                    EMBER_SERIAL0_TX_QUEUE_SIZE=128 -D                       #
+#                    EMBER_SERIAL0_RX_QUEUE_SIZE=64 -D                        #
+#                    SCAN_DEBUG_PRINT_ENABLE -D USE_BOOTLOADER_LIB -D         #
+#                    "__SOURCEFILE__=\"ember-configuration.c\"" -lC           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\            #
+#                    --diag_suppress Pa050 -o F:\Firmware\emberZNet\firmware\ #
+#                    EmberZNet\EM35x\build\sink-cortexm3-iar-em357-em3xx-dev0 #
+#                    680-debug\Obj\ --debug --endian=little --cpu=Cortex-M3   #
+#                    -e --fpu=None --dlib_config "D:\Program Files\IAR        #
+#                    Systems\Embedded Workbench 6.4\arm\INC\c\DLib_Config_Nor #
+#                    mal.h" -I F:\Firmware\emberZNet\firmware\EmberZNet\EM35x #
+#                    \hal\ -I F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\ #
+#                    app\sensor\ewb-em357\..\..\..\ -I                        #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\STACK\ -I                           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\HAL\ -I                             #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\ -Ohz --use_c++_inline              #
+#    List file    =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\ember-confi #
+#                    guration.lst                                             #
+#    Object file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\ember-confi #
+#                    guration.o                                               #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\ember-configuration.c
+      1          /** @file ember-configuration.c
+      2           * @brief User-configurable stack memory allocation and convenience stubs 
+      3           * for little-used callbacks. 
+      4           * 
+      5           *
+      6           * \b Note: Application developers should \b not modify any portion
+      7           * of this file. Doing so may lead to mysterious bugs. Allocations should be 
+      8           * adjusted only with macros in a custom CONFIGURATION_HEADER. 
+      9           *
+     10           * <!--Copyright 2008 by Ember Corporation. All rights reserved.         *80*-->
+     11           */
+     12          #include PLATFORM_HEADER 
+     13          #include "stack/include/ember.h"
+     14          #include "stack/include/error.h"
+     15          #include "stack/include/ember-static-struct.h" // Required typedefs
+     16          //[[WBB350FIXME -- We need a unified, platform independant reboot machanism ]]
+     17          #ifdef XAP2B
+     18            #include "hal/micro/xap2b/em250/pcb.h"
+     19          #elif defined (CORTEXM3)
+     20            #include "hal/micro/micro.h"
+     21          #endif
+     22          
+     23          // *****************************************
+     24          // Memory Allocations & declarations
+     25          // *****************************************
+     26          
+     27          extern int8u emAvailableMemory[];
+     28          #ifdef XAP2B
+     29            #define align(value) ((value) + ((value) & 1))
+     30          #else
+     31            #define align(value) (value)
+     32          #endif
+     33          
+     34          //------------------------------------------------------------------------------
+     35          // API Version
+     36          
+
+   \                                 In section .rodata, align 1, keep-with-next
+     37          const int8u emApiVersion 
+   \                     emApiVersion:
+   \   00000000   0x20               DC8 32
+     38            = (EMBER_API_MAJOR_VERSION << 4) + EMBER_API_MINOR_VERSION;
+     39          
+     40          //------------------------------------------------------------------------------
+     41          // Packet Buffers
+     42          
+
+   \                                 In section .data, align 1
+     43          int8u emPacketBufferCount = EMBER_PACKET_BUFFER_COUNT;
+   \                     emPacketBufferCount:
+   \   00000000   0x18               DC8 24
+
+   \                                 In section .data, align 1
+     44          int8u emPacketBufferFreeCount = EMBER_PACKET_BUFFER_COUNT;
+   \                     emPacketBufferFreeCount:
+   \   00000000   0x18               DC8 24
+     45          
+     46          // The actual memory for buffers.
+
+   \                                 In section .data, align 4
+     47          int8u *emPacketBufferData = &emAvailableMemory[0];
+   \                     emPacketBufferData:
+   \   00000000   0x........         DC32 emAvailableMemory
+     48          #define END_emPacketBufferData          \
+     49            (align(EMBER_PACKET_BUFFER_COUNT * 32))
+     50          
+
+   \                                 In section .data, align 4
+     51          int8u *emMessageBufferLengths = &emAvailableMemory[END_emPacketBufferData];
+   \                     emMessageBufferLengths:
+   \   00000000   0x........         DC32 emAvailableMemory + 300H
+     52          #define END_emMessageBufferLengths      \
+     53            (END_emPacketBufferData + align(EMBER_PACKET_BUFFER_COUNT))
+     54          
+
+   \                                 In section .data, align 4
+     55          int8u *emMessageBufferReferenceCounts = &emAvailableMemory[END_emMessageBufferLengths];
+   \                     emMessageBufferReferenceCounts:
+   \   00000000   0x........         DC32 emAvailableMemory + 318H
+     56          #define END_emMessageBufferReferenceCounts      \
+     57            (END_emMessageBufferLengths + align(EMBER_PACKET_BUFFER_COUNT))
+     58          
+
+   \                                 In section .data, align 4
+     59          int8u *emPacketBufferLinks = &emAvailableMemory[END_emMessageBufferReferenceCounts];
+   \                     emPacketBufferLinks:
+   \   00000000   0x........         DC32 emAvailableMemory + 330H
+     60          #define END_emPacketBufferLinks      \
+     61            (END_emMessageBufferReferenceCounts + align(EMBER_PACKET_BUFFER_COUNT))
+     62          
+
+   \                                 In section .data, align 4
+     63          int8u *emPacketBufferQueueLinks = &emAvailableMemory[END_emPacketBufferLinks];
+   \                     emPacketBufferQueueLinks:
+   \   00000000   0x........         DC32 emAvailableMemory + 348H
+     64          #define END_emPacketBufferQueueLinks      \
+     65            (END_emPacketBufferLinks + align(EMBER_PACKET_BUFFER_COUNT))
+     66          
+     67          //------------------------------------------------------------------------------
+     68          // NWK Layer
+     69          
+     70          #ifdef EMBER_DISABLE_RELAY
+     71          int8u emAllowRelay = FALSE;
+     72          #else
+
+   \                                 In section .data, align 1
+     73          int8u emAllowRelay = TRUE;
+   \                     emAllowRelay:
+   \   00000000   0x01               DC8 1
+     74          #endif
+     75          
+     76          // emChildIdTable must be sized one element larger than EMBER_CHILD_TABLE_SIZE
+     77          // to allow emberChildIndex() to perform an optimized search when setting the
+     78          // frame pending bit.  emberChildTableSize and EMBER_CHILD_TABLE_SIZE still
+     79          // correspond to the number of children, not the number of child table elements.
+
+   \                                 In section .data, align 4
+     80          EmberNodeId *emChildIdTable = (EmberNodeId *) &emAvailableMemory[END_emPacketBufferQueueLinks];
+   \                     emChildIdTable:
+   \   00000000   0x........         DC32 emAvailableMemory + 360H
+
+   \                                 In section .data, align 1
+     81          int8u emberChildTableSize = EMBER_CHILD_TABLE_SIZE;
+   \                     emberChildTableSize:
+   \   00000000   0x06               DC8 6
+     82          #define END_emChildIdTable              \
+     83           (END_emPacketBufferQueueLinks + align( (EMBER_CHILD_TABLE_SIZE+1) * sizeof(EmberNodeId)))
+     84          
+
+   \                                 In section .data, align 4
+     85          int16u *emChildStatus = (int16u *) &emAvailableMemory[END_emChildIdTable];
+   \                     emChildStatus:
+   \   00000000   0x........         DC32 emAvailableMemory + 36EH
+     86          #define END_emChildStatus               \
+     87           (END_emChildIdTable + align(EMBER_CHILD_TABLE_SIZE * sizeof(int16u)))
+     88          
+
+   \                                 In section .data, align 4
+     89          int8u *emChildTimers = (int8u *) &emAvailableMemory[END_emChildStatus];
+   \                     emChildTimers:
+   \   00000000   0x........         DC32 emAvailableMemory + 37AH
+     90          #define END_emChildTimers               \
+     91           (END_emChildStatus + align(EMBER_CHILD_TABLE_SIZE * sizeof(int8u)))
+     92          
+
+   \                                 In section .data, align 4
+     93          int8u *emUnicastAlarmData = (int8u *) &emAvailableMemory[END_emChildTimers];
+   \                     emUnicastAlarmData:
+   \   00000000   0x........         DC32 emAvailableMemory + 380H
+
+   \                                 In section .bss, align 1
+     94          int8u emUnicastAlarmDataSize = EMBER_UNICAST_ALARM_DATA_SIZE;
+   \                     emUnicastAlarmDataSize:
+   \   00000000                      DS8 1
+     95          #define END_emUnicastAlarmData          \
+     96           (END_emChildTimers+ align(EMBER_CHILD_TABLE_SIZE * EMBER_UNICAST_ALARM_DATA_SIZE))
+     97          
+
+   \                                 In section .data, align 4
+     98          int8u *emBroadcastAlarmData = (int8u *) &emAvailableMemory[END_emUnicastAlarmData];
+   \                     emBroadcastAlarmData:
+   \   00000000   0x........         DC32 emAvailableMemory + 380H
+
+   \                                 In section .bss, align 1
+     99          int8u emBroadcastAlarmDataSize = EMBER_BROADCAST_ALARM_DATA_SIZE;
+   \                     emBroadcastAlarmDataSize:
+   \   00000000                      DS8 1
+    100          #define END_emBroadcastAlarmData        \
+    101           (END_emUnicastAlarmData + align(EMBER_BROADCAST_ALARM_DATA_SIZE))
+    102          
+
+   \                                 In section .data, align 4
+    103          EmRouteTableEntry *emRouteData = (EmRouteTableEntry *) &emAvailableMemory[END_emBroadcastAlarmData];
+   \                     emRouteData:
+   \   00000000   0x........         DC32 emAvailableMemory + 380H
+
+   \                                 In section .data, align 1
+    104          int8u emRouteTableSize = EMBER_ROUTE_TABLE_SIZE;
+   \                     emRouteTableSize:
+   \   00000000   0x10               DC8 16
+    105          #define END_emRouteData        \
+    106           (END_emBroadcastAlarmData + align(EMBER_ROUTE_TABLE_SIZE * sizeof(EmRouteTableEntry)))
+    107          
+
+   \                                 In section .data, align 4
+    108          EmDiscoveryTableEntry *emDiscoveryTable = (EmDiscoveryTableEntry *) &emAvailableMemory[END_emRouteData];
+   \                     emDiscoveryTable:
+   \   00000000   0x........         DC32 emAvailableMemory + 3E0H
+
+   \                                 In section .data, align 1
+    109          int8u emDiscoveryTableSize = EMBER_DISCOVERY_TABLE_SIZE;
+   \                     emDiscoveryTableSize:
+   \   00000000   0x08               DC8 8
+    110          #define END_emDiscoveryTable        \
+    111           (END_emRouteData + align(EMBER_DISCOVERY_TABLE_SIZE * sizeof(EmDiscoveryTableEntry)))
+    112          
+
+   \                                 In section .data, align 4
+    113          EmberMulticastTableEntry *emberMulticastTable = (EmberMulticastTableEntry *) &emAvailableMemory[END_emDiscoveryTable];
+   \                     emberMulticastTable:
+   \   00000000   0x........         DC32 emAvailableMemory + 420H
+
+   \                                 In section .data, align 1
+    114          int8u emberMulticastTableSize = EMBER_MULTICAST_TABLE_SIZE;
+   \                     emberMulticastTableSize:
+   \   00000000   0x01               DC8 1
+    115          #define END_emberMulticastTable        \
+    116           (END_emDiscoveryTable + align(EMBER_MULTICAST_TABLE_SIZE * sizeof(EmberMulticastTableEntry)))
+    117          
+    118          #ifdef EMBER_PARAMETERIZED_BROADCAST_TABLE
+    119          EmBroadcastTableEntry *emBroadcastTable = (EmBroadcastTableEntry *) &emAvailableMemory[END_emberMulticastTable];
+    120          #define END_emberBroadcastTable        \
+    121           (END_emberMulticastTable + align(EMBER_BROADCAST_TABLE_SIZE * sizeof(EmBroadcastTableEntry)))
+    122          int8u emBroadcastTableSize = EMBER_BROADCAST_TABLE_SIZE;
+    123          #else
+    124          #define END_emberBroadcastTable END_emberMulticastTable
+    125          #endif
+    126          
+    127          //------------------------------------------------------------------------------
+    128          // Network descriptor (multi-network support)
+    129          #if !defined(EMBER_MULTI_NETWORK_STRIPPED)
+
+   \                                 In section .data, align 4
+    130          EmberNetworkInfo* emNetworkDescriptor = (EmberNetworkInfo *) &emAvailableMemory[END_emberBroadcastTable];
+   \                     emNetworkDescriptor:
+   \   00000000   0x........         DC32 emAvailableMemory + 424H
+
+   \                                 In section .data, align 1
+    131          int8u emSupportedNetworks = EMBER_SUPPORTED_NETWORKS;
+   \                     emSupportedNetworks:
+   \   00000000   0x01               DC8 1
+    132          #define END_emNetworkDescriptor         \
+    133              (END_emberBroadcastTable + align( (EMBER_SUPPORTED_NETWORKS) * sizeof(EmberNetworkInfo)))
+    134          #else
+    135          int8u emSupportedNetworks = 1;
+    136          #define END_emNetworkDescriptor END_emberBroadcastTable
+    137          #endif // !defined(EMBER_MULTI_NETWORK_STRIPPED)
+    138          
+    139          //------------------------------------------------------------------------------
+    140          // Neighbor Table
+    141          
+
+   \                                 In section .data, align 4
+    142          EmNeighborTableEntry *emNeighborData = (EmNeighborTableEntry *) &emAvailableMemory[END_emNetworkDescriptor];
+   \                     emNeighborData:
+   \   00000000   0x........         DC32 emAvailableMemory + 46CH
+
+   \                                 In section .data, align 1
+    143          int8u emRouterNeighborTableSize = EMBER_NEIGHBOR_TABLE_SIZE;
+   \                     emRouterNeighborTableSize:
+   \   00000000   0x08               DC8 8
+    144          #define END_emNeighborData        \
+    145           (END_emNetworkDescriptor + align((EMBER_NEIGHBOR_TABLE_SIZE + EMBER_SUPPORTED_NETWORKS) * sizeof(EmNeighborTableEntry)))
+    146          
+
+   \                                 In section .data, align 4
+    147          int32u *emFrameCountersTable = (int32u *) &emAvailableMemory[END_emNeighborData];
+   \                     emFrameCountersTable:
+   \   00000000   0x........         DC32 emAvailableMemory + 4EAH
+    148          #define END_emFrameCountersTable        \
+    149           (END_emNeighborData + align((EMBER_NEIGHBOR_TABLE_SIZE + EMBER_CHILD_TABLE_SIZE + EMBER_SUPPORTED_NETWORKS) * sizeof(int32u)))
+    150          
+    151          //------------------------------------------------------------------------------
+    152          // Binding Table
+    153          
+
+   \                                 In section .bss, align 1
+    154          int8u emberBindingTableSize = EMBER_BINDING_TABLE_SIZE;
+   \                     emberBindingTableSize:
+   \   00000000                      DS8 1
+    155          
+
+   \                                 In section .data, align 4
+    156          int16u *emBindingRemoteNode = (int16u *) &emAvailableMemory[END_emFrameCountersTable];
+   \                     emBindingRemoteNode:
+   \   00000000   0x........         DC32 emAvailableMemory + 526H
+    157          #define END_emBindingRemoteNode        \
+    158           (END_emFrameCountersTable + align(EMBER_BINDING_TABLE_SIZE * sizeof(int16u)))
+    159          
+
+   \                                 In section .data, align 4
+    160          int8u *emBindingFlags = &emAvailableMemory[END_emBindingRemoteNode];
+   \                     emBindingFlags:
+   \   00000000   0x........         DC32 emAvailableMemory + 526H
+    161          #define END_emBindingFlags        \
+    162           (END_emBindingRemoteNode + align(EMBER_BINDING_TABLE_SIZE))
+    163          
+    164          //------------------------------------------------------------------------------
+    165          // APS Layer
+    166          
+
+   \                                 In section .data, align 1
+    167          int8u emAddressTableSize = EMBER_ADDRESS_TABLE_SIZE;
+   \                     emAddressTableSize:
+   \   00000000   0x14               DC8 20
+
+   \                                 In section .data, align 4
+    168          EmAddressTableEntry *emAddressTable = (EmAddressTableEntry *) &emAvailableMemory[END_emBindingFlags];
+   \                     emAddressTable:
+   \   00000000   0x........         DC32 emAvailableMemory + 526H
+    169          #define END_emAddressTable        \
+    170           (END_emBindingFlags + align(EMBER_ADDRESS_TABLE_SIZE * sizeof(EmAddressTableEntry)))
+    171          
+
+   \                                 In section .data, align 1
+    172          int8u emMaxApsUnicastMessages = EMBER_APS_UNICAST_MESSAGE_COUNT;
+   \                     emMaxApsUnicastMessages:
+   \   00000000   0x0A               DC8 10
+
+   \                                 In section .data, align 4
+    173          EmApsUnicastMessageData *emApsUnicastMessageData = (EmApsUnicastMessageData *) &emAvailableMemory[END_emAddressTable];
+   \                     emApsUnicastMessageData:
+   \   00000000   0x........         DC32 emAvailableMemory + 616H
+    174          #define END_emApsUnicastMessageData        \
+    175           (END_emAddressTable + align(EMBER_APS_UNICAST_MESSAGE_COUNT * sizeof(EmApsUnicastMessageData)))
+    176          
+
+   \                                 In section .data, align 2
+    177          int16u emberApsAckTimeoutMs = 
+   \                     emberApsAckTimeoutMs:
+   \   00000000   0x0640             DC16 1600
+    178           ((EMBER_APSC_MAX_ACK_WAIT_HOPS_MULTIPLIER_MS
+    179             * EMBER_MAX_HOPS)
+    180            + EMBER_APSC_MAX_ACK_WAIT_TERMINAL_SECURITY_MS);
+    181          
+
+   \                                 In section .bss, align 1
+    182          int8u emFragmentDelayMs = EMBER_FRAGMENT_DELAY_MS;
+   \                     emFragmentDelayMs:
+   \   00000000                      DS8 1
+
+   \                                 In section .data, align 1
+    183          int8u emberFragmentWindowSize = EMBER_FRAGMENT_WINDOW_SIZE;
+   \                     emberFragmentWindowSize:
+   \   00000000   0x01               DC8 1
+    184          
+
+   \                                 In section .bss, align 1
+    185          int8u emberKeyTableSize = EMBER_KEY_TABLE_SIZE;
+   \                     emberKeyTableSize:
+   \   00000000                      DS8 1
+
+   \                                 In section .data, align 4
+    186          int32u* emIncomingApsFrameCounters = (int32u*)&emAvailableMemory[END_emApsUnicastMessageData];
+   \                     emIncomingApsFrameCounters:
+   \   00000000   0x........         DC32 emAvailableMemory + 652H
+    187          #define END_emIncomingApsFrameCounters \
+    188            (END_emApsUnicastMessageData + align(EMBER_KEY_TABLE_SIZE * sizeof(int32u)))
+    189          
+
+   \                                 In section .bss, align 1
+    190          EmberLinkKeyRequestPolicy emberTrustCenterLinkKeyRequestPolicy = 
+   \                     emberTrustCenterLinkKeyRequestPolicy:
+   \   00000000                      DS8 1
+    191            EMBER_DENY_KEY_REQUESTS;
+
+   \                                 In section .data, align 1
+    192          EmberLinkKeyRequestPolicy emberAppLinkKeyRequestPolicy = 
+   \                     emberAppLinkKeyRequestPolicy:
+   \   00000000   0x01               DC8 1
+    193            EMBER_ALLOW_KEY_REQUESTS;
+    194          
+
+   \                                 In section .bss, align 1
+    195          int8u emCertificateTableSize = EMBER_CERTIFICATE_TABLE_SIZE;
+   \                     emCertificateTableSize:
+   \   00000000                      DS8 1
+    196          
+
+   \                                 In section .bss, align 1
+    197          int8u emAppZdoConfigurationFlags =
+   \                     emAppZdoConfigurationFlags:
+   \   00000000                      DS8 1
+    198            0
+    199            
+    200          // Define this in order to receive supported ZDO request messages via
+    201          // the incomingMessageHandler callback.  A supported ZDO request is one that
+    202          // is handled by the EmberZNet stack.  The stack will continue to handle the
+    203          // request and send the appropriate ZDO response even if this configuration
+    204          // option is enabled.
+    205          #ifdef EMBER_APPLICATION_RECEIVES_SUPPORTED_ZDO_REQUESTS
+    206            | EMBER_APP_RECEIVES_SUPPORTED_ZDO_REQUESTS
+    207          #endif
+    208          
+    209          // Define this in order to receive unsupported ZDO request messages via
+    210          // the incomingMessageHandler callback.  An unsupported ZDO request is one that
+    211          // is not handled by the EmberZNet stack, other than to send a 'not supported'
+    212          // ZDO response.  If this configuration option is enabled, the stack will no
+    213          // longer send any ZDO response, and it is the application's responsibility
+    214          // to do so.  To see if a response is required, the application must check
+    215          // the APS options bitfield within the emberIncomingMessageHandler callback to see
+    216          // if the EMBER_APS_OPTION_ZDO_RESPONSE_REQUIRED flag is set.
+    217          #ifdef EMBER_APPLICATION_HANDLES_UNSUPPORTED_ZDO_REQUESTS
+    218            | EMBER_APP_HANDLES_UNSUPPORTED_ZDO_REQUESTS
+    219          #endif
+    220          
+    221          // Define this in order to receive the following ZDO request 
+    222          // messages via the emberIncomingMessageHandler callback: SIMPLE_DESCRIPTOR_REQUEST,
+    223          // MATCH_DESCRIPTORS_REQUEST, and ACTIVE_ENDPOINTS_REQUEST.  If this 
+    224          // configuration option is enabled, the stack will no longer send any ZDO
+    225          // response, and it is the application's responsibility to do so.
+    226          // To see if a response is required, the application must check
+    227          // the APS options bitfield within the emberIncomingMessageHandler callback to see
+    228          // if the EMBER_APS_OPTION_ZDO_RESPONSE_REQUIRED flag is set.
+    229          #ifdef EMBER_APPLICATION_HANDLES_ENDPOINT_ZDO_REQUESTS
+    230            | EMBER_APP_HANDLES_ZDO_ENDPOINT_REQUESTS
+    231          #endif
+    232          
+    233          // Define this in order to receive the following ZDO request
+    234          // messages via the emberIncomingMessageHandler callback: BINDING_TABLE_REQUEST, 
+    235          // BIND_REQUEST, and UNBIND_REQUEST.  If this
+    236          // configuration option is enabled, the stack will no longer send any ZDO
+    237          // response, and it is the application's responsibility to do so.
+    238          // To see if a response is required, the application must check
+    239          // the APS options bitfield within the emberIncomingMessageHandler callback
+    240          // to see if the EMBER_APS_OPTION_ZDO_RESPONSE_REQUIRED flag is set.
+    241          #ifdef EMBER_APPLICATION_HANDLES_BINDING_ZDO_REQUESTS
+    242            | EMBER_APP_HANDLES_ZDO_BINDING_REQUESTS
+    243          #endif
+    244          ;
+    245          
+    246          //------------------------------------------------------------------------------
+    247          // Memory Allocation
+    248          
+    249          #ifndef RESERVED_AVAILABLE_MEMORY
+    250            #define RESERVED_AVAILABLE_MEMORY 0
+    251          #endif
+    252          #define END_stackMemory  END_emIncomingApsFrameCounters + RESERVED_AVAILABLE_MEMORY
+    253          
+    254          // On the XAP2B platform, emAvailableMemory is allocated automatically to fill
+    255          // the available space. On other platforms, we must allocate it here.
+    256          #if defined(XAP2B)
+    257            extern int8u emAvailableMemoryTop[];
+    258            const int16u emMinAvailableMemorySize = END_stackMemory;
+    259          #elif defined (CORTEXM3)
+
+   \                                 In section EMHEAP, align 4
+    260            VAR_AT_SEGMENT(int8u emAvailableMemory[END_stackMemory], __EMHEAP__);
+   \                     emAvailableMemory:
+   \   00000000                      DS8 1620
+    261          #elif defined(EMBER_TEST)
+    262            int8u emAvailableMemory[END_stackMemory];
+    263            const int16u emAvailableMemorySize = END_stackMemory;
+    264          #else
+    265            #error "Unknown platform."
+    266          #endif
+    267          
+
+   \                                 In section .text, align 2, keep-with-next
+    268          void emCheckAvailableMemory(void)
+    269          {
+    270          #ifdef XAP2B
+    271            int16u emAvailableMemorySize = emAvailableMemoryTop - emAvailableMemory;
+    272            assert(END_stackMemory <= emAvailableMemorySize);
+    273          #endif
+    274          }
+   \                     emCheckAvailableMemory:
+   \   00000000   0x4770             BX       LR               ;; return
+    275          
+    276          // *****************************************
+    277          // Non-dynamically configurable structures
+    278          // *****************************************
+
+   \                                 In section .rodata, align 1, keep-with-next
+    279          PGM int8u emTaskCount = EMBER_TASK_COUNT;
+   \                     emTaskCount:
+   \   00000000   0x03               DC8 3
+
+   \                                 In section .bss, align 4
+    280          EmberTaskControl emTasks[EMBER_TASK_COUNT];
+   \                     emTasks:
+   \   00000000                      DS8 36
+    281          
+    282          
+    283          // *****************************************
+    284          // Stack Profile Parameters
+    285          // *****************************************
+    286          
+
+   \                                 In section .rodata, align 4, keep-with-next
+    287          PGM int8u emberStackProfileId[8] = { 0, };
+   \                     emberStackProfileId:
+   \   00000000   0x00 0x00          DC8 0, 0, 0, 0, 0, 0, 0, 0
+   \              0x00 0x00    
+   \              0x00 0x00    
+   \              0x00 0x00    
+    288          
+
+   \                                 In section .bss, align 1
+    289          int8u emStackProfile = EMBER_STACK_PROFILE;
+   \                     emStackProfile:
+   \   00000000                      DS8 1
+
+   \                                 In section .data, align 1
+    290          int8u emDefaultSecurityLevel = EMBER_SECURITY_LEVEL;
+   \                     emDefaultSecurityLevel:
+   \   00000000   0x05               DC8 5
+
+   \                                 In section .data, align 1
+    291          int8u emMaxEndDeviceChildren = EMBER_MAX_END_DEVICE_CHILDREN;
+   \                     emMaxEndDeviceChildren:
+   \   00000000   0x06               DC8 6
+
+   \                                 In section .data, align 1
+    292          int8u emMaxHops = EMBER_MAX_HOPS;
+   \                     emMaxHops:
+   \   00000000   0x1E               DC8 30
+
+   \                                 In section .data, align 2
+    293          int16u emberMacIndirectTimeout = EMBER_INDIRECT_TRANSMISSION_TIMEOUT;
+   \                     emberMacIndirectTimeout:
+   \   00000000   0x0BB8             DC16 3000
+
+   \                                 In section .bss, align 1
+    294          int8u emberReservedMobileChildEntries = EMBER_RESERVED_MOBILE_CHILD_ENTRIES;
+   \                     emberReservedMobileChildEntries:
+   \   00000000                      DS8 1
+
+   \                                 In section .data, align 1
+    295          int8u emberMobileNodePollTimeout = EMBER_MOBILE_NODE_POLL_TIMEOUT;
+   \                     emberMobileNodePollTimeout:
+   \   00000000   0x14               DC8 20
+
+   \                                 In section .data, align 1
+    296          int8u emberEndDevicePollTimeout = EMBER_END_DEVICE_POLL_TIMEOUT;
+   \                     emberEndDevicePollTimeout:
+   \   00000000   0x05               DC8 5
+
+   \                                 In section .data, align 1
+    297          int8u emberEndDevicePollTimeoutShift = EMBER_END_DEVICE_POLL_TIMEOUT_SHIFT;
+   \                     emberEndDevicePollTimeoutShift:
+   \   00000000   0x06               DC8 6
+
+   \                                 In section .data, align 1
+    298          int8u emEndDeviceBindTimeout = EMBER_END_DEVICE_BIND_TIMEOUT;
+   \                     emEndDeviceBindTimeout:
+   \   00000000   0x3C               DC8 60
+
+   \                                 In section .bss, align 1
+    299          int8u emRequestKeyTimeout = EMBER_REQUEST_KEY_TIMEOUT;
+   \                     emRequestKeyTimeout:
+   \   00000000                      DS8 1
+
+   \                                 In section .data, align 1
+    300          int8u emPanIdConflictReportThreshold = EMBER_PAN_ID_CONFLICT_REPORT_THRESHOLD;
+   \                     emPanIdConflictReportThreshold:
+   \   00000000   0x01               DC8 1
+    301          
+    302          
+    303          // Normally multicasts do NOT go to the sleepy address (0xFFFF), they go to
+    304          // RxOnWhenIdle=TRUE (0xFFFD).  This can be changed, but doing so is not
+    305          // ZigBee Pro Compliant and is possibly NOT interoperable.
+
+   \                                 In section .bss, align 1
+    306          boolean emSendMulticastsToSleepyAddress = EMBER_SEND_MULTICASTS_TO_SLEEPY_ADDRESS;
+   \                     emSendMulticastsToSleepyAddress:
+   \   00000000                      DS8 1
+    307          
+    308          // *****************************************
+    309          // ZigBee Light Link
+    310          // *****************************************
+    311          
+    312          #if defined(EMBER_ZLL_STACK)
+    313            // The number of groups required by the ZLL application.
+    314            int8u emZllGroupAddressesNeeded = EMBER_ZLL_GROUP_ADDRESSES;
+    315            int8s emZllRssiThreshold = EMBER_ZLL_RSSI_THRESHOLD;
+    316          #endif
+    317          
+    318          // *****************************************
+    319          // Convenience Stubs
+    320          // *****************************************
+    321          
+    322          #ifndef EMBER_APPLICATION_HAS_TRUST_CENTER_JOIN_HANDLER
+    323          EmberJoinDecision emberDefaultTrustCenterDecision = EMBER_USE_PRECONFIGURED_KEY;
+    324          
+    325          EmberJoinDecision emberTrustCenterJoinHandler(EmberNodeId newNodeId,
+    326                                                        EmberEUI64 newNodeEui64,
+    327                                                        EmberDeviceUpdate status,
+    328                                                        EmberNodeId parentOfNewNode)
+    329          {
+    330            if (status == EMBER_STANDARD_SECURITY_SECURED_REJOIN
+    331                || status == EMBER_DEVICE_LEFT
+    332                || status == EMBER_HIGH_SECURITY_SECURED_REJOIN)
+    333              return EMBER_NO_ACTION;
+    334          
+    335            return emberDefaultTrustCenterDecision;
+    336          }
+    337          #endif
+    338          
+    339          #ifndef EMBER_APPLICATION_HAS_SWITCH_KEY_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    340          void emberSwitchNetworkKeyHandler(int8u sequenceNumber)
+    341          {
+    342          }
+   \                     emberSwitchNetworkKeyHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    343          #endif
+    344          
+    345          #ifndef EMBER_APPLICATION_HAS_ZIGBEE_KEY_ESTABLISHMENT_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    346          void emberZigbeeKeyEstablishmentHandler(EmberEUI64 partner, EmberKeyStatus status)
+    347          {
+    348          }
+   \                     emberZigbeeKeyEstablishmentHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    349          #endif
+    350          
+    351          #ifndef EMBER_APPLICATION_HAS_CHILD_JOIN_HANDLER
+    352          void emberChildJoinHandler(int8u index, boolean joining)
+    353          {
+    354          }
+    355          #endif
+    356          
+    357          #ifndef EMBER_APPLICATION_HAS_POLL_COMPLETE_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    358          void emberPollCompleteHandler(EmberStatus status)
+    359          {
+    360          }
+   \                     emberPollCompleteHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    361          #endif
+    362          
+    363          #ifndef EMBER_APPLICATION_HAS_BOOTLOAD_HANDLERS
+    364          void emberIncomingBootloadMessageHandler(EmberEUI64 longId,
+    365                                                   EmberMessageBuffer message)
+    366          {
+    367          }
+    368          void emberBootloadTransmitCompleteHandler(EmberMessageBuffer message,
+    369                                                    EmberStatus status)
+    370          {
+    371          }
+    372          #endif
+    373          
+    374          #ifndef EMBER_APPLICATION_HAS_MAC_FILTER_MATCH_MESSAGE_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    375          void emberMacFilterMatchMessageHandler(const EmberMacFilterMatchStruct* macFilterMatchStruct)
+    376          {
+    377            emberMacPassthroughMessageHandler(macFilterMatchStruct->legacyPassthroughType,
+    378                                              macFilterMatchStruct->message);
+    379          }
+   \                     emberMacFilterMatchMessageHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    380          #endif
+    381          
+    382          #ifndef EMBER_APPLICATION_HAS_MAC_PASSTHROUGH_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    383          void emberMacPassthroughMessageHandler(EmberMacPassthroughType messageType,
+    384                                                 EmberMessageBuffer message)
+    385          {
+    386          }
+   \                     emberMacPassthroughMessageHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    387          #endif
+    388          #ifndef EMBER_APPLICATION_HAS_RAW_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    389          void emberRawTransmitCompleteHandler(EmberMessageBuffer message,
+    390                                               EmberStatus status)
+    391          {
+    392          }
+   \                     emberRawTransmitCompleteHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    393          #endif
+    394          
+    395          #ifndef EMBER_APPLICATION_HAS_INCOMING_MFG_TEST_MESSAGE_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    396          void emberIncomingMfgTestMessageHandler(int8u messageType, 
+    397                                                  int8u dataLength, 
+    398                                                  int8u *data) {}
+   \                     emberIncomingMfgTestMessageHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    399          #endif
+    400          
+    401          #ifndef EMBER_APPLICATION_HAS_ENERGY_SCAN_RESULT_HANDLER
+    402          void emberEnergyScanResultHandler(int8u channel, int8s maxRssiValue) {}
+    403          #endif
+    404          
+    405          #ifndef EMBER_APPLICATION_HAS_DEBUG_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    406          void emberDebugHandler(EmberMessageBuffer message) {}
+   \                     emberDebugHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    407          #endif
+    408          
+    409          #ifndef EMBER_APPLICATION_HAS_POLL_HANDLER
+    410          void emberPollHandler(EmberNodeId childId, boolean transmitExpected)
+    411          {
+    412          }
+    413          #endif
+    414          
+    415          #ifndef EMBER_APPLICATION_HAS_REMOTE_BINDING_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    416          EmberStatus emberRemoteSetBindingHandler(EmberBindingTableEntry *entry)
+    417          {
+    418            // Don't let anyone mess with our bindings.
+    419            return EMBER_INVALID_BINDING_INDEX;
+   \                     emberRemoteSetBindingHandler:
+   \   00000000   0x206C             MOVS     R0,#+108
+   \   00000002   0x4770             BX       LR               ;; return
+    420          }
+
+   \                                 In section .text, align 2, keep-with-next
+    421          EmberStatus emberRemoteDeleteBindingHandler(int8u index)
+    422          {
+    423            // Don't let anyone mess with our bindings.
+    424            return EMBER_INVALID_BINDING_INDEX;
+   \                     emberRemoteDeleteBindingHandler:
+   \   00000000   0x206C             MOVS     R0,#+108
+   \   00000002   0x4770             BX       LR               ;; return
+    425          }
+    426          #endif
+    427          
+    428          #ifndef EMBER_APPLICATION_HAS_BUTTON_HANDLER
+    429          void halButtonIsr(int8u button, int8u state)
+    430          {
+    431          }
+    432          #endif
+    433          
+    434          #ifndef EMBER_APPLICATION_HAS_SOURCE_ROUTING
+    435          void emberIncomingRouteRecordHandler(EmberNodeId source,
+    436                                               EmberEUI64 sourceEui,
+    437                                               int8u relayCount,
+    438                                               EmberMessageBuffer header,
+    439                                               int8u relayListIndex)
+    440          {
+    441          }
+    442          int8u emberAppendSourceRouteHandler(EmberNodeId destination,
+    443                                             EmberMessageBuffer header)
+    444          {
+    445            return 0;
+    446          }
+    447          #endif
+    448          
+    449          #ifndef EMBER_APPLICATION_HAS_INCOMING_MANY_TO_ONE_ROUTE_REQUEST_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    450          void emberIncomingManyToOneRouteRequestHandler(EmberNodeId source,
+    451                                                         EmberEUI64 longId,
+    452                                                         int8u cost)
+    453          {
+    454          }
+   \                     emberIncomingManyToOneRouteRequestHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    455          #endif
+    456          
+    457          #ifndef EMBER_APPLICATION_HAS_INCOMING_ROUTE_ERROR_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    458          void emberIncomingRouteErrorHandler(EmberStatus status, 
+    459                                              EmberNodeId target)
+    460          {
+    461          }
+   \                     emberIncomingRouteErrorHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    462          #endif
+    463          
+    464          #ifndef EMBER_APPLICATION_HAS_GET_ENDPOINT
+
+   \                                 In section .text, align 2, keep-with-next
+    465          int8u emberGetEndpoint(int8u index)
+    466          {
+    467            return emberEndpoints[index].endpoint;
+   \                     emberGetEndpoint:
+   \   00000000   0x0100             LSLS     R0,R0,#+4
+   \   00000002   0x....             LDR.N    R1,??DataTable7
+   \   00000004   0x5C40             LDRB     R0,[R0, R1]
+   \   00000006   0x4770             BX       LR               ;; return
+    468          }
+    469          
+
+   \                                 In section .text, align 2, keep-with-next
+    470          boolean emberGetEndpointDescription(int8u endpoint,
+    471                                              EmberEndpointDescription *result)
+    472          { 
+   \                     emberGetEndpointDescription:
+   \   00000000   0xB510             PUSH     {R4,LR}
+    473            int8u i;
+    474            EmberEndpoint *endpoints = emberEndpoints;
+   \   00000002   0x....             LDR.N    R2,??DataTable7
+    475            for (i = 0; i < emberEndpointCount; i++, endpoints++) {
+   \   00000004   0x2300             MOVS     R3,#+0
+   \   00000006   0xE001             B.N      ??emberGetEndpointDescription_0
+   \                     ??emberGetEndpointDescription_1:
+   \   00000008   0x1C5B             ADDS     R3,R3,#+1
+   \   0000000A   0x3210             ADDS     R2,R2,#+16
+   \                     ??emberGetEndpointDescription_0:
+   \   0000000C   0x....             LDR.N    R4,??DataTable7_1
+   \   0000000E   0x7824             LDRB     R4,[R4, #+0]
+   \   00000010   0xB2DB             UXTB     R3,R3
+   \   00000012   0x42A3             CMP      R3,R4
+   \   00000014   0xD20F             BCS.N    ??emberGetEndpointDescription_2
+    476              if (endpoints->endpoint == endpoint) {
+   \   00000016   0x7814             LDRB     R4,[R2, #+0]
+   \   00000018   0x4284             CMP      R4,R0
+   \   0000001A   0xD1F5             BNE.N    ??emberGetEndpointDescription_1
+    477                EmberEndpointDescription PGM * d = endpoints->description;
+   \   0000001C   0x6850             LDR      R0,[R2, #+4]
+    478                result->profileId                   = d->profileId;
+   \   0000001E   0x8802             LDRH     R2,[R0, #+0]
+   \   00000020   0x800A             STRH     R2,[R1, #+0]
+    479                result->deviceId                    = d->deviceId;
+   \   00000022   0x8842             LDRH     R2,[R0, #+2]
+   \   00000024   0x804A             STRH     R2,[R1, #+2]
+    480                result->deviceVersion               = d->deviceVersion;
+   \   00000026   0x7902             LDRB     R2,[R0, #+4]
+   \   00000028   0x710A             STRB     R2,[R1, #+4]
+    481                result->inputClusterCount           = d->inputClusterCount;
+   \   0000002A   0x7942             LDRB     R2,[R0, #+5]
+   \   0000002C   0x714A             STRB     R2,[R1, #+5]
+    482                result->outputClusterCount          = d->outputClusterCount;
+   \   0000002E   0x7980             LDRB     R0,[R0, #+6]
+   \   00000030   0x7188             STRB     R0,[R1, #+6]
+    483                return TRUE;
+   \   00000032   0x2001             MOVS     R0,#+1
+   \   00000034   0xBD10             POP      {R4,PC}
+    484              }
+    485            }
+    486            return FALSE;
+   \                     ??emberGetEndpointDescription_2:
+   \   00000036   0x2000             MOVS     R0,#+0
+   \   00000038   0xBD10             POP      {R4,PC}          ;; return
+    487          }
+    488          
+
+   \                                 In section .text, align 2, keep-with-next
+    489          int16u emberGetEndpointCluster(int8u endpoint,
+    490                                         EmberClusterListId listId,
+    491                                         int8u listIndex)
+    492          {
+   \                     emberGetEndpointCluster:
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+    493            int8u i;
+    494            EmberEndpoint *endpoints = emberEndpoints;
+   \   00000002   0x....             LDR.N    R3,??DataTable7
+    495            for (i = 0; i < emberEndpointCount; i++, endpoints++) {
+   \   00000004   0x2400             MOVS     R4,#+0
+   \   00000006   0xE001             B.N      ??emberGetEndpointCluster_0
+   \                     ??emberGetEndpointCluster_1:
+   \   00000008   0x1C64             ADDS     R4,R4,#+1
+   \   0000000A   0x3310             ADDS     R3,R3,#+16
+   \                     ??emberGetEndpointCluster_0:
+   \   0000000C   0x....             LDR.N    R5,??DataTable7_1
+   \   0000000E   0x782D             LDRB     R5,[R5, #+0]
+   \   00000010   0xB2E4             UXTB     R4,R4
+   \   00000012   0x42AC             CMP      R4,R5
+   \   00000014   0xD20C             BCS.N    ??emberGetEndpointCluster_2
+    496              if (endpoints->endpoint == endpoint) {
+   \   00000016   0x781D             LDRB     R5,[R3, #+0]
+   \   00000018   0x4285             CMP      R5,R0
+   \   0000001A   0xD1F5             BNE.N    ??emberGetEndpointCluster_1
+    497                switch (listId) {
+   \   0000001C   0xB111             CBZ.N    R1,??emberGetEndpointCluster_3
+   \   0000001E   0x2901             CMP      R1,#+1
+   \   00000020   0xD1F2             BNE.N    ??emberGetEndpointCluster_1
+   \   00000022   0xE001             B.N      ??emberGetEndpointCluster_4
+    498                case EMBER_INPUT_CLUSTER_LIST:
+    499                  return endpoints->inputClusterList[listIndex];
+   \                     ??emberGetEndpointCluster_3:
+   \   00000024   0x6898             LDR      R0,[R3, #+8]
+   \   00000026   0xE000             B.N      ??emberGetEndpointCluster_5
+    500                case EMBER_OUTPUT_CLUSTER_LIST:
+    501                  return endpoints->outputClusterList[listIndex];
+   \                     ??emberGetEndpointCluster_4:
+   \   00000028   0x68D8             LDR      R0,[R3, #+12]
+   \                     ??emberGetEndpointCluster_5:
+   \   0000002A   0xF830 0x0012      LDRH     R0,[R0, R2, LSL #+1]
+   \   0000002E   0xBD30             POP      {R4,R5,PC}
+    502                default: {
+    503                }
+    504                }
+    505              }
+    506            }
+    507            return 0;
+   \                     ??emberGetEndpointCluster_2:
+   \   00000030   0x2000             MOVS     R0,#+0
+   \   00000032   0xBD30             POP      {R4,R5,PC}       ;; return
+    508          }
+    509          
+    510          #endif // defined EMBER_APPLICATION_HAS_GET_ENDPOINT
+    511          
+    512          
+    513          // Inform the application that an orphan notification has been received.
+    514          // This is generally not useful for applications. It could be useful in
+    515          // testing and is included for this purpose.
+    516          #ifndef EMBER_APPLICATION_HAS_ORPHAN_NOTIFICATION_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    517          void emberOrphanNotificationHandler(EmberEUI64 longId)
+    518          {
+    519            return;
+   \                     emberOrphanNotificationHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    520          }
+    521          #endif
+    522          
+    523          #ifndef EMBER_APPLICATION_HAS_COUNTER_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    524          void emberCounterHandler(EmberCounterType type, int8u data)
+    525          {
+    526          }
+   \                     emberCounterHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    527          #endif
+    528          
+    529          #ifndef EMBER_APPLICATION_HAS_STACK_TOKEN_CHANGED_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    530          void emberStackTokenChangedHandler(int16u tokenAddress)
+    531          {
+    532          }
+   \                     emberStackTokenChangedHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    533          #endif
+    534          
+    535          #ifndef EMBER_APPLICATION_HAS_ID_CONFLICT_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    536          void emberIdConflictHandler(EmberNodeId conflictingId)
+    537          {
+    538          }
+   \                     emberIdConflictHandler:
+   \   00000000   0x4770             BX       LR               ;; return
+    539          #endif
+    540          
+    541          #ifndef EMBER_APPLICATION_HAS_MAC_PASSTHROUGH_FILTER_HANDLER
+
+   \                                 In section .text, align 2, keep-with-next
+    542          boolean emberMacPassthroughFilterHandler(int8u *macHeader)
+    543          {
+    544            return FALSE;
+   \                     emberMacPassthroughFilterHandler:
+   \   00000000   0x2000             MOVS     R0,#+0
+   \   00000002   0x4770             BX       LR               ;; return
+    545          }
+    546          #endif
+    547          
+    548          #ifndef AVR_ATMEGA
+    549          #ifndef EMBER_APPLICATION_HAS_CUSTOM_RADIO_CALIBRATION_CALLBACK
+    550          // See stack-info.h for more information.
+
+   \                                 In section .text, align 2, keep-with-next
+    551          void emberRadioNeedsCalibratingHandler(void)
+    552          {
+    553            // TODO: Failsafe any critical processes or peripherals.
+    554            emberCalibrateCurrentChannel();
+   \                     emberRadioNeedsCalibratingHandler:
+   \   00000000   0x.... 0x....      B.W      emberCalibrateCurrentChannel
+    555          }
+    556          #endif//EMBER_APPLICATION_HAS_CUSTOM_RADIO_CALIBRATION_CALLBACK
+    557          #endif//AVR_ATMEGA
+    558          
+    559          #if defined (XAP2B) || defined (CORTEXM3)
+    560          #ifndef EMBER_APPLICATION_HAS_CUSTOM_SIM_EEPROM_CALLBACK
+    561          #include "hal/micro/sim-eeprom.h"
+    562          // The Simulated EEPROM Callback function.
+    563          
+    564          #ifdef EMBER_SIMEE2
+    565          
+    566          void halSimEeprom2Callback(EmberStatus status)
+    567          {
+    568            switch (status) {
+    569            case EMBER_SIM_EEPROM_ERASE_PAGE_GREEN:
+    570              //SimEE is asking for one page to be erased.
+    571              halSimEeprom2ErasePage();
+    572              break;
+    573            case EMBER_SIM_EEPROM_ERASE_PAGE_RED:
+    574            case EMBER_SIM_EEPROM_FULL:
+    575            { //SimEE says we're out of room!  Erase all pages now or data
+    576              //currently being written will be dropped.
+    577              boolean erasedSome = FALSE;
+    578              while(halSimEeprom2ErasePage()) { erasedSome = TRUE; }
+    579              if(erasedSome) {
+    580                break;
+    581              }
+    582              //If nothing got erased, then we have a situation where page
+    583              //rotation is stuck because live tokens still exist in the
+    584              //page we want to erase.  In this case we must do a repair to
+    585              //get all live tokens into one virtual page. [BugzId:14392]
+    586              //Fall into...
+    587            }
+    588            case EMBER_ERR_FLASH_WRITE_INHIBITED:
+    589            case EMBER_ERR_FLASH_VERIFY_FAILED:
+    590            { //Something went wrong while writing a token.  There is stale data and the
+    591              //token the app expected to write did not get written.  Also there may
+    592              //now be "stray" data written in the flash that could inhibit future token
+    593              //writes.  To deal with stray/stale data, we must repair the Simulated
+    594              //EEPROM.  Because the expected token write failed and will not be retried,
+    595              //it is best to reset the chip and let normal boot sequences take over.
+    596              //Since halInternalSimEeRepair() could potentially result in another write
+    597              //failure, we use a simple semaphore to prevent recursion.
+    598              static boolean repairActive = FALSE;
+    599              if(!repairActive) {
+    600                repairActive = TRUE;
+    601                halInternalSimEeRepair(FALSE);
+    602                switch (status) {
+    603                case EMBER_SIM_EEPROM_FULL:
+    604                  //Don't reboot - return to let SimEE code retry the token write
+    605                  //[BugzId:14392]
+    606                  break;
+    607                case EMBER_ERR_FLASH_VERIFY_FAILED:
+    608                  halInternalSysReset(RESET_FLASH_VERIFY);
+    609                  break;
+    610                case EMBER_ERR_FLASH_WRITE_INHIBITED:
+    611                  halInternalSysReset(RESET_FLASH_INHIBIT);
+    612                  break;
+    613                default:
+    614                  assert(0);
+    615                  break;
+    616                }
+    617                repairActive = FALSE;
+    618              }
+    619              break;
+    620            }
+    621            case EMBER_SIM_EEPROM_REPAIRING:
+    622              // While there's nothing for an app to do when the SimEE is going to
+    623              // repair itself (SimEE has to be fully functional for the rest of the
+    624              // system to work), alert the application to the fact that repairing
+    625              // is occuring.  There are debugging scenarios where an app might want
+    626              // to know that repairing is happening; such as monitoring frequency.
+    627              // NOTE:  Common situations will trigger an expected repair, such as
+    628              //        using an erased chip or changing token definitions.
+    629              break;
+    630            default:
+    631              // this condition indicates an unexpected problem.
+    632              assert(0);
+    633              break;
+    634            }
+    635          }
+    636          
+    637          #else //EMBER_SIMEE2
+    638          
+    639          // The Simulated EEPROM occasionally needs to perform a page erase operation
+    640          // which disables interrupts for 20ms.
+    641          // Since this operation may impact proper application functionality, it is
+    642          // performed in a callback function which may be customized by the application.
+    643          // Applications that need to perform custom processing before and after this
+    644          // operation should define EMBER_APPLICATION_HAS_CUSTOM_SIM_EEPROM_CALLBACK.
+    645          // The default implementation provided here does not perform any special
+    646          // processing before performing the page erase operation.
+    647          // 'GREEN' means a page needs to be erased, but we have not crossed the
+    648          // threshold of how full the current page is.
+    649          // 'RED' means a page needs to be erased and we have a critically small amount
+    650          // of space left in the current page (we crossed the threshold).
+
+   \                                 In section .text, align 4, keep-with-next
+    651          void halSimEepromCallback(EmberStatus status)
+    652          {
+   \                     halSimEepromCallback:
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    653            switch (status) {
+   \   00000004   0x2843             CMP      R0,#+67
+   \   00000006   0xD030             BEQ.N    ??halSimEepromCallback_0
+   \   00000008   0x2844             CMP      R0,#+68
+   \   0000000A   0xD00E             BEQ.N    ??halSimEepromCallback_1
+   \   0000000C   0x2845             CMP      R0,#+69
+   \   0000000E   0xD006             BEQ.N    ??halSimEepromCallback_2
+   \   00000010   0x2846             CMP      R0,#+70
+   \   00000012   0xBF18             IT       NE 
+   \   00000014   0x2847             CMPNE    R0,#+71
+   \   00000016   0xD00C             BEQ.N    ??halSimEepromCallback_3
+   \   00000018   0x284D             CMP      R0,#+77
+   \   0000001A   0xD026             BEQ.N    ??halSimEepromCallback_0
+   \   0000001C   0xE01C             B.N      ??halSimEepromCallback_4
+    654            case EMBER_SIM_EEPROM_ERASE_PAGE_GREEN:
+    655              // this condition is expected in normal operation.  nothing to do.
+    656              break;
+    657            case EMBER_SIM_EEPROM_ERASE_PAGE_RED:
+    658              // this condition indicates that the page erase operation must be performed.
+    659              halSimEepromErasePage();
+    660              break;
+    661            case EMBER_SIM_EEPROM_FULL:
+    662              // the Simulated EEPROM is full!  we must erase a page!  we should never
+    663              // reach this case if the PAGE_RED above calls ErasePage();
+    664              halSimEepromErasePage();
+   \                     ??halSimEepromCallback_2:
+   \   0000001E   0x.... 0x....      BL       halSimEepromErasePage
+    665              halSimEepromErasePage();
+   \   00000022   0x.... 0x....      BL       halSimEepromErasePage
+    666              halSimEepromErasePage();
+   \   00000026   0x.... 0x....      BL       halSimEepromErasePage
+    667              halSimEepromErasePage();
+   \                     ??halSimEepromCallback_1:
+   \   0000002A   0xE8BD 0x4031      POP      {R0,R4,R5,LR}
+   \   0000002E   0x.... 0x....      B.W      halSimEepromErasePage
+    668              break;
+    669            case EMBER_ERR_FLASH_WRITE_INHIBITED:
+    670            case EMBER_ERR_FLASH_VERIFY_FAILED:
+    671            { //Something went wrong while writing a token.  There is stale data and the
+    672              //token the app expected to write did not get written.  Also there may
+    673              //now be "stray" data written in the flash that could inhibit future token
+    674              //writes.  To deal with stray/stale data, we must repair the Simulated
+    675              //EEPROM.  Because the expected token write failed and will not be retried,
+    676              //it is best to reset the chip and let normal boot sequences take over.
+    677              //Since halInternalSimEeRepair() could potentially result in another write
+    678              //failure, we use a simple semaphore to prevent recursion.
+    679              static boolean repairActive = FALSE;
+    680              if(!repairActive) {
+   \                     ??halSimEepromCallback_3:
+   \   00000032   0x....             LDR.N    R5,??DataTable7_2
+   \   00000034   0x7828             LDRB     R0,[R5, #+0]
+   \   00000036   0xB9C0             CBNZ.N   R0,??halSimEepromCallback_0
+    681                repairActive = TRUE;
+   \   00000038   0x2001             MOVS     R0,#+1
+   \   0000003A   0x7028             STRB     R0,[R5, #+0]
+    682                halInternalSimEeRepair(FALSE);
+   \   0000003C   0x2000             MOVS     R0,#+0
+   \   0000003E   0x.... 0x....      BL       halInternalSimEeStartup
+    683                //[[WBB350FIXME -It would be nice to have a unified, ]]
+    684                //[[             platform independant reboot machanism]]
+    685                if(status==EMBER_ERR_FLASH_VERIFY_FAILED) {
+   \   00000042   0x2C47             CMP      R4,#+71
+   \   00000044   0xBF0C             ITE      EQ 
+   \   00000046   0xF640 0x0001      MOVWEQ   R0,#+2049
+   \   0000004A   0xF640 0x0002      MOVWNE   R0,#+2050
+    686                  #if defined (XAP2B)
+    687                    halInternalSysReset(CE_REBOOT_F_VERIFY);
+    688                  #elif defined (CORTEXM3)
+    689                    halInternalSysReset(RESET_FLASH_VERIFY);
+    690                  #else
+    691                    assert(0);
+    692                  #endif
+    693                } else {
+    694                  #if defined (XAP2B)
+    695                    halInternalSysReset(CE_REBOOT_F_INHIBIT);
+    696                  #elif defined (CORTEXM3)
+    697                    halInternalSysReset(RESET_FLASH_INHIBIT);
+   \   0000004E   0x.... 0x....      BL       halInternalSysReset
+    698                  #else
+    699                    assert(0);
+    700                  #endif
+    701                }
+    702                repairActive = FALSE;
+   \   00000052   0x2000             MOVS     R0,#+0
+   \   00000054   0x7028             STRB     R0,[R5, #+0]
+   \   00000056   0xBD31             POP      {R0,R4,R5,PC}
+    703              }
+    704              break;
+    705            }
+    706            case EMBER_SIM_EEPROM_REPAIRING:
+    707              // While there's nothing for an app to do when the SimEE is going to
+    708              // repair itself (SimEE has to be fully functional for the rest of the
+    709              // system to work), alert the application to the fact that repairing
+    710              // is occuring.  There are debugging scenarios where an app might want
+    711              // to know that repairing is happening; such as monitoring frequency.
+    712              // NOTE:  Common situations will trigger an expected repair, such as
+    713              //        using an erased chip or changing token definitions.
+    714              break;
+    715            default:
+    716              // this condition indicates an unexpected problem.
+    717              assert(0);
+   \                     ??halSimEepromCallback_4:
+   \   00000058   0xB507             PUSH {R0,R1,R2,LR}
+   \   0000005A   0xF240 0x21CD      MOVW     R1,#+717
+   \   0000005E   0x.... 0x....      ADR.W    R0,`?<Constant "ember-configuration.c">`
+   \   00000062   0xE8BD 0x4034      POP      {R2,R4,R5,LR}
+   \   00000066   0x.... 0x....      B.W      halInternalAssertFailed
+    718              break;
+    719            }
+    720          }
+   \                     ??halSimEepromCallback_0:
+   \   0000006A   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+
+   \                                 In section .bss, align 1
+   \                     ??repairActive:
+   \   00000000                      DS8 1
+    721          #endif //EMBER_SIMEE2
+    722          
+    723          #endif//EMBER_APPLICATION_HAS_CUSTOM_SIM_EEPROM_CALLBACK
+    724          
+    725          #ifndef CUSTOM_EM250_TEST_APPLICATION
+    726          /* Sample system call */
+
+   \                                 In section .text, align 2, keep-with-next
+    727          int32u emberTest ( int16u arg, ... )
+    728          {
+   \                     emberTest:
+   \   00000000   0xB40E             PUSH     {R1-R3}
+    729            return arg;
+   \   00000002   0xB003             ADD      SP,SP,#+12
+   \   00000004   0x4770             BX       LR               ;; return
+    730          }
+    731          #endif//CUSTOM_EM250_TEST_APPLICATION
+    732          
+    733          #ifndef EMBER_APPLICATION_HAS_CUSTOM_ISRS
+
+   \                                 In section .text, align 2, keep-with-next
+    734          int16u microGenericIsr ( int16u interrupt, int16u pcbContext )
+    735          {
+    736            return interrupt;
+   \                     microGenericIsr:
+   \   00000000   0x4770             BX       LR               ;; return
+    737          }
+    738          
+
+   \                                 In section .text, align 2, keep-with-next
+    739          int16u halInternalSc2Isr(int16u interrupt, int16u pcbContext)
+    740          {
+    741            return interrupt;
+   \                     halInternalSc2Isr:
+   \   00000000   0x4770             BX       LR               ;; return
+    742          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7:
+   \   00000000   0x........         DC32     emberEndpoints
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_1:
+   \   00000000   0x........         DC32     emberEndpointCount
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_2:
+   \   00000000   0x........         DC32     ??repairActive
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     `?<Constant "ember-configuration.c">`:
+   \   00000000   0x65 0x6D          DC8 "ember-configuration.c"
+   \              0x62 0x65    
+   \              0x72 0x2D    
+   \              0x63 0x6F    
+   \              0x6E 0x66    
+   \              0x69 0x67    
+   \              0x75 0x72    
+   \              0x61 0x74    
+   \              0x69 0x6F    
+   \              0x6E 0x2E    
+   \              0x63 0x00    
+   \   00000016   0x00 0x00          DC8 0, 0
+    743          #endif//EMBER_APPLICATION_HAS_CUSTOM_ISRS
+    744          #endif//XAP2B
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        0  emCheckAvailableMemory
+        0  emberCounterHandler
+        0  emberDebugHandler
+        0  emberGetEndpoint
+       12  emberGetEndpointCluster
+        8  emberGetEndpointDescription
+        0  emberIdConflictHandler
+        0  emberIncomingManyToOneRouteRequestHandler
+        0  emberIncomingMfgTestMessageHandler
+        0  emberIncomingRouteErrorHandler
+        0  emberMacFilterMatchMessageHandler
+        0  emberMacPassthroughFilterHandler
+        0  emberMacPassthroughMessageHandler
+        0  emberOrphanNotificationHandler
+        0  emberPollCompleteHandler
+        0  emberRadioNeedsCalibratingHandler
+              0 -> emberCalibrateCurrentChannel
+        0  emberRawTransmitCompleteHandler
+        0  emberRemoteDeleteBindingHandler
+        0  emberRemoteSetBindingHandler
+        0  emberStackTokenChangedHandler
+        0  emberSwitchNetworkKeyHandler
+       12  emberTest
+        0  emberZigbeeKeyEstablishmentHandler
+        0  halInternalSc2Isr
+       16  halSimEepromCallback
+              0 -> halInternalAssertFailed
+             16 -> halInternalSimEeStartup
+             16 -> halInternalSysReset
+              0 -> halSimEepromErasePage
+             16 -> halSimEepromErasePage
+        0  microGenericIsr
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      24  ?<Constant "ember-configuration.c">
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_2
+       4  emAddressTable
+       1  emAddressTableSize
+       1  emAllowRelay
+       1  emApiVersion
+       1  emAppZdoConfigurationFlags
+       4  emApsUnicastMessageData
+    1620  emAvailableMemory
+       4  emBindingFlags
+       4  emBindingRemoteNode
+       4  emBroadcastAlarmData
+       1  emBroadcastAlarmDataSize
+       1  emCertificateTableSize
+       2  emCheckAvailableMemory
+       4  emChildIdTable
+       4  emChildStatus
+       4  emChildTimers
+       1  emDefaultSecurityLevel
+       4  emDiscoveryTable
+       1  emDiscoveryTableSize
+       1  emEndDeviceBindTimeout
+       1  emFragmentDelayMs
+       4  emFrameCountersTable
+       4  emIncomingApsFrameCounters
+       1  emMaxApsUnicastMessages
+       1  emMaxEndDeviceChildren
+       1  emMaxHops
+       4  emMessageBufferLengths
+       4  emMessageBufferReferenceCounts
+       4  emNeighborData
+       4  emNetworkDescriptor
+       1  emPacketBufferCount
+       4  emPacketBufferData
+       1  emPacketBufferFreeCount
+       4  emPacketBufferLinks
+       4  emPacketBufferQueueLinks
+       1  emPanIdConflictReportThreshold
+       1  emRequestKeyTimeout
+       4  emRouteData
+       1  emRouteTableSize
+       1  emRouterNeighborTableSize
+       1  emSendMulticastsToSleepyAddress
+       1  emStackProfile
+       1  emSupportedNetworks
+       1  emTaskCount
+      36  emTasks
+       4  emUnicastAlarmData
+       1  emUnicastAlarmDataSize
+       1  emberAppLinkKeyRequestPolicy
+       2  emberApsAckTimeoutMs
+       1  emberBindingTableSize
+       1  emberChildTableSize
+       2  emberCounterHandler
+       2  emberDebugHandler
+       1  emberEndDevicePollTimeout
+       1  emberEndDevicePollTimeoutShift
+       1  emberFragmentWindowSize
+       8  emberGetEndpoint
+      52  emberGetEndpointCluster
+      58  emberGetEndpointDescription
+       2  emberIdConflictHandler
+       2  emberIncomingManyToOneRouteRequestHandler
+       2  emberIncomingMfgTestMessageHandler
+       2  emberIncomingRouteErrorHandler
+       1  emberKeyTableSize
+       2  emberMacFilterMatchMessageHandler
+       2  emberMacIndirectTimeout
+       4  emberMacPassthroughFilterHandler
+       2  emberMacPassthroughMessageHandler
+       1  emberMobileNodePollTimeout
+       4  emberMulticastTable
+       1  emberMulticastTableSize
+       2  emberOrphanNotificationHandler
+       2  emberPollCompleteHandler
+       4  emberRadioNeedsCalibratingHandler
+       2  emberRawTransmitCompleteHandler
+       4  emberRemoteDeleteBindingHandler
+       4  emberRemoteSetBindingHandler
+       1  emberReservedMobileChildEntries
+       8  emberStackProfileId
+       2  emberStackTokenChangedHandler
+       2  emberSwitchNetworkKeyHandler
+       6  emberTest
+       1  emberTrustCenterLinkKeyRequestPolicy
+       2  emberZigbeeKeyEstablishmentHandler
+       2  halInternalSc2Isr
+     108  halSimEepromCallback
+       2  microGenericIsr
+       1  repairActive
+
+ 
+    49 bytes in section .bss
+   109 bytes in section .data
+    10 bytes in section .rodata
+   318 bytes in section .text
+ 1 620 bytes in section EMHEAP
+ 
+   318 bytes of CODE  memory
+    10 bytes of CONST memory
+ 1 778 bytes of DATA  memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,395 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.40.4.54170/W32 for ARM     02/Jul/2013  21:36:39 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro #
+#                    \generic\mem-util.c                                      #
+#    Command line =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro #
+#                    \generic\mem-util.c -D DEBUG -D                          #
+#                    "BOARD_HEADER=\"hal/micro/cortexm3/em35x/board/dev0680.h #
+#                    \"" -D "PLATFORM_HEADER=\"hal/micro/cortexm3/compiler/ia #
+#                    r.h\"" -D HAL_MICRO -D CORTEXM3 -D CORTEXM3_EM357 -D     #
+#                    PHY_EM3XX -D BOARD_DEV0680 -D                            #
+#                    "CONFIGURATION_HEADER=\"app/sensor/sensor-configuration. #
+#                    h\"" -D SINK_APP -D EMBER_SERIAL1_MODE=EMBER_SERIAL_FIFO #
+#                     -D EMBER_SERIAL1_TX_QUEUE_SIZE=128 -D                   #
+#                    EMBER_SERIAL1_RX_QUEUE_SIZE=16 -D EMBER_SERIAL0_DEBUG    #
+#                    -D EMBER_SERIAL0_MODE=EMBER_SERIAL_FIFO -D               #
+#                    EMBER_SERIAL0_TX_QUEUE_SIZE=128 -D                       #
+#                    EMBER_SERIAL0_RX_QUEUE_SIZE=64 -D                        #
+#                    SCAN_DEBUG_PRINT_ENABLE -D USE_BOOTLOADER_LIB -D         #
+#                    "__SOURCEFILE__=\"mem-util.c\"" -lC                      #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\            #
+#                    --diag_suppress Pa050 -o F:\Firmware\emberZNet\firmware\ #
+#                    EmberZNet\EM35x\build\sink-cortexm3-iar-em357-em3xx-dev0 #
+#                    680-debug\Obj\ --debug --endian=little --cpu=Cortex-M3   #
+#                    -e --fpu=None --dlib_config "D:\Program Files\IAR        #
+#                    Systems\Embedded Workbench 6.4\arm\INC\c\DLib_Config_Nor #
+#                    mal.h" -I F:\Firmware\emberZNet\firmware\EmberZNet\EM35x #
+#                    \hal\micro\generic\ -I F:\Firmware\emberZNet\firmware\Em #
+#                    berZNet\EM35x\app\sensor\ewb-em357\..\..\..\ -I          #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\STACK\ -I                           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\HAL\ -I                             #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\ -Ohz --use_c++_inline              #
+#    List file    =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\mem-util.ls #
+#                    t                                                        #
+#    Object file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\mem-util.o  #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro\generic\mem-util.c
+      1          /*
+      2           * File: hal/micro/generic/mem-util.c
+      3           * Description: generic memory manipulation routines.
+      4           *
+      5           * Author(s): Lee Taylor, lee@ember.com,
+      6           *            Jeff Mathews, jm@ember.com
+      7           *
+      8           * Copyright 2004 by Ember Corporation. All rights reserved.                *80*
+      9           */
+     10          
+     11          #include PLATFORM_HEADER
+     12          #include "stack/include/ember-types.h"
+     13          #include "include/error.h"
+     14          
+     15          #include "hal/hal.h"
+     16          
+     17          #if !defined(XAP2B) && !defined(UNIX)
+     18          // A version of memcopy that can handle overlapping source and
+     19          // destination regions.
+     20          
+
+   \                                 In section .text, align 2, keep-with-next
+     21          void halCommonMemCopy(void *dest, const void *src, int16u bytes)
+     22          {
+     23            int8u *d = (int8u *)dest;
+     24            int8u *s = (int8u *)src;
+     25          
+     26            if (d > s) {
+   \                     halCommonMemCopy:
+   \   00000000   0x4281             CMP      R1,R0
+   \   00000002   0xD233             BCS.N    ??halCommonMemCopy_0
+     27              d += bytes - 1;
+   \   00000004   0x1810             ADDS     R0,R2,R0
+   \   00000006   0x1E40             SUBS     R0,R0,#+1
+     28              s += bytes - 1;
+   \   00000008   0x1851             ADDS     R1,R2,R1
+   \   0000000A   0x1E49             SUBS     R1,R1,#+1
+   \   0000000C   0xE010             B.N      ??halCommonMemCopy_1
+     29              #ifndef _HAL_SMALL_MEMUTILS_
+     30                while(bytes >= 4) {
+     31                  bytes -= 4;
+   \                     ??halCommonMemCopy_2:
+   \   0000000E   0x1F12             SUBS     R2,R2,#+4
+     32                  *d-- = *s--;
+   \   00000010   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   00000014   0xF800 0x3901      STRB     R3,[R0], #-1
+     33                  *d-- = *s--;
+   \   00000018   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   0000001C   0xF800 0x3901      STRB     R3,[R0], #-1
+     34                  *d-- = *s--;
+   \   00000020   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   00000024   0xF800 0x3901      STRB     R3,[R0], #-1
+     35                  *d-- = *s--;
+   \   00000028   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   0000002C   0xF800 0x3901      STRB     R3,[R0], #-1
+     36                }
+   \                     ??halCommonMemCopy_1:
+   \   00000030   0xB292             UXTH     R2,R2
+   \   00000032   0x2A04             CMP      R2,#+4
+   \   00000034   0xD2EB             BCS.N    ??halCommonMemCopy_2
+     37              #endif // _HAL_SMALL_MEMUTILS_
+     38              for(; bytes; bytes--) {
+   \                     ??halCommonMemCopy_3:
+   \   00000036   0xB292             UXTH     R2,R2
+   \   00000038   0x2A00             CMP      R2,#+0
+   \   0000003A   0xBF1E             ITTT     NE 
+   \   0000003C   0xF811 0x3901      LDRBNE   R3,[R1], #-1
+   \   00000040   0xF800 0x3901      STRBNE   R3,[R0], #-1
+   \   00000044   0x1E52             SUBNE    R2,R2,#+1
+     39                *d-- = *s--;
+   \   00000046   0xD1F6             BNE.N    ??halCommonMemCopy_3
+   \   00000048   0x4770             BX       LR
+     40              }
+     41            } else {
+     42              #ifndef _HAL_SMALL_MEMUTILS_
+     43                while(bytes >= 4) {
+     44                  bytes -= 4;
+   \                     ??halCommonMemCopy_4:
+   \   0000004A   0x1F12             SUBS     R2,R2,#+4
+     45                  *d++ = *s++;
+   \   0000004C   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000050   0xF800 0x3B01      STRB     R3,[R0], #+1
+     46                  *d++ = *s++;
+   \   00000054   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000058   0xF800 0x3B01      STRB     R3,[R0], #+1
+     47                  *d++ = *s++;
+   \   0000005C   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000060   0xF800 0x3B01      STRB     R3,[R0], #+1
+     48                  *d++ = *s++;
+   \   00000064   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000068   0xF800 0x3B01      STRB     R3,[R0], #+1
+     49                }
+   \                     ??halCommonMemCopy_0:
+   \   0000006C   0xB292             UXTH     R2,R2
+   \   0000006E   0x2A04             CMP      R2,#+4
+   \   00000070   0xD2EB             BCS.N    ??halCommonMemCopy_4
+     50              #endif // _HAL_SMALL_MEMUTILS_
+     51              for(; bytes; bytes--) {
+   \                     ??halCommonMemCopy_5:
+   \   00000072   0xB292             UXTH     R2,R2
+   \   00000074   0x2A00             CMP      R2,#+0
+   \   00000076   0xBF1E             ITTT     NE 
+   \   00000078   0xF811 0x3B01      LDRBNE   R3,[R1], #+1
+   \   0000007C   0xF800 0x3B01      STRBNE   R3,[R0], #+1
+   \   00000080   0x1E52             SUBNE    R2,R2,#+1
+     52                *d++ = *s++;
+   \   00000082   0xD1F6             BNE.N    ??halCommonMemCopy_5
+     53              }
+     54            }
+     55          }
+   \   00000084   0x4770             BX       LR               ;; return
+     56          
+     57          // Same as above except copies from Program space to RAM.
+
+   \                                 In section .text, align 2, keep-with-next
+     58          void halCommonMemPGMCopy(void* dest, const void PGM_NO_CONST *source, int16u bytes)
+     59          {
+     60            int8u *d = (int8u *)dest;
+     61            PGM_PU s = (PGM_PU)source;
+     62          
+     63            if (d > s) {
+   \                     halCommonMemPGMCopy:
+   \   00000000   0x4281             CMP      R1,R0
+   \   00000002   0xD233             BCS.N    ??halCommonMemPGMCopy_0
+     64              d += bytes - 1;
+   \   00000004   0x1810             ADDS     R0,R2,R0
+   \   00000006   0x1E40             SUBS     R0,R0,#+1
+     65              s += bytes - 1;
+   \   00000008   0x1851             ADDS     R1,R2,R1
+   \   0000000A   0x1E49             SUBS     R1,R1,#+1
+   \   0000000C   0xE010             B.N      ??halCommonMemPGMCopy_1
+     66              #ifndef _HAL_SMALL_MEMUTILS_
+     67                while(bytes >= 4) {
+     68                  bytes -= 4;
+   \                     ??halCommonMemPGMCopy_2:
+   \   0000000E   0x1F12             SUBS     R2,R2,#+4
+     69                  *d-- = *s--;
+   \   00000010   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   00000014   0xF800 0x3901      STRB     R3,[R0], #-1
+     70                  *d-- = *s--;
+   \   00000018   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   0000001C   0xF800 0x3901      STRB     R3,[R0], #-1
+     71                  *d-- = *s--;
+   \   00000020   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   00000024   0xF800 0x3901      STRB     R3,[R0], #-1
+     72                  *d-- = *s--;
+   \   00000028   0xF811 0x3901      LDRB     R3,[R1], #-1
+   \   0000002C   0xF800 0x3901      STRB     R3,[R0], #-1
+     73                }
+   \                     ??halCommonMemPGMCopy_1:
+   \   00000030   0xB292             UXTH     R2,R2
+   \   00000032   0x2A04             CMP      R2,#+4
+   \   00000034   0xD2EB             BCS.N    ??halCommonMemPGMCopy_2
+     74              #endif // _HAL_SMALL_MEMUTILS_
+     75              for(; bytes; bytes--) {
+   \                     ??halCommonMemPGMCopy_3:
+   \   00000036   0xB292             UXTH     R2,R2
+   \   00000038   0x2A00             CMP      R2,#+0
+   \   0000003A   0xBF1E             ITTT     NE 
+   \   0000003C   0xF811 0x3901      LDRBNE   R3,[R1], #-1
+   \   00000040   0xF800 0x3901      STRBNE   R3,[R0], #-1
+   \   00000044   0x1E52             SUBNE    R2,R2,#+1
+     76                *d-- = *s--;
+   \   00000046   0xD1F6             BNE.N    ??halCommonMemPGMCopy_3
+   \   00000048   0x4770             BX       LR
+     77              }
+     78            } else {
+     79              #ifndef _HAL_SMALL_MEMUTILS_
+     80                while(bytes >= 4) {
+     81                  bytes -= 4;
+   \                     ??halCommonMemPGMCopy_4:
+   \   0000004A   0x1F12             SUBS     R2,R2,#+4
+     82                  *d++ = *s++;
+   \   0000004C   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000050   0xF800 0x3B01      STRB     R3,[R0], #+1
+     83                  *d++ = *s++;
+   \   00000054   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000058   0xF800 0x3B01      STRB     R3,[R0], #+1
+     84                  *d++ = *s++;
+   \   0000005C   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000060   0xF800 0x3B01      STRB     R3,[R0], #+1
+     85                  *d++ = *s++;
+   \   00000064   0xF811 0x3B01      LDRB     R3,[R1], #+1
+   \   00000068   0xF800 0x3B01      STRB     R3,[R0], #+1
+     86                }
+   \                     ??halCommonMemPGMCopy_0:
+   \   0000006C   0xB292             UXTH     R2,R2
+   \   0000006E   0x2A04             CMP      R2,#+4
+   \   00000070   0xD2EB             BCS.N    ??halCommonMemPGMCopy_4
+     87              #endif // _HAL_SMALL_MEMUTILS_
+     88              for(; bytes; bytes--) {
+   \                     ??halCommonMemPGMCopy_5:
+   \   00000072   0xB292             UXTH     R2,R2
+   \   00000074   0x2A00             CMP      R2,#+0
+   \   00000076   0xBF1E             ITTT     NE 
+   \   00000078   0xF811 0x3B01      LDRBNE   R3,[R1], #+1
+   \   0000007C   0xF800 0x3B01      STRBNE   R3,[R0], #+1
+   \   00000080   0x1E52             SUBNE    R2,R2,#+1
+     89                *d++ = *s++;
+   \   00000082   0xD1F6             BNE.N    ??halCommonMemPGMCopy_5
+     90              }
+     91            }
+     92          }
+   \   00000084   0x4770             BX       LR               ;; return
+     93          
+
+   \                                 In section .text, align 2, keep-with-next
+     94          void halCommonMemSet(void *dest, int8u val, int16u bytes)
+     95          {
+   \                     halCommonMemSet:
+   \   00000000   0x0013             MOVS     R3,R2
+     96            int8u *d=(int8u *)dest;
+     97          
+     98            for(;bytes;bytes--) {
+   \   00000002   0xD003             BEQ.N    ??halCommonMemSet_0
+     99              *d++ = val;
+   \   00000004   0x460A             MOV      R2,R1
+   \   00000006   0x4619             MOV      R1,R3
+   \   00000008   0x.... 0x....      B.W      __aeabi_memset
+    100            }
+    101          }
+   \                     ??halCommonMemSet_0:
+   \   0000000C   0x4770             BX       LR               ;; return
+    102          
+
+   \                                 In section .text, align 2, keep-with-next
+    103          int8s halCommonMemCompare(const void *source0, const void *source1, int16u bytes)
+    104          {
+   \                     halCommonMemCompare:
+   \   00000000   0xB510             PUSH     {R4,LR}
+    105            int8u *s0 = (int8u *)source0;
+    106            int8u *s1 = (int8u *)source1;
+   \   00000002   0xE000             B.N      ??halCommonMemCompare_0
+    107          
+    108            for(; 0 < bytes; bytes--, s0++, s1++) {
+   \                     ??halCommonMemCompare_1:
+   \   00000004   0x1E52             SUBS     R2,R2,#+1
+   \                     ??halCommonMemCompare_0:
+   \   00000006   0xB292             UXTH     R2,R2
+   \   00000008   0xB132             CBZ.N    R2,??halCommonMemCompare_2
+    109              int8u b0 = *s0;
+   \   0000000A   0xF810 0x3B01      LDRB     R3,[R0], #+1
+    110              int8u b1 = *s1;
+   \   0000000E   0xF811 0x4B01      LDRB     R4,[R1], #+1
+    111              if (b0 != b1)
+   \   00000012   0x42A3             CMP      R3,R4
+   \   00000014   0xD0F6             BEQ.N    ??halCommonMemCompare_1
+    112                return b0 - b1;
+   \   00000016   0x....             B.N      ?Subroutine0
+    113            }
+    114            return 0;
+   \                     ??halCommonMemCompare_2:
+   \   00000018   0x2000             MOVS     R0,#+0
+   \   0000001A   0xBD10             POP      {R4,PC}          ;; return
+    115          }
+
+   \                                 In section .text, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   00000000   0x1B18             SUBS     R0,R3,R4
+   \   00000002   0xB240             SXTB     R0,R0
+   \   00000004   0xBD10             POP      {R4,PC}
+    116          
+    117          // Test code for halCommonMemCompare().  There is no good place for unit tests
+    118          // for this file.  If you change the function you should probably rerun the
+    119          // test.
+    120          //  {
+    121          //    int8u s0[3] = { 0, 0, 0};
+    122          //    int8u s1[3] = { 0, 0, 0};
+    123          //    int8u i;
+    124          //    assert(halCommonMemCompare(s0, s1, 0) == 0);
+    125          //    assert(halCommonMemCompare(s0, s1, 3) == 0);
+    126          //    for (i = 0; i < 3; i++) {
+    127          //      s0[i] = 1;
+    128          //      assert(halCommonMemCompare(s0, s1, 3) > 0);
+    129          //      s1[i] = 2;
+    130          //      assert(halCommonMemCompare(s0, s1, 3) < 0);
+    131          //      s0[i] = 2;
+    132          //    }
+    133          //  }
+    134          
+    135          // Same again, except that the second source is in program space.
+    136          
+
+   \                                 In section .text, align 2, keep-with-next
+    137          int8s halCommonMemPGMCompare(const void *source0, const void PGM_NO_CONST *source1, int16u bytes)
+    138          {
+   \                     halCommonMemPGMCompare:
+   \   00000000   0xB510             PUSH     {R4,LR}
+    139            int8u *s0 = (int8u *)source0;
+    140            int8u PGM *s1 = (int8u PGM *)source1;
+   \   00000002   0xE000             B.N      ??halCommonMemPGMCompare_0
+    141          
+    142            for(; 0 < bytes; bytes--, s0++, s1++) {
+   \                     ??halCommonMemPGMCompare_1:
+   \   00000004   0x1E52             SUBS     R2,R2,#+1
+   \                     ??halCommonMemPGMCompare_0:
+   \   00000006   0xB292             UXTH     R2,R2
+   \   00000008   0xB132             CBZ.N    R2,??halCommonMemPGMCompare_2
+    143              int8u b0 = *s0;
+   \   0000000A   0xF810 0x3B01      LDRB     R3,[R0], #+1
+    144              int8u b1 = *s1;
+   \   0000000E   0xF811 0x4B01      LDRB     R4,[R1], #+1
+    145              if (b0 != b1)
+   \   00000012   0x42A3             CMP      R3,R4
+   \   00000014   0xD0F6             BEQ.N    ??halCommonMemPGMCompare_1
+    146                return b0 - b1;
+   \   00000016   0x....             B.N      ?Subroutine0
+    147            }
+    148            return 0;
+   \                     ??halCommonMemPGMCompare_2:
+   \   00000018   0x2000             MOVS     R0,#+0
+   \   0000001A   0xBD10             POP      {R4,PC}          ;; return
+    149          }
+    150          #endif
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  halCommonMemCompare
+        0  halCommonMemCopy
+        8  halCommonMemPGMCompare
+        0  halCommonMemPGMCopy
+        0  halCommonMemSet
+             0 -> __aeabi_memset
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       6  ?Subroutine0
+      28  halCommonMemCompare
+     134  halCommonMemCopy
+      28  halCommonMemPGMCompare
+     134  halCommonMemPGMCopy
+      14  halCommonMemSet
+
+ 
+ 344 bytes in section .text
+ 
+ 344 bytes of CODE memory
+
+Errors: none
+Warnings: none

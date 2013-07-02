@@ -1,0 +1,416 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.40.4.54170/W32 for ARM     02/Jul/2013  21:36:26 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro #
+#                    \cortexm3\buzzer.c                                       #
+#    Command line =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro #
+#                    \cortexm3\buzzer.c -D DEBUG -D                           #
+#                    "BOARD_HEADER=\"hal/micro/cortexm3/em35x/board/dev0680.h #
+#                    \"" -D "PLATFORM_HEADER=\"hal/micro/cortexm3/compiler/ia #
+#                    r.h\"" -D HAL_MICRO -D CORTEXM3 -D CORTEXM3_EM357 -D     #
+#                    PHY_EM3XX -D BOARD_DEV0680 -D                            #
+#                    "CONFIGURATION_HEADER=\"app/sensor/sensor-configuration. #
+#                    h\"" -D SINK_APP -D EMBER_SERIAL1_MODE=EMBER_SERIAL_FIFO #
+#                     -D EMBER_SERIAL1_TX_QUEUE_SIZE=128 -D                   #
+#                    EMBER_SERIAL1_RX_QUEUE_SIZE=16 -D EMBER_SERIAL0_DEBUG    #
+#                    -D EMBER_SERIAL0_MODE=EMBER_SERIAL_FIFO -D               #
+#                    EMBER_SERIAL0_TX_QUEUE_SIZE=128 -D                       #
+#                    EMBER_SERIAL0_RX_QUEUE_SIZE=64 -D                        #
+#                    SCAN_DEBUG_PRINT_ENABLE -D USE_BOOTLOADER_LIB -D         #
+#                    "__SOURCEFILE__=\"buzzer.c\"" -lC                        #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\            #
+#                    --diag_suppress Pa050 -o F:\Firmware\emberZNet\firmware\ #
+#                    EmberZNet\EM35x\build\sink-cortexm3-iar-em357-em3xx-dev0 #
+#                    680-debug\Obj\ --debug --endian=little --cpu=Cortex-M3   #
+#                    -e --fpu=None --dlib_config "D:\Program Files\IAR        #
+#                    Systems\Embedded Workbench 6.4\arm\INC\c\DLib_Config_Nor #
+#                    mal.h" -I F:\Firmware\emberZNet\firmware\EmberZNet\EM35x #
+#                    \hal\micro\cortexm3\ -I F:\Firmware\emberZNet\firmware\E #
+#                    mberZNet\EM35x\app\sensor\ewb-em357\..\..\..\ -I         #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\STACK\ -I                           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\HAL\ -I                             #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\..\..\..\ -Ohz --use_c++_inline              #
+#    List file    =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\buzzer.lst  #
+#    Object file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sin #
+#                    k-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\buzzer.o    #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\hal\micro\cortexm3\buzzer.c
+      1          /** @file hal/micro/cortexm3/buzzer.c
+      2           *  @brief  Sample API functions for using a timer to play tunes on a buzzer.
+      3           * 
+      4           * <!-- Author(s): Areeya Vimayangkoon -->
+      5           * <!-- Copyright 2007 by Ember Corporation. All rights reserved.       *80*-->   
+      6           */
+      7          
+      8          #include PLATFORM_HEADER
+      9          #include "stack/include/ember.h"
+     10          #include "hal/hal.h"
+     11          
+     12          // Tune state
+
+   \                                 In section .data, align 4
+     13          int8u PGM *currentTune = NULL;
+     14          int8u tunePos = 0;
+   \                     tunePos:
+   \   00000000   0x00               DC8 0
+     15          int16u currentDuration = 0;
+     16          boolean tuneDone=TRUE;
+   \                     tuneDone:
+   \   00000001   0x01               DC8 1
+   \                     currentDuration:
+   \   00000002   0x0000             DC16 0
+   \                     currentTune:
+   \   00000004   0x00000000         DC32 0H
+     17          
+     18          // Keep the defaults if not defined on the board file. Default is TMR1
+     19          #ifndef BUZZER_CLK
+     20          #define BUZZER_CLK TIM1_OR
+     21          #endif
+     22          
+     23          #ifndef BUZZER_PSC
+     24          #define BUZZER_PSC TIM1_PSC
+     25          #endif
+     26          
+     27          #ifndef BUZZER_UPDATE
+     28          #define BUZZER_UPDATE TIM1_EGR
+     29          #endif
+     30          
+     31          #ifndef BUZZER_OUTPUT_CFG 
+     32          #define BUZZER_OUTPUT_CFG TIM1_CCMR1
+     33          #endif
+     34          
+     35          #ifndef BUZZER_OUTPUT_MODE
+     36          #define BUZZER_OUTPUT_MODE (0x3 << TIM_OC2M_BIT)
+     37          #endif
+     38          
+     39          #ifndef BUZZER_OUTPUT_ENABLE 
+     40          #define BUZZER_OUTPUT_ENABLE TIM1_CCER
+     41          #endif
+     42          
+     43          #ifndef BUZZER_TOP
+     44          #define BUZZER_TOP TIM1_ARR
+     45          #endif 
+     46          
+     47          #ifndef BUZZER_CNT
+     48          #define BUZZER_CNT TIM1_CNT
+     49          #endif 
+     50          
+     51          #ifndef BUZZER_INT_MASK
+     52          #define BUZZER_INT_MASK INT_TIM1CFG
+     53          #endif
+     54          
+     55          #ifndef BUZZER_INT
+     56          #define BUZZER_INT INT_TIM1FLAG
+     57          #endif
+     58          
+     59          #ifndef BUZZER_BIT
+     60          #define BUZZER_BIT INT_TIMUIF
+     61          #endif
+     62          
+     63          #ifndef BUZZER_ENABLE
+     64          #define BUZZER_ENABLE TIM1_CR1
+     65          #endif
+     66          
+     67          #ifndef BUZZER_TEMPO
+     68          #define BUZZER_TEMPO 200
+     69          #endif
+     70          
+     71          // EO defaults
+     72          
+
+   \                                 In section .text, align 2, keep-with-next
+     73          void halPlayTune_P(int8u PGM *tune, boolean bkg)
+     74          {
+   \                     halPlayTune_P:
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x460C             MOV      R4,R1
+     75            //According to emulator.h, buzzer is on pin 15 which is mapped 
+     76            //to channel 2 of TMR1
+     77            BUZZER_CLK = 0; //use 12MHz clock
+   \   00000004   0x....             LDR.N    R5,??DataTable2  ;; 0x4000e000
+   \   00000006   0x2100             MOVS     R1,#+0
+   \   00000008   0x6529             STR      R1,[R5, #+80]
+     78            BUZZER_PSC = 5; //2^5=32 -> 12MHz/32 = 375kHz = 2.6us tick
+   \   0000000A   0x2105             MOVS     R1,#+5
+   \   0000000C   0x62A9             STR      R1,[R5, #+40]
+     79            BUZZER_UPDATE = 1; //trigger update event to load new prescaler value
+   \   0000000E   0x2101             MOVS     R1,#+1
+   \   00000010   0x6169             STR      R1,[R5, #+20]
+     80            BUZZER_OUTPUT_CFG  = 0; //start from a zeroed configuration
+   \   00000012   0x2100             MOVS     R1,#+0
+   \   00000014   0x61A9             STR      R1,[R5, #+24]
+     81            //Output waveform: toggle on CNT reaching TOP
+     82            BUZZER_OUTPUT_CFG |= BUZZER_OUTPUT_MODE; 
+   \   00000016   0x69A9             LDR      R1,[R5, #+24]
+   \   00000018   0xF441 0x5140      ORR      R1,R1,#0x3000
+   \   0000001C   0x61A9             STR      R1,[R5, #+24]
+     83            
+     84            currentTune = tune; 
+   \   0000001E   0x....             LDR.N    R6,??DataTable2_1
+   \   00000020   0x6070             STR      R0,[R6, #+4]
+     85            BUZZER_TOP = tune[0]*13; //magical conversion to match our tick period
+   \   00000022   0x7801             LDRB     R1,[R0, #+0]
+   \   00000024   0x220D             MOVS     R2,#+13
+   \   00000026   0x4351             MULS     R1,R2,R1
+   \   00000028   0x62E9             STR      R1,[R5, #+44]
+     86            BUZZER_CNT = 0; //force the counter back to zero to prevent missing BUZZER_TOP
+   \   0000002A   0x2100             MOVS     R1,#+0
+   \   0000002C   0x6269             STR      R1,[R5, #+36]
+     87            
+     88            // Magic duration calculation based on frequency
+     89            currentDuration = ((int16u)BUZZER_TEMPO*(int16u)tune[1])/(tune[0]/15);
+   \   0000002E   0x7801             LDRB     R1,[R0, #+0]
+   \   00000030   0x220F             MOVS     R2,#+15
+   \   00000032   0xFB91 0xF1F2      SDIV     R1,R1,R2
+   \   00000036   0x7840             LDRB     R0,[R0, #+1]
+   \   00000038   0x22C8             MOVS     R2,#+200
+   \   0000003A   0x4350             MULS     R0,R2,R0
+   \   0000003C   0xFB90 0xF0F1      SDIV     R0,R0,R1
+   \   00000040   0x8070             STRH     R0,[R6, #+2]
+     90            tunePos = 2;  // First note is already set up
+   \   00000042   0x2002             MOVS     R0,#+2
+   \   00000044   0x7030             STRB     R0,[R6, #+0]
+     91            tuneDone = FALSE;
+   \   00000046   0x2000             MOVS     R0,#+0
+   \   00000048   0x7070             STRB     R0,[R6, #+1]
+     92            ATOMIC(
+     93              BUZZER_INT_MASK = BUZZER_BIT; //enable the Timer 1, CNT ?= TOP interrupt
+     94              INT_CFGSET |= INT_TIM1; //enable top level timer interrupts
+     95              BUZZER_OUTPUT_ENABLE = TIM_CC2E; //enable output on channel 2
+     96              BUZZER_ENABLE |= TIM_CEN; //enable counting
+     97            )
+   \   0000004A   0x.... 0x....      BL       _disableBasePri
+   \   0000004E   0x....             LDR.N    R1,??DataTable2_2  ;; 0x4000a840
+   \   00000050   0x2201             MOVS     R2,#+1
+   \   00000052   0x600A             STR      R2,[R1, #+0]
+   \   00000054   0x....             LDR.N    R1,??DataTable2_3  ;; 0xe000e100
+   \   00000056   0x680A             LDR      R2,[R1, #+0]
+   \   00000058   0xF042 0x0201      ORR      R2,R2,#0x1
+   \   0000005C   0x600A             STR      R2,[R1, #+0]
+   \   0000005E   0x2110             MOVS     R1,#+16
+   \   00000060   0x6229             STR      R1,[R5, #+32]
+   \   00000062   0x6829             LDR      R1,[R5, #+0]
+   \   00000064   0xF041 0x0101      ORR      R1,R1,#0x1
+   \   00000068   0x6029             STR      R1,[R5, #+0]
+   \   0000006A   0x.... 0x....      BL       _writeBasePri
+   \   0000006E   0xE001             B.N      ??halPlayTune_P_0
+     98            while( (!bkg) && (!tuneDone)) {
+     99              halResetWatchdog();
+   \                     ??halPlayTune_P_1:
+   \   00000070   0x.... 0x....      BL       halInternalResetWatchDog
+    100            }
+   \                     ??halPlayTune_P_0:
+   \   00000074   0x7870             LDRB     R0,[R6, #+1]
+   \   00000076   0x4320             ORRS     R0,R0,R4
+   \   00000078   0xD0FA             BEQ.N    ??halPlayTune_P_1
+    101          }
+   \   0000007A   0xBD70             POP      {R4-R6,PC}       ;; return
+    102          
+
+   \                                 In section .text, align 2, keep-with-next
+    103          void halTimer1Isr(void)
+    104          {
+   \                     halTimer1Isr:
+   \   00000000   0xB5F0             PUSH     {R4-R7,LR}
+    105            if(currentDuration-- == 0) {
+   \   00000002   0x....             LDR.N    R0,??DataTable2_1
+   \   00000004   0x8842             LDRH     R2,[R0, #+2]
+   \   00000006   0x1E51             SUBS     R1,R2,#+1
+   \   00000008   0x8041             STRH     R1,[R0, #+2]
+   \   0000000A   0x....             LDR.N    R1,??DataTable2_4  ;; 0x4000a800
+   \   0000000C   0x2A00             CMP      R2,#+0
+   \   0000000E   0xD137             BNE.N    ??halTimer1Isr_0
+    106              if(currentTune[tunePos+1]) {
+   \   00000010   0x7802             LDRB     R2,[R0, #+0]
+   \   00000012   0x6847             LDR      R7,[R0, #+4]
+   \   00000014   0x19D4             ADDS     R4,R2,R7
+   \   00000016   0x....             LDR.N    R3,??DataTable2  ;; 0x4000e000
+   \   00000018   0x7865             LDRB     R5,[R4, #+1]
+   \   0000001A   0xB31D             CBZ.N    R5,??halTimer1Isr_1
+    107                if(currentTune[tunePos]) {
+   \   0000001C   0x5DD6             LDRB     R6,[R2, R7]
+   \   0000001E   0x25C8             MOVS     R5,#+200
+   \   00000020   0xB18E             CBZ.N    R6,??halTimer1Isr_2
+    108                  // generate a note
+    109                  BUZZER_TOP = currentTune[tunePos]*13; //magical conversion
+   \   00000022   0xF04F 0x0E0D      MOV      LR,#+13
+   \   00000026   0xFB0E 0xF606      MUL      R6,LR,R6
+   \   0000002A   0x62DE             STR      R6,[R3, #+44]
+    110                  BUZZER_CNT = 0; //force the counter back to zero to prevent missing BUZZER_TOP
+   \   0000002C   0x2600             MOVS     R6,#+0
+   \   0000002E   0x625E             STR      R6,[R3, #+36]
+    111                  BUZZER_OUTPUT_ENABLE = TIM_CC2E; //enable output on channel 2
+   \   00000030   0x2610             MOVS     R6,#+16
+   \   00000032   0x621E             STR      R6,[R3, #+32]
+    112                  // work some magic to determine the duration based upon the frequency
+    113                  // of the note we are currently playing.
+    114                  currentDuration = ((int16u)BUZZER_TEMPO*(int16u)currentTune[tunePos+1])
+    115                                    /(currentTune[tunePos]/15);
+   \   00000034   0x5DD3             LDRB     R3,[R2, R7]
+   \   00000036   0x260F             MOVS     R6,#+15
+   \   00000038   0xFB93 0xF3F6      SDIV     R3,R3,R6
+   \   0000003C   0x7864             LDRB     R4,[R4, #+1]
+   \   0000003E   0x436C             MULS     R4,R5,R4
+   \   00000040   0xFB94 0xF3F3      SDIV     R3,R4,R3
+   \   00000044   0xE00A             B.N      ??halTimer1Isr_3
+    116                } else {
+    117                  // generate a pause
+    118                  BUZZER_TOP = 403; //simulated a note (NOTE_B4*13), but output is disabled
+   \                     ??halTimer1Isr_2:
+   \   00000046   0xF240 0x1693      MOVW     R6,#+403
+   \   0000004A   0x62DE             STR      R6,[R3, #+44]
+    119                  BUZZER_CNT = 0; //force the counter back to zero to prevent missing BUZZER_TOP
+   \   0000004C   0x2600             MOVS     R6,#+0
+   \   0000004E   0x625E             STR      R6,[R3, #+36]
+    120                  BUZZER_OUTPUT_ENABLE = 0; //Output waveform disabled for silence
+   \   00000050   0x621E             STR      R6,[R3, #+32]
+    121                  currentDuration = ((int16u)BUZZER_TEMPO*(int16u)currentTune[tunePos+1])/(31/15);
+   \   00000052   0x7863             LDRB     R3,[R4, #+1]
+   \   00000054   0x436B             MULS     R3,R5,R3
+   \   00000056   0xEB03 0x73D3      ADD      R3,R3,R3, LSR #+31
+   \   0000005A   0x105B             ASRS     R3,R3,#+1
+   \                     ??halTimer1Isr_3:
+   \   0000005C   0x8043             STRH     R3,[R0, #+2]
+    122                }
+    123                tunePos += 2;
+   \   0000005E   0x1C92             ADDS     R2,R2,#+2
+   \   00000060   0x7002             STRB     R2,[R0, #+0]
+   \   00000062   0xE00D             B.N      ??halTimer1Isr_0
+    124              } else {
+    125                // End tune
+    126                BUZZER_INT_MASK &= ~BUZZER_BIT; //disable the Timer, CNT ?= TOP interrupt
+   \                     ??halTimer1Isr_1:
+   \   00000064   0x6C0A             LDR      R2,[R1, #+64]
+   \   00000066   0x0852             LSRS     R2,R2,#+1
+   \   00000068   0x0052             LSLS     R2,R2,#+1
+   \   0000006A   0x640A             STR      R2,[R1, #+64]
+    127                INT_CFGSET &= ~INT_TIM1; //stop the interrupts
+   \   0000006C   0x....             LDR.N    R2,??DataTable2_3  ;; 0xe000e100
+   \   0000006E   0x6814             LDR      R4,[R2, #+0]
+   \   00000070   0x0864             LSRS     R4,R4,#+1
+   \   00000072   0x0064             LSLS     R4,R4,#+1
+   \   00000074   0x6014             STR      R4,[R2, #+0]
+    128                BUZZER_OUTPUT_ENABLE  = 0; //disable output
+   \   00000076   0x2200             MOVS     R2,#+0
+   \   00000078   0x621A             STR      R2,[R3, #+32]
+    129                BUZZER_ENABLE = 0;; //disable timer
+   \   0000007A   0x601A             STR      R2,[R3, #+0]
+    130                tuneDone = TRUE;
+   \   0000007C   0x2201             MOVS     R2,#+1
+   \   0000007E   0x7042             STRB     R2,[R0, #+1]
+    131              }
+    132            }
+    133            //clear interrupt
+    134            BUZZER_INT = 0xFFFFFFFF;
+   \                     ??halTimer1Isr_0:
+   \   00000080   0xF04F 0x30FF      MOV      R0,#-1
+   \   00000084   0x6008             STR      R0,[R1, #+0]
+    135          }
+   \   00000086   0xBDF0             POP      {R4-R7,PC}       ;; return
+    136          
+
+   \                                 In section .text, align 4, keep-with-next
+    137          int8u PGM hereIamTune[] = {
+   \                     hereIamTune:
+   \   00000000   0x1F 0x01          DC8 31, 1, 0, 1, 31, 1, 0, 1, 31, 1, 0, 1, 15, 5, 0, 0
+   \              0x00 0x01    
+   \              0x1F 0x01    
+   \              0x00 0x01    
+   \              0x1F 0x01    
+   \              0x00 0x01    
+   \              0x0F 0x05    
+   \              0x00 0x00    
+    138            NOTE_B4,  1,
+    139            0,        1,
+    140            NOTE_B4,  1,
+    141            0,        1,
+    142            NOTE_B4,  1,
+    143            0,        1,
+    144            NOTE_B5,  5,
+    145            0,        0
+    146          };
+    147          
+
+   \                                 In section .text, align 2, keep-with-next
+    148          void halStackIndicatePresence(void)
+    149          {
+    150            halPlayTune_P(hereIamTune,TRUE);
+   \                     halStackIndicatePresence:
+   \   00000000   0x2101             MOVS     R1,#+1
+   \   00000002   0x.... 0x....      ADR.W    R0,hereIamTune
+   \   00000006   0x....             B.N      halPlayTune_P
+    151          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2:
+   \   00000000   0x4000E000         DC32     0x4000e000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_1:
+   \   00000000   0x........         DC32     tunePos
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_2:
+   \   00000000   0x4000A840         DC32     0x4000a840
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_3:
+   \   00000000   0xE000E100         DC32     0xe000e100
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_4:
+   \   00000000   0x4000A800         DC32     0x4000a800
+    152          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       16  halPlayTune_P
+             16 -> _disableBasePri
+             16 -> _writeBasePri
+             16 -> halInternalResetWatchDog
+        0  halStackIndicatePresence
+              0 -> halPlayTune_P
+       20  halTimer1Isr
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+       4  ??DataTable2_1
+       4  ??DataTable2_2
+       4  ??DataTable2_3
+       4  ??DataTable2_4
+     124  halPlayTune_P
+       8  halStackIndicatePresence
+     136  halTimer1Isr
+      16  hereIamTune
+       8  tunePos
+          tuneDone
+          currentDuration
+          currentTune
+
+ 
+   8 bytes in section .data
+ 304 bytes in section .text
+ 
+ 304 bytes of CODE memory
+   8 bytes of DATA memory
+
+Errors: none
+Warnings: none
