@@ -133,7 +133,7 @@
   DEFINE_BUFFER_QUEUE(EMBER_SERIAL1_TX_QUEUE_SIZE,emSerial1TxQueue)
   #define EM_SERIAL1_TX_QUEUE_ADDR (&emSerial1TxQueue)
 #elif EMBER_SERIAL1_MODE == EMBER_SERIAL_UNUSED || \
-      EMBER_SERIAL1_MODE == EMBER_SERIAL_LOWLEVEL 
+      EMBER_SERIAL1_MODE == EMBER_SERIAL_LOWLEVEL
   #define EM_SERIAL1_TX_QUEUE_ADDR (NULL)
   #define EMBER_SERIAL1_TX_QUEUE_SIZE 0
   #define EMBER_SERIAL1_RX_QUEUE_SIZE 0
@@ -147,7 +147,7 @@
   DEFINE_BUFFER_QUEUE(EMBER_SERIAL2_TX_QUEUE_SIZE,emSerial2TxQueue)
   #define EM_SERIAL2_TX_QUEUE_ADDR (&emSerial2TxQueue)
 #elif EMBER_SERIAL2_MODE == EMBER_SERIAL_UNUSED || \
-      EMBER_SERIAL2_MODE == EMBER_SERIAL_LOWLEVEL 
+      EMBER_SERIAL2_MODE == EMBER_SERIAL_LOWLEVEL
   #define EM_SERIAL2_TX_QUEUE_ADDR (NULL)
   #define EMBER_SERIAL2_TX_QUEUE_SIZE 0
   #define EMBER_SERIAL2_RX_QUEUE_SIZE 0
@@ -161,7 +161,7 @@
   DEFINE_BUFFER_QUEUE(EMBER_SERIAL3_TX_QUEUE_SIZE,emSerial3TxQueue)
   #define EM_SERIAL3_TX_QUEUE_ADDR (&emSerial3TxQueue)
 #elif EMBER_SERIAL3_MODE == EMBER_SERIAL_UNUSED || \
-      EMBER_SERIAL3_MODE == EMBER_SERIAL_LOWLEVEL 
+      EMBER_SERIAL3_MODE == EMBER_SERIAL_LOWLEVEL
   #define EM_SERIAL3_TX_QUEUE_ADDR (NULL)
   #define EMBER_SERIAL3_TX_QUEUE_SIZE 0
   #define EMBER_SERIAL3_RX_QUEUE_SIZE 0
@@ -175,7 +175,7 @@
   DEFINE_BUFFER_QUEUE(EMBER_SERIAL4_TX_QUEUE_SIZE,emSerial4TxQueue)
   #define EM_SERIAL4_TX_QUEUE_ADDR (&emSerial4TxQueue)
 #elif EMBER_SERIAL4_MODE == EMBER_SERIAL_UNUSED || \
-      EMBER_SERIAL4_MODE == EMBER_SERIAL_LOWLEVEL 
+      EMBER_SERIAL4_MODE == EMBER_SERIAL_LOWLEVEL
   #define EM_SERIAL4_TX_QUEUE_ADDR (NULL)
   #define EMBER_SERIAL4_TX_QUEUE_SIZE 0
   #define EMBER_SERIAL4_RX_QUEUE_SIZE 0
@@ -231,7 +231,7 @@
 
 // Data structure for referencing TX Queues
 //  (allows for different modes and queue sizes)
-void *emSerialTxQueues[EM_NUM_SERIAL_PORTS] = 
+void *emSerialTxQueues[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (void *),EM_SERIAL,_TX_QUEUE_ADDR ) };
 
 int16u PGM emSerialTxQueueSizes[EM_NUM_SERIAL_PORTS] =
@@ -242,28 +242,28 @@ int16u PGM emSerialTxQueueMasks[EM_NUM_SERIAL_PORTS] =
 
 // Data structure for referencing RX Queues
 //  (allows for different queue sizes)
-EmSerialFifoQueue *emSerialRxQueues[EM_NUM_SERIAL_PORTS] = 
+EmSerialFifoQueue *emSerialRxQueues[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (EmSerialFifoQueue *),EM_SERIAL,_RX_QUEUE_ADDR ) };
 
 int16u PGM emSerialRxQueueSizes[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int16u),EMBER_SERIAL,_RX_QUEUE_SIZE ) };
 
 // In-flash data structure for determined port mode
-int8u PGM emSerialPortModes[EM_NUM_SERIAL_PORTS] = 
+int8u PGM emSerialPortModes[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int8u),EMBER_SERIAL,_MODE ) };
 
 //Compatibility code for the AVR Atmega
 //If an AVR Atmega is used, then emSerialTx(/Rx)QueueWraps map to
 //emSerialTx(/Rx)QueueMasks, otherwise they map to emSerialTx(/Rx)QueueSizes
 #ifdef AVR_ATMEGA
-int8u PGM emSerialTxQueueWraps[EM_NUM_SERIAL_PORTS] = 
+int8u PGM emSerialTxQueueWraps[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int8u), EMBER_SERIAL,_TX_QUEUE_SIZE-1 ) };
-int8u PGM emSerialRxQueueWraps[EM_NUM_SERIAL_PORTS] = 
+int8u PGM emSerialRxQueueWraps[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int8u), EMBER_SERIAL,_RX_QUEUE_SIZE-1 ) };
 #else
-int16u PGM emSerialTxQueueWraps[EM_NUM_SERIAL_PORTS] = 
+int16u PGM emSerialTxQueueWraps[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int16u), EMBER_SERIAL,_TX_QUEUE_SIZE ) };
-int16u PGM emSerialRxQueueWraps[EM_NUM_SERIAL_PORTS] = 
+int16u PGM emSerialRxQueueWraps[EM_NUM_SERIAL_PORTS] =
   { FOR_EACH_PORT( (int16u), EMBER_SERIAL,_RX_QUEUE_SIZE ) };
 #endif
 
@@ -311,7 +311,7 @@ static PGM int32u powers10[9] = {
 //    "0b".
 //    Ember assumes the number after the % and before the 'x' to be the number
 //    of BYTES, and all hex values are left-justified zero padded.
-// 
+//
 // A few macros and a function help make this readable:
 //   - flush the local buffer to the output
 //   - ensure that there is some room in the local buffer
@@ -332,7 +332,7 @@ do { count = localBufferPointer - localBuffer;     \
      total += count;                               \
      localBufferPointer = localBuffer;             \
      (void)localBufferPointer;                     \
-} while (FALSE)                                           
+} while (FALSE)
 
 #define addByte(byte) \
 do { *(localBufferPointer++) = (byte); } while (FALSE)
@@ -351,7 +351,7 @@ int8u *emWriteHexInternal(int8u *charBuffer, int16u value, int8u charCount)
   return charBuffer + charCount;
 }
 
-// This function will write a decimal ASCII string to buffer 
+// This function will write a decimal ASCII string to buffer
 // containing the passed 'value'.  Includes negative sign, if applicable.
 // Returns the number of bytes written.
 
@@ -399,9 +399,9 @@ static int8u decimalStringWrite(int32s value, int8u* buffer)
 }
 
 // Returns number of characters written
-int8u emPrintfInternal(emPrintfFlushHandler flushHandler, 
+int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
                        int8u port,
-                       PGM_P string, 
+                       PGM_P string,
                        va_list args)
 {
   int8u localBuffer[LOCAL_BUFFER_SIZE + MAX_SINGLE_COMMAND_BYTES];
@@ -425,7 +425,7 @@ int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
         // character
         addByte(va_arg(args, unsigned int) & 0xFF);
         break;
-      case 'p': 
+      case 'p':
         // only avr needs to special-case the pgm handling, all other current
         //  platforms fall through to standard string handling.
         #ifdef AVR_ATMEGA
@@ -473,7 +473,7 @@ int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
       case 'X': {
         // single hex byte (always prints 2 chars, ex: 0A)
         int8u data = va_arg(args, int);
-       
+
         localBufferPointer = emWriteHexInternal(localBufferPointer, data, 2);
         break; }
       case '2':
@@ -491,11 +491,11 @@ int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
           // On the AVR at least, the code size is smaller if we limit the
           // emWriteHexInternal() code to 16-bit numbers and call it twice in
           // this case.  Other processors may have a different tradeoff.
-          localBufferPointer = emWriteHexInternal(localBufferPointer, 
-                                              (int16u) (data >> 16), 
+          localBufferPointer = emWriteHexInternal(localBufferPointer,
+                                              (int16u) (data >> 16),
                                               4);
-          localBufferPointer = emWriteHexInternal(localBufferPointer, 
-                                              (int16u) data, 
+          localBufferPointer = emWriteHexInternal(localBufferPointer,
+                                              (int16u) data,
                                               4);
         }
         break;
@@ -508,7 +508,7 @@ int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
     if (localBufferLimit <= localBufferPointer)
       flushBuffer();
   }
-  
+
  done:
   flushBuffer();
   return total;
@@ -522,7 +522,7 @@ int8u emPrintfInternal(emPrintfFlushHandler flushHandler,
 
 #ifdef EM_ENABLE_SERIAL_BUFFER
 // always executed in interrupt context
-void emSerialBufferNextMessageIsr(EmSerialBufferQueue *q) 
+void emSerialBufferNextMessageIsr(EmSerialBufferQueue *q)
 {
   EmSerialBufferQueueEntry *e = &q->fifo[q->tail];
 
@@ -543,7 +543,7 @@ void emSerialBufferNextMessageIsr(EmSerialBufferQueue *q)
 void emSerialBufferNextBlockIsr(EmSerialBufferQueue *q, int8u port)
 {
   EmSerialBufferQueueEntry *e = &q->fifo[q->tail];
-  
+
   if(e->length != 0) {
     q->currentBuffer = emberStackBufferLink(q->currentBuffer);
     q->nextByte = emberLinkedBufferContents(q->currentBuffer);
@@ -557,7 +557,7 @@ void emSerialBufferNextBlockIsr(EmSerialBufferQueue *q, int8u port)
   } else {
     #ifdef AVR_ATMEGA
       //If we are using an AVR host, non power-of-2 queue sizes are NOT
-      //supported and therefore we use a mask    
+      //supported and therefore we use a mask
       q->tail = ((q->tail+1) & emSerialTxQueueMasks[port]);
     #else // AVR_ATMEGA
       //If we are using the xap2b/cortexm3, non power-of-2 queue sizes are
@@ -577,7 +577,7 @@ void emSerialBufferNextBlockIsr(EmSerialBufferQueue *q, int8u port)
 //------------------------------------------------------
 // Serial initialization
 
-EmberStatus emberSerialInit(int8u port, 
+EmberStatus emberSerialInit(int8u port,
                             SerialBaudRate rate,
                             SerialParity parity,
                             int8u stopBits)
@@ -654,7 +654,7 @@ EmberStatus emberSerialInit(int8u port,
 // Serial Input
 
 // returns # bytes available for reading
-int16u emberSerialReadAvailable(int8u port)  
+int16u emberSerialReadAvailable(int8u port)
 {
 #ifdef EMBER_SERIAL_USE_STDIO
   return halInternalPrintfReadAvailable();
@@ -691,10 +691,10 @@ EmberStatus emberSerialReadByte(int8u port, int8u *dataByte)
       return retval;
     }
   }
-  
+
   halInternalUartRxPump(port);
   halInternalUartFlowControl(port);
-  
+
   if(q->used > 0) {
     ATOMIC_LITE(
       *dataByte = FIFO_DEQUEUE(q,emSerialRxQueueWraps[port]);
@@ -808,7 +808,7 @@ EmberStatus emberSerialReadPartialLine(int8u port, char *data, int8u max, int8u 
   if (((*index) == 0) || ((*index) >= max))
     data[0] = '\0';
 
-  for (;;) {   
+  for (;;) {
     err = emberSerialReadByte(port, &ch);
 
     // no new serial port char?, keep looping
@@ -863,8 +863,8 @@ EmberStatus emberSerialReadPartialLine(int8u port, char *data, int8u max, int8u 
       }
 
       return EMBER_SUCCESS;
-    } 
-      
+    }
+
     data[(*index)++] = ch;
   }
 }
@@ -883,7 +883,7 @@ EmberStatus emberSerialReadLine(int8u port, char *data, int8u max)
 // Serial Output
 
 // returns # bytes (if fifo mode)/messages (if buffer mode) that can be written
-int16u emberSerialWriteAvailable(int8u port)  
+int16u emberSerialWriteAvailable(int8u port)
 {
 #ifdef EMBER_SERIAL_USE_STDIO
   return halInternalPrintfWriteAvailable();
@@ -891,14 +891,14 @@ int16u emberSerialWriteAvailable(int8u port)
   switch(emSerialPortModes[port]) {
 #ifdef EM_ENABLE_SERIAL_FIFO
   case EMBER_SERIAL_FIFO:
-    return emSerialTxQueueSizes[port] - 
+    return emSerialTxQueueSizes[port] -
       ((EmSerialFifoQueue*)emSerialTxQueues[port])->used;
 #endif
 #ifdef EM_ENABLE_SERIAL_BUFFER
   case EMBER_SERIAL_BUFFER: {
     EmSerialBufferQueue *q = (EmSerialBufferQueue *)emSerialTxQueues[port];
     int8u elementsUsed;
-    int8u elementsDead; 
+    int8u elementsDead;
     ATOMIC_LITE( // To clarify the volatile access.
            elementsUsed = q->used;
            elementsDead = q->dead;
@@ -986,7 +986,7 @@ EmberStatus emberSerialWriteString(int8u port, PGM_P string)
       EmberMessageBuffer buff = emberAllocateStackBuffer();
       if(buff != EMBER_NULL_MESSAGE_BUFFER) {
         EmberStatus stat;
-        if((stat=emberAppendPgmStringToLinkedBuffers(buff, string)) 
+        if((stat=emberAppendPgmStringToLinkedBuffers(buff, string))
            == EMBER_SUCCESS) {
           stat = emberSerialWriteBuffer(port, buff, 0, emberMessageBufferLength(buff));
         }
@@ -1011,13 +1011,13 @@ EmberStatus emberSerialPrintCarriageReturn(int8u port)
 EmberStatus emberSerialPrintfVarArg(int8u port, PGM_P formatString, va_list ap)
 {
    EmberStatus stat = EMBER_SUCCESS;
-   
+
 #ifdef EMBER_SERIAL_USE_STDIO
   if(!emPrintfInternal(emberSerialWriteData, port, formatString, ap)) {
     stat = EMBER_ERR_FATAL;
   }
 #else //EMBER_SERIAL_USE_STDIO
-  
+
   switch(emSerialPortModes[port]) {
 #ifdef EM_ENABLE_SERIAL_FIFO
   case EMBER_SERIAL_FIFO: {
@@ -1133,7 +1133,7 @@ EmberStatus emberSerialWriteData(int8u port, int8u *data, int8u length)
         // Refcounts may be manipulated in ISR if DMA used
         ATOMIC( emberReleaseMessageBuffer(buff); )
         return stat;
-      } else 
+      } else
         return EMBER_NO_BUFFERS;
     }
 #endif
@@ -1144,9 +1144,9 @@ EmberStatus emberSerialWriteData(int8u port, int8u *data, int8u length)
 }
 
 #ifndef  NO_PACKET_BUFFERS
-EmberStatus emberSerialWriteBuffer(int8u port, 
-                                   EmberMessageBuffer buffer, 
-                                   int8u start, 
+EmberStatus emberSerialWriteBuffer(int8u port,
+                                   EmberMessageBuffer buffer,
+                                   int8u start,
                                    int8u length)
 {
 //Host processors do not use Ember Message Buffers.
@@ -1165,7 +1165,7 @@ EmberStatus emberSerialWriteBuffer(int8u port,
     {
       for(;PACKET_BUFFER_SIZE <= start; start-=PACKET_BUFFER_SIZE)
         buffer = emberStackBufferLink(buffer);
-      
+
       while (0 < length) {
         int8u remainingInBuffer = PACKET_BUFFER_SIZE - start;
         int8u bytes = (length < remainingInBuffer
@@ -1195,7 +1195,7 @@ EmberStatus emberSerialWriteBuffer(int8u port,
              elementsUsed = q->used;
              elementsDead = q->dead;
              )
-      
+
       #ifdef   EM_ENABLE_SERIAL_BLOCKING
       if(emSerialBlocking[port]) {
         while((elementsUsed + elementsDead) >= emSerialTxQueueSizes[port]) {
@@ -1219,7 +1219,7 @@ EmberStatus emberSerialWriteBuffer(int8u port,
         buffer = emberStackBufferLink(buffer);
       }
       emberHoldMessageBuffer(buffer);
-      
+
       e = &q->fifo[q->head];
       e->length = length;
       e->buffer = buffer;
@@ -1236,8 +1236,8 @@ EmberStatus emberSerialWriteBuffer(int8u port,
       ATOMIC_LITE(
         q->used++;
       )
-      halInternalStartUartTx(port);  
-      break; 
+      halInternalStartUartTx(port);
+      break;
     }
 #endif// EM_ENABLE_SERIAL_BUFFER
   default:
@@ -1281,7 +1281,7 @@ EmberStatus emberSerialWaitSend(int8u port)  // waits for all byte to be written
 //------------------------------------------------------
 // Guaranteed output
 
-// The _only_ Guaranteed API:  The usage model for this api 
+// The _only_ Guaranteed API:  The usage model for this api
 //   Does not require efficiency
 EmberStatus emberSerialGuaranteedPrintf(int8u port, PGM_P formatString, ...)
 {
@@ -1299,7 +1299,7 @@ EmberStatus emberSerialGuaranteedPrintf(int8u port, PGM_P formatString, ...)
   return stat;
 #else //EMBER_SERIAL_USE_STDIO
   va_list ap;
-  
+
   // prevent interrupt driven transmission from intermixing
   halInternalStopUartTx(port);
   va_start(ap, formatString);
@@ -1332,7 +1332,7 @@ EmberStatus emberSerialGuaranteedPrintf(int8u port, PGM_P formatString, ...)
 
 //------------------------------------------------------
 // Serial buffer maintenance
-void emberSerialFlushRx(int8u port) 
+void emberSerialFlushRx(int8u port)
 {
 #ifdef EMBER_SERIAL_USE_STDIO
   ATOMIC(
@@ -1357,11 +1357,11 @@ void emberSerialFlushRx(int8u port)
 // Serial Buffer Cleanup Tick
 
 #ifdef EM_ENABLE_SERIAL_BUFFER
-//Helper function to calculate deadIndex since ifdefs cannot exist in the 
+//Helper function to calculate deadIndex since ifdefs cannot exist in the
 //ATOMIC_LITE block
 int8u calculateDeadIndex(int8u port, int8u tail, int8u numDead) {
   int8u deadIndex;
-  
+
   #ifdef AVR_ATMEGA
     //If we are using an AVR host, non power-of-2 queue sizes are NOT
     //supported and therefore we use a mask
@@ -1379,11 +1379,11 @@ int8u calculateDeadIndex(int8u port, int8u tail, int8u numDead) {
       deadIndex = tail - numDead;
     }
   #endif // !AVR_ATMEGA
-  
+
   return deadIndex;
 }
 #endif //EM_ENABLE_SERIAL_BUFFER
-    
+
 void emberSerialBufferTick(void)
 {
 #ifdef EM_ENABLE_SERIAL_BUFFER

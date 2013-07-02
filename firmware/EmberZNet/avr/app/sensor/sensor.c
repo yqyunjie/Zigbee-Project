@@ -219,6 +219,15 @@ void main(void)
   // print the reason for the reset
   emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
                               (PGM_P)halGetResetString());
+
+#if defined AVR_ATMEGA_128
+  emberSerialGuaranteedPrintf(APP_SERIAL, "ATMEGA128L ");
+#else
+    #error Unknown AVR ATMEGA micro
+#endif
+  emberSerialGuaranteedPrintf(APP_SERIAL,
+							  "Build on: "__TIME__" "__DATE__"\r\n");
+
   // emberInit must be called before other EmberNet stack functions
   status = emberInit(reset);
   if (status != EMBER_SUCCESS) {
