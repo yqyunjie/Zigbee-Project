@@ -224,6 +224,12 @@ int main(void)
     emberSerialWaitSend(APP_SERIAL);
   }
 
+  // turn allow join on
+  emberPermitJoining(0xFF);
+#if EMBER_SECURITY_LEVEL == 5
+  trustCenterPermitJoins(TRUE);
+#endif // EMBER_SECURITY_LEVEL == 5
+
   // init application state
   sinkInit();
 
@@ -502,10 +508,15 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
     if (length < 10) {
       emberSerialPrintf(APP_SERIAL, "; len 0x%x / data NO DATA!\r\n");
     } else {
-      emberSerialPrintf(APP_SERIAL, "; len 0x%x / data 0x%x%x\r\n",
+      /*emberSerialPrintf(APP_SERIAL, "; len 0x%x / data 0x%x%x\r\n",
                         length,
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),
-                        emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));
+                        emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));*/
+      emberSerialPrintf(APP_SERIAL, "\r\ndata part: 0x");
+      for(int8u i = EUI64_SIZE; i < length; i++) {
+         emberSerialPrintf(APP_SERIAL, "%02X ",
+                        emberGetLinkedBuffersByte(message, i));
+      }
 #ifdef DEBUG
       emberDebugPrintf("Sink received data: 0x%x%x \r\n",
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),
@@ -690,6 +701,7 @@ static void applicationTick(void) {
       // Increment our timer for joining.  Turn off joining at the trust
       // center when it has reached the join timeout.
       // *******************
+#if 0
       if ( trustCenterIsPermittingJoins() ) {
         permitJoinsTimer++;
 
@@ -699,7 +711,8 @@ static void applicationTick(void) {
           permitJoinsTimer = 0;
         }
       }
-#endif
+#endif//#if 0
+#endif//#if EMBER_SECURITY_LEVEL == 5
 
       // ******************************************
       // see if it is time to advertise
@@ -773,10 +786,10 @@ static void applicationTick(void) {
       emberSerialPrintf(APP_SERIAL, "BUTTON0: turn permit join ON for 60 seconds\r\n");
 
       // turn allow join on
-      emberPermitJoining(joinTimeout);
+      //emberPermitJoining(joinTimeout);
 #if EMBER_SECURITY_LEVEL == 5
-      trustCenterPermitJoins(TRUE);
-      permitJoinsTimer = 0;
+      //trustCenterPermitJoins(TRUE);
+      //permitJoinsTimer = 0;
 #endif // EMBER_SECURITY_LEVEL == 5
     }
 

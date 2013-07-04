@@ -204,7 +204,7 @@ int main(void)
   // can be printed to the serial port.
   if(emberSerialInit(APP_SERIAL, BAUD_115200, PARITY_NONE, 1)
      != EMBER_SUCCESS) {
-    emberSerialInit(APP_SERIAL, BAUD_19200, PARITY_NONE, 1);
+    emberSerialInit(APP_SERIAL, BAUD_38400, PARITY_NONE, 1);
   }
 
   // emberInit must be called before other EmberNet stack functions
@@ -529,10 +529,16 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
     if (length < 10) {
       emberSerialPrintf(APP_SERIAL, "; len 0x%x / data NO DATA!\r\n");
     } else {
-      emberSerialPrintf(APP_SERIAL, "; len 0x%x / data 0x%x%x\r\n",
+      /*emberSerialPrintf(APP_SERIAL, "; len 0x%x / data 0x%x%x\r\n",
                         length,
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),
-                        emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));
+                        emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));*/
+      emberSerialPrintf(APP_SERIAL, "\r\ndata part: 0x");
+      for(int8u i = 0; i < length; i++) {
+         emberSerialPrintf(APP_SERIAL, "%c ",
+                        emberGetLinkedBuffersByte(message, i));
+      }
+      emberSerialPrintf(APP_SERIAL, "\r\n");
 #ifdef DEBUG
       emberDebugPrintf("Sink received data: 0x%x%x \r\n",
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),
