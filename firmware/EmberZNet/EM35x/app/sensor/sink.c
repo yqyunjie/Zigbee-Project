@@ -535,7 +535,7 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));*/
       emberSerialPrintf(APP_SERIAL, "\r\ndata part: 0x");
       for(int8u i = 0; i < length; i++) {
-         emberSerialPrintf(APP_SERIAL, "%c ",
+         emberSerialPrintf(APP_SERIAL, "%c",
                         emberGetLinkedBuffersByte(message, i));
       }
       emberSerialPrintf(APP_SERIAL, "\r\n");

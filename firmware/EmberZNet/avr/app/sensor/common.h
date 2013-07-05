@@ -40,7 +40,7 @@
 // Application specific constants and globals
 
 // All nodes running the sensor or sink application will belong to the
-// SENSOR MULTICAST group and will use the same location in the 
+// SENSOR MULTICAST group and will use the same location in the
 // multicast table.
 
 #define MULTICAST_ID            0x1111
@@ -91,9 +91,9 @@
 // This is in quarter seconds.
 #define TIME_BEFORE_SINK_ADVERTISE 240 // ~60 seconds
 
-// This define determines how much data to send. It must be multiple of 2 
-// (since we're sending two-byte integers). The maximum value for 
-// SEND_DATA_SIZE is determined by the maximum transport payload 
+// This define determines how much data to send. It must be multiple of 2
+// (since we're sending two-byte integers). The maximum value for
+// SEND_DATA_SIZE is determined by the maximum transport payload
 // size, which varies if security is on or off. The sendData
 // function in sensor.c checks this value and adjusts it if necessary.
 // The default value for this define is set to 40 bytes.
@@ -134,13 +134,13 @@ void sensorCommonPrint16ByteKey(int8u* key);
 
 #ifdef USE_HARDCODED_NETWORK_SETTINGS
   // when the network settings are hardcoded - set the channel, panid, and
-  // power. 
-  #define APP_CHANNEL (26)
+  // power.
+  #define APP_CHANNEL (25)
   #define APP_PANID   (0x01ff)
   #define APP_EXTENDED_PANID {'s','e','n','s','o','r',0,0}
 #else
   // when not using hardcoded settings, it is possible to ensure that
-  // devices join to each other by setting an extended PAN ID below. 
+  // devices join to each other by setting an extended PAN ID below.
   // Leaving the extended PAN ID as "0" means "use any"
   #define APP_EXTENDED_PANID {0,0,0,0,0,0,0,0}
 #endif //USE_HARDCODED_NETWORK_SETTINGS
@@ -161,8 +161,8 @@ void sensorCommonPrint16ByteKey(int8u* key);
 // The following function are to support sleepy end devices
 
 // adds a JIT (just-in-time) message of type msgType for all current children.
-void appAddJitForAllChildren(int8u msgType, 
-                             int8u* data, 
+void appAddJitForAllChildren(int8u msgType,
+                             int8u* data,
                              int8u dataLength);
 
 // construct and send an APS message based on a stored JIT message
@@ -173,7 +173,7 @@ void appSendJitToChild(EmberNodeId childId);
 // (primarily used for debugging)
 void jitMessageStatus(void);
 
-// Handle queries from end devices for the sink by sending a 
+// Handle queries from end devices for the sink by sending a
 // sink advertise in response
 void handleSinkQuery(EmberNodeId childId);
 
@@ -195,27 +195,27 @@ extern EmberNodeId sinkShortAddress;
 
 #ifdef USE_BOOTLOADER_LIB
 // ****************************************************************
-// the following functions are defined to support the em250 standalone 
-// bootloader in the sensor sample application. 
-// 
-// The sensor application only makes use of passthru bootloading and does not 
-// use clone or recovery bootload modes. The solution presented is not a 
-// complete solution as the command line interface on the applications only 
-// supports bootloading the first child in the child table or first entry in 
+// the following functions are defined to support the em250 standalone
+// bootloader in the sensor sample application.
+//
+// The sensor application only makes use of passthru bootloading and does not
+// use clone or recovery bootload modes. The solution presented is not a
+// complete solution as the command line interface on the applications only
+// supports bootloading the first child in the child table or first entry in
 // the address table. (This could be solved with either an extension to the
 // command line interface, or a different model for determining the EUI to
 // be bootloaded). This is meant as a reference to show what is needed
-// to support bootloading in an existing application. All code related to 
+// to support bootloading in an existing application. All code related to
 // bootloading is defined under USE_BOOTLOADER_LIB.
 //
-// Please see the standalone-bootloader-demo sample application for a 
+// Please see the standalone-bootloader-demo sample application for a
 // complete example of using the bootloader.
 
 // called by a parent when a child should be bootloaded. The Bootload does
 // not start until the next time the child wakes up.
 void bootloadMySleepyChild(EmberEUI64 targetEui);
 
-// called by a non-sleepy to bootload a neighbor. The bootload will attempt 
+// called by a non-sleepy to bootload a neighbor. The bootload will attempt
 // to start immediately.
 void bootloadMyNeighborRouter(EmberEUI64 targetEui);
 

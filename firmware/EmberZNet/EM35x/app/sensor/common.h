@@ -137,7 +137,7 @@ void sensorCommonPrint16ByteKey(int8u* key);
 #ifdef USE_HARDCODED_NETWORK_SETTINGS
   // when the network settings are hardcoded - set the channel, panid, and
   // power.
-  #define APP_CHANNEL (26)
+  #define APP_CHANNEL (25)
   #define APP_PANID   (0x01ff)
   #define APP_EXTENDED_PANID {'s','e','n','s','o','r',0,0}
 #else

@@ -2,111 +2,109 @@
 #                                                                              #
 #      IAR Universal Linker V4.61L/W32                                         #
 #                                                                              #
-#           Link time     =  04/Jul/2013  20:40:28                             #
+#           Link time     =  05/Jul/2013  15:43:45                             #
 #           Target CPU    =  A90                                               #
-#           List file     =  F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\List\Sink-Atmega128.map          #
-#           Output file 1 =  F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Exe\Sink-Atmega128.lbin          #
+#           List file     =  D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\List\Sink-Atmega128.map              #
+#           Output file 1 =  D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Exe\Sink-Atmega128.lbin              #
 #                            Format: mpds-code, variant: -y(CODE)              #
 #           Command line  =  -y(CODE) -w6                                      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\adc.r90                      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\bootloader-interface-app.r90 #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\bootloader-interface-standal #
-#                            one-120k.r90                                      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\button.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\buzzer.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\common.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\cstartup.r90                 #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\diagnostic.r90               #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\em2420-128.r90               #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\em2420.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\ember-configuration.r90      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\form-and-join-node-adapter.r #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\adc.r90                          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\bootloader-interface-app.r90     #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\bootloader-interface-standalone- #
+#                            120k.r90                                          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\button.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\buzzer.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\common.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\cstartup.r90                     #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\diagnostic.r90                   #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\em2420-128.r90                   #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\em2420.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\ember-configuration.r90          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\form-and-join-node-adapter.r90   #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\form-and-join-node-callbacks.r90 #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\form-and-join.r90                #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\led.r90                          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\low-level-init.r90               #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\mem-util.r90                     #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\micro.r90                        #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\node.r90                         #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\random.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\security-address-cache.r90       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\serial.r90                       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\sink.r90                         #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\source-route-common.r90          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\source-route.r90                 #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\spi.r90                          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\symbol-timer.r90                 #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\system-timer.r90                 #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\token.r90                        #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\trust-center.r90                 #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Obj\uart.r90                         #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\alarm-library-em2420-mega128.r90              #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\binding-table-library-em2420-mega128.r90      #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\cbke-stub-library-em2420-mega128.r90          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\end-device-bind-stub-library-em2420-mega128.r #
 #                            90                                                #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\form-and-join-node-callbacks #
-#                            .r90                                              #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\form-and-join.r90            #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\led.r90                      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\low-level-init.r90           #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\mem-util.r90                 #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\micro.r90                    #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\node.r90                     #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\random.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\security-address-cache.r90   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\serial.r90                   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\sink.r90                     #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\source-route-common.r90      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\source-route.r90             #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\spi.r90                      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\symbol-timer.r90             #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\system-timer.r90             #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\token.r90                    #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\trust-center.r90             #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Obj\uart.r90                     #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\alarm-library-em2420-mega128.r90          #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\binding-table-library-em2420-mega128.r90  #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\cbke-stub-library-em2420-mega128.r90      #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\end-device-bind-stub-library-em2420-mega1 #
-#                            28.r90                                            #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\security-library-core-em2420-mega128.r90  #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\security-library-link-keys-stub-em2420-me #
-#                            ga128.r90                                         #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\stac #
-#                            k\build\zigbee-pro-stack-em2420-mega128.r90       #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\security-library-core-em2420-mega128.r90      #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\security-library-link-keys-stub-em2420-mega12 #
+#                            8.r90                                             #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\bu #
+#                            ild\zigbee-pro-stack-em2420-mega128.r90           #
 #                            -o                                                #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\Exe\Sink-Atmega128.lbin          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\Exe\Sink-Atmega128.lbin              #
 #                            -Fmpds-code -D_..X_INTVEC_BASE=100                #
 #                            -D_..X_CSTACK_SIZE=300 -D_..X_RSTACK_SIZE=80      #
 #                            -D_..X_EXT_SRAM_BASE=0 -D_..X_EXT_SRAM_END=0 -l   #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\buil #
-#                            d\Sink_Atmega128\List\Sink-Atmega128.map          #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Si #
+#                            nk_Atmega128\List\Sink-Atmega128.map              #
 #                            -xms                                              #
-#                            "-ID:\Program Files\IAR Systems\Embedded Workbenc #
+#                            "-IC:\Program Files\IAR Systems\Embedded Workbenc #
 #                            h 5.4\avr\LIB\"                                   #
-#                            "-ID:\Program Files\IAR Systems\Embedded Workbenc #
+#                            "-IC:\Program Files\IAR Systems\Embedded Workbenc #
 #                            h 5.4\avr\SRC\LIB\"                               #
 #                            -f                                                #
-#                            F:\Firmware\emberZNet\firmware\EmberZNet\avr\app\ #
-#                            sensor\..\..\hal\micro\avr-atmega\128\app-cfg.xcl #
+#                            D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\app\sens #
+#                            or\..\..\hal\micro\avr-atmega\128\app-cfg.xcl     #
 #                            (-D_..X_INTVEC_SIZE=8C                            #
 #                            -D_..X_INTVEC_END=(_..X_INTVEC_BASE+_..X_INTVEC_S #
 #                            IZE-1)                                            #
@@ -150,7 +148,7 @@
 #                            -Z(DATA)NEAR_C=_..X_EXT_ROM_BASE-_..X_EXT_ROM_END #
 #                            -Z(DATA)NEAR_N=_..X_EXT_NV_BASE-_..X_EXT_NV_END   #
 #                            -Z(XDATA)EEPROM_I,EEPROM_N=1-_..X_EEPROM_END)     #
-#                            "D:\Program Files\IAR Systems\Embedded Workbench  #
+#                            "C:\Program Files\IAR Systems\Embedded Workbench  #
 #                            5.4\avr\LIB\CLIB\cl3s-ec_mul.r90"                 #
 #                                                                              #
 #                           Copyright (C) 1987-2009 IAR Systems AB.            #
@@ -240,7 +238,7 @@ Absolute parts
            _..X_INTVEC_BASE        00000100 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\adc.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\adc.r90
   PROGRAM MODULE, NAME : adc
 
   SEGMENTS IN THE MODULE
@@ -371,7 +369,7 @@ INTVEC
                                    00000154 
     -------------------------------------------------------------------------
 INITTAB
-  Relative segment, address: CODE 00013043 - 00013049 (0x7 bytes), align: 0
+  Relative segment, address: CODE 00013033 - 00013039 (0x7 bytes), align: 0
   Segment part 12.            Intra module refs:   Segment part 10 (form-and-join-node-adapter)
                                                    Segment part 10 (neighbor)
                                                    Segment part 10 (network)
@@ -441,14 +439,14 @@ INITTAB
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            ?<Segment init: NEAR_Z>
-                                   00013043 
+                                   00013033 
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\bootloader-interface-app.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\bootloader-interface-app.r90
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\bootloader-interface-standalone-120k.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\bootloader-interface-standalone-120k.r90
   PROGRAM MODULE, NAME : bootloader-interface-standalone-120k
 
   SEGMENTS IN THE MODULE
@@ -527,7 +525,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\button.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\button.r90
   PROGRAM MODULE, NAME : button
 
   SEGMENTS IN THE MODULE
@@ -703,7 +701,7 @@ INTVEC
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\buzzer.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\buzzer.r90
   PROGRAM MODULE, NAME : buzzer
 
   SEGMENTS IN THE MODULE
@@ -805,11 +803,11 @@ INTVEC
                                    00000124 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013051 - 00013057 (0x7 bytes), align: 0
+  Relative segment, address: CODE 00013041 - 00013047 (0x7 bytes), align: 0
   Segment part 12.            Intra module refs:   Segment part 11
     -------------------------------------------------------------------------
 INITTAB
-  Relative segment, address: CODE 0001304A - 00013050 (0x7 bytes), align: 0
+  Relative segment, address: CODE 0001303A - 00013040 (0x7 bytes), align: 0
   Segment part 13.            Intra module refs:   Segment part 11
                                                    Segment part 12 (serial)
                                                    Segment part 15 (sink)
@@ -905,11 +903,11 @@ INITTAB
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
            ?<Segment init: NEAR_I>
-                                   0001304A 
+                                   0001303A 
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\common.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\common.r90
   PROGRAM MODULE, NAME : common
 
   SEGMENTS IN THE MODULE
@@ -1413,7 +1411,7 @@ CODE
                                                    emberChildJoinHandler
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013058 - 00013065 (0xe bytes), align: 0
+  Relative segment, address: CODE 00013048 - 00013055 (0xe bytes), align: 0
   Segment part 19.            Intra module refs:   Segment part 18
     -------------------------------------------------------------------------
 FAR_F
@@ -1455,24 +1453,24 @@ FAR_F
   Segment part 13.            Intra module refs:   handleSinkQuery
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00011F2F - 00011FBC (0x8e bytes), align: 0
+  Relative segment, address: CODE 00011F2F - 00011FB8 (0x8a bytes), align: 0
   Segment part 14.            Intra module refs:   createAndStoreJitMessage
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00011FBD - 0001200A (0x4e bytes), align: 0
+  Relative segment, address: CODE 00011FB9 - 00012006 (0x4e bytes), align: 0
   Segment part 15.            Intra module refs:   appAddJitForAllChildren
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 0001200B - 00012026 (0x1c bytes), align: 0
+  Relative segment, address: CODE 00012007 - 00012022 (0x1c bytes), align: 0
   Segment part 16.            Intra module refs:   appSendJitToChild
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012027 - 00012079 (0x53 bytes), align: 0
+  Relative segment, address: CODE 00012023 - 00012075 (0x53 bytes), align: 0
   Segment part 17.            Intra module refs:   jitMessageStatus
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\cstartup.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\cstartup.r90
   PROGRAM MODULE, NAME : ?RESET
 
   SEGMENTS IN THE MODULE
@@ -1522,7 +1520,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\diagnostic.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\diagnostic.r90
   PROGRAM MODULE, NAME : diagnostic
 
   SEGMENTS IN THE MODULE
@@ -1629,7 +1627,7 @@ INTVEC
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\em2420-128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\em2420-128.r90
   PROGRAM MODULE, NAME : em2420-128
 
   SEGMENTS IN THE MODULE
@@ -1784,7 +1782,7 @@ INTVEC
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\em2420.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\em2420.r90
   PROGRAM MODULE, NAME : em2420
 
   SEGMENTS IN THE MODULE
@@ -2119,7 +2117,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\ember-configuration.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\ember-configuration.r90
   PROGRAM MODULE, NAME : ember-configuration
 
   SEGMENTS IN THE MODULE
@@ -2918,176 +2916,176 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013066 - 00013066 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013056 - 00013056 (0x1 bytes), align: 0
   Segment part 11.            Intra module refs:   emPacketBufferCount
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013067 - 00013067 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013057 - 00013057 (0x1 bytes), align: 0
   Segment part 13.            Intra module refs:   emPacketBufferFreeCount
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013068 - 00013069 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013058 - 00013059 (0x2 bytes), align: 0
   Segment part 15.            Intra module refs:   emPacketBufferData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001306A - 0001306B (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001305A - 0001305B (0x2 bytes), align: 0
   Segment part 17.            Intra module refs:   emMessageBufferLengths
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001306C - 0001306D (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001305C - 0001305D (0x2 bytes), align: 0
   Segment part 19.            Intra module refs:   emMessageBufferReferenceCounts
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001306E - 0001306F (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001305E - 0001305F (0x2 bytes), align: 0
   Segment part 21.            Intra module refs:   emPacketBufferLinks
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013070 - 00013071 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013060 - 00013061 (0x2 bytes), align: 0
   Segment part 23.            Intra module refs:   emPacketBufferQueueLinks
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013072 - 00013072 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013062 - 00013062 (0x1 bytes), align: 0
   Segment part 25.            Intra module refs:   emAllowRelay
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013073 - 00013074 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013063 - 00013064 (0x2 bytes), align: 0
   Segment part 27.            Intra module refs:   emChildIdTable
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013075 - 00013075 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013065 - 00013065 (0x1 bytes), align: 0
   Segment part 29.            Intra module refs:   emberChildTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013076 - 00013077 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013066 - 00013067 (0x2 bytes), align: 0
   Segment part 31.            Intra module refs:   emChildStatus
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013078 - 00013079 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013068 - 00013069 (0x2 bytes), align: 0
   Segment part 33.            Intra module refs:   emChildTimers
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001307A - 0001307B (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001306A - 0001306B (0x2 bytes), align: 0
   Segment part 35.            Intra module refs:   emUnicastAlarmData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001307C - 0001307D (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001306C - 0001306D (0x2 bytes), align: 0
   Segment part 39.            Intra module refs:   emBroadcastAlarmData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001307E - 0001307F (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001306E - 0001306F (0x2 bytes), align: 0
   Segment part 42.            Intra module refs:   emRouteData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013080 - 00013080 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013070 - 00013070 (0x1 bytes), align: 0
   Segment part 44.            Intra module refs:   emRouteTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013081 - 00013082 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013071 - 00013072 (0x2 bytes), align: 0
   Segment part 46.            Intra module refs:   emDiscoveryTable
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013083 - 00013083 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013073 - 00013073 (0x1 bytes), align: 0
   Segment part 48.            Intra module refs:   emDiscoveryTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013084 - 00013085 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013074 - 00013075 (0x2 bytes), align: 0
   Segment part 50.            Intra module refs:   emberMulticastTable
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013086 - 00013086 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013076 - 00013076 (0x1 bytes), align: 0
   Segment part 52.            Intra module refs:   emberMulticastTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013087 - 00013088 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013077 - 00013078 (0x2 bytes), align: 0
   Segment part 54.            Intra module refs:   emNeighborData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013089 - 00013089 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013079 - 00013079 (0x1 bytes), align: 0
   Segment part 56.            Intra module refs:   emNeighborTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001308A - 0001308B (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001307A - 0001307B (0x2 bytes), align: 0
   Segment part 58.            Intra module refs:   emFrameCounters
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001308C - 0001308D (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001307C - 0001307D (0x2 bytes), align: 0
   Segment part 61.            Intra module refs:   emBindingRemoteNode
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001308E - 0001308F (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001307E - 0001307F (0x2 bytes), align: 0
   Segment part 63.            Intra module refs:   emBindingFlags
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013090 - 00013090 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013080 - 00013080 (0x1 bytes), align: 0
   Segment part 65.            Intra module refs:   emAddressTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013091 - 00013092 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013081 - 00013082 (0x2 bytes), align: 0
   Segment part 67.            Intra module refs:   emAddressTable
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013093 - 00013093 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013083 - 00013083 (0x1 bytes), align: 0
   Segment part 69.            Intra module refs:   emMaxApsUnicastMessages
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013094 - 00013095 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013084 - 00013085 (0x2 bytes), align: 0
   Segment part 71.            Intra module refs:   emApsUnicastMessageData
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013096 - 00013097 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013086 - 00013087 (0x2 bytes), align: 0
   Segment part 73.            Intra module refs:   emberApsAckTimeoutMs
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013098 - 00013098 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013088 - 00013088 (0x1 bytes), align: 0
   Segment part 76.            Intra module refs:   emberFragmentWindowSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013099 - 0001309A (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013089 - 0001308A (0x2 bytes), align: 0
   Segment part 79.            Intra module refs:   emIncomingApsFrameCounters
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001309B - 0001309B (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001308B - 0001308B (0x1 bytes), align: 0
   Segment part 81.            Intra module refs:   emberTrustCenterLinkKeyRequestPolicy
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001309C - 0001309C (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001308C - 0001308C (0x1 bytes), align: 0
   Segment part 83.            Intra module refs:   emberAppLinkKeyRequestPolicy
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001309D - 0001309D (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001308D - 0001308D (0x1 bytes), align: 0
   Segment part 94.            Intra module refs:   emZigbeeNetworkSecurityLevel
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001309E - 0001309E (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001308E - 0001308E (0x1 bytes), align: 0
   Segment part 96.            Intra module refs:   emMaxEndDeviceChildren
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001309F - 0001309F (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001308F - 0001308F (0x1 bytes), align: 0
   Segment part 98.            Intra module refs:   emMaxHops
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A0 - 000130A1 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013090 - 00013091 (0x2 bytes), align: 0
   Segment part 100.           Intra module refs:   emberMacIndirectTimeout
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A2 - 000130A2 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013092 - 00013092 (0x1 bytes), align: 0
   Segment part 103.           Intra module refs:   emberMobileNodePollTimeout
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A3 - 000130A3 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013093 - 00013093 (0x1 bytes), align: 0
   Segment part 105.           Intra module refs:   emberEndDevicePollTimeout
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A4 - 000130A4 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013094 - 00013094 (0x1 bytes), align: 0
   Segment part 107.           Intra module refs:   emberEndDevicePollTimeoutShift
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A5 - 000130A5 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013095 - 00013095 (0x1 bytes), align: 0
   Segment part 112.           Intra module refs:   emPanIdConflictReportThreshold
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join-node-adapter.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join-node-adapter.r90
   PROGRAM MODULE, NAME : form-and-join-node-adapter
 
   SEGMENTS IN THE MODULE
@@ -3168,7 +3166,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 0001207A - 00012081 (0x8 bytes), align: 0
+  Relative segment, address: CODE 00012076 - 0001207D (0x8 bytes), align: 0
   Segment part 12.            Intra module refs:   emberFormAndJoinTick
     -------------------------------------------------------------------------
 CODE
@@ -3181,12 +3179,12 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A6 - 000130A6 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013096 - 00013096 (0x1 bytes), align: 0
   Segment part 8.             Intra module refs:   Segment part 7
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join-node-callbacks.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join-node-callbacks.r90
   PROGRAM MODULE, NAME : form-and-join-node-callbacks
 
   SEGMENTS IN THE MODULE
@@ -3224,7 +3222,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\form-and-join.r90
   PROGRAM MODULE, NAME : form-and-join
 
   SEGMENTS IN THE MODULE
@@ -3463,7 +3461,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\led.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\led.r90
   PROGRAM MODULE, NAME : led
 
   SEGMENTS IN THE MODULE
@@ -3553,7 +3551,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\low-level-init.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\low-level-init.r90
   PROGRAM MODULE, NAME : low-level-init
 
   SEGMENTS IN THE MODULE
@@ -3582,7 +3580,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\mem-util.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\mem-util.r90
   PROGRAM MODULE, NAME : mem-util
 
   SEGMENTS IN THE MODULE
@@ -3703,7 +3701,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\micro.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\micro.r90
   PROGRAM MODULE, NAME : micro
 
   SEGMENTS IN THE MODULE
@@ -3901,11 +3899,11 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A7 - 000130A7 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013097 - 00013097 (0x1 bytes), align: 0
   Segment part 37.            Intra module refs:   Segment part 36
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130A8 - 000130C8 (0x21 bytes), align: 0
+  Relative segment, address: CODE 00013098 - 000130B8 (0x21 bytes), align: 0
   Segment part 40.            Intra module refs:   Segment part 39
     -------------------------------------------------------------------------
 SWITCH
@@ -3913,63 +3911,63 @@ SWITCH
   Segment part 59.            Intra module refs:   halGetResetString
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012082 - 0001208D (0xc bytes), align: 0
+  Relative segment, address: CODE 0001207E - 00012089 (0xc bytes), align: 0
   Segment part 23.            Intra module refs:   halDumpStack
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 0001208E - 000120A2 (0x15 bytes), align: 0
+  Relative segment, address: CODE 0001208A - 0001209E (0x15 bytes), align: 0
   Segment part 24.            Intra module refs:   halInternalAssertFailed
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120A3 - 000120A9 (0x7 bytes), align: 0
+  Relative segment, address: CODE 0001209F - 000120A5 (0x7 bytes), align: 0
   Segment part 25.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120AA - 000120AD (0x4 bytes), align: 0
+  Relative segment, address: CODE 000120A6 - 000120A9 (0x4 bytes), align: 0
   Segment part 26.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120AE - 000120B1 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000120AA - 000120AD (0x4 bytes), align: 0
   Segment part 27.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120B2 - 000120B6 (0x5 bytes), align: 0
+  Relative segment, address: CODE 000120AE - 000120B2 (0x5 bytes), align: 0
   Segment part 28.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120B7 - 000120BA (0x4 bytes), align: 0
+  Relative segment, address: CODE 000120B3 - 000120B6 (0x4 bytes), align: 0
   Segment part 29.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120BB - 000120BF (0x5 bytes), align: 0
+  Relative segment, address: CODE 000120B7 - 000120BB (0x5 bytes), align: 0
   Segment part 30.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120C0 - 000120C4 (0x5 bytes), align: 0
+  Relative segment, address: CODE 000120BC - 000120C0 (0x5 bytes), align: 0
   Segment part 31.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120C5 - 000120C9 (0x5 bytes), align: 0
+  Relative segment, address: CODE 000120C1 - 000120C5 (0x5 bytes), align: 0
   Segment part 32.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120CA - 000120D0 (0x7 bytes), align: 0
+  Relative segment, address: CODE 000120C6 - 000120CC (0x7 bytes), align: 0
   Segment part 33.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120D1 - 000120D3 (0x3 bytes), align: 0
+  Relative segment, address: CODE 000120CD - 000120CF (0x3 bytes), align: 0
   Segment part 34.            Intra module refs:   Segment part 40
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120D4 - 000120D6 (0x3 bytes), align: 0
+  Relative segment, address: CODE 000120D0 - 000120D2 (0x3 bytes), align: 0
   Segment part 35.            Intra module refs:   Segment part 40
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\node.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\node.r90
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\random.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\random.r90
   PROGRAM MODULE, NAME : random
 
   SEGMENTS IN THE MODULE
@@ -4022,12 +4020,12 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130C9 - 000130CC (0x4 bytes), align: 0
+  Relative segment, address: CODE 000130B9 - 000130BC (0x4 bytes), align: 0
   Segment part 8.             Intra module refs:   Segment part 7
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\security-address-cache.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\security-address-cache.r90
   PROGRAM MODULE, NAME : security-address-cache
 
   SEGMENTS IN THE MODULE
@@ -4062,7 +4060,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\serial.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\serial.r90
   PROGRAM MODULE, NAME : serial
 
   SEGMENTS IN THE MODULE
@@ -4076,17 +4074,17 @@ NEAR_Z
   Segment part 11.            Intra module refs:   Segment part 13
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000120D7 - 000120DE (0x8 bytes), align: 0
+  Relative segment, address: CODE 000120D3 - 000120DA (0x8 bytes), align: 0
   Segment part 15.            Intra module refs:   Segment part 35
                                                    Segment part 65
                                                    Segment part 68
                                                    emberSerialReadByte
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           emSerialPortModes       000120DD 
-           emSerialRxQueueMasks    000120DB        halInternalUart1RxIsr (uart)
-           emSerialTxQueueMasks    000120D9        halInternalUart1TxIsr (uart)
-           emSerialTxQueueSizes    000120D7 
+           emSerialPortModes       000120D9 
+           emSerialRxQueueMasks    000120D7        halInternalUart1RxIsr (uart)
+           emSerialTxQueueMasks    000120D5        halInternalUart1TxIsr (uart)
+           emSerialTxQueueSizes    000120D3 
     -------------------------------------------------------------------------
 NEAR_I
   Relative segment, address: DATA 000004FC - 00000507 (0xc bytes), align: 0
@@ -4392,18 +4390,18 @@ CODE
   Segment part 83.            Intra module refs:   Segment part 82
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130CD - 000130D8 (0xc bytes), align: 0
+  Relative segment, address: CODE 000130BD - 000130C8 (0xc bytes), align: 0
   Segment part 13.            Intra module refs:   Segment part 12
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\sink.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\sink.r90
   PROGRAM MODULE, NAME : sink
 
   SEGMENTS IN THE MODULE
   ======================
 FAR_F
-  Relative segment, address: CODE 000120DF - 00012785 (0x6a7 bytes), align: 0
+  Relative segment, address: CODE 000120DB - 0001277D (0x6a3 bytes), align: 0
   Segment part 7.             Intra module refs:   Segment part 29
                                                    Segment part 37
                                                    Segment part 38
@@ -4417,39 +4415,39 @@ FAR_F
                                                    processSerialInput
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012786 - 000127CB (0x46 bytes), align: 0
+  Relative segment, address: CODE 0001277E - 000127C3 (0x46 bytes), align: 0
   Segment part 8.             Intra module refs:   emberScanErrorHandler
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000127CC - 000127D3 (0x8 bytes), align: 0
+  Relative segment, address: CODE 000127C4 - 000127CB (0x8 bytes), align: 0
   Segment part 9.             Intra module refs:   emberUnusedPanIdFoundHandler
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000127D4 - 000127FA (0x27 bytes), align: 0
+  Relative segment, address: CODE 000127CC - 000127F2 (0x27 bytes), align: 0
   Segment part 10.            Intra module refs:   addMulticastGroup
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000127FB - 00012850 (0x56 bytes), align: 0
+  Relative segment, address: CODE 000127F3 - 00012848 (0x56 bytes), align: 0
   Segment part 11.            Intra module refs:   sendMulticastHello
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012851 - 0001289F (0x4f bytes), align: 0
+  Relative segment, address: CODE 00012849 - 00012897 (0x4f bytes), align: 0
   Segment part 12.            Intra module refs:   sinkAdvertise
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 000128A0 - 000129FF (0x160 bytes), align: 0
+  Relative segment, address: CODE 00012898 - 000129F7 (0x160 bytes), align: 0
   Segment part 13.            Intra module refs:   sinkAppSwitchNetworkKey
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012A00 - 00012D3C (0x33d bytes), align: 0
+  Relative segment, address: CODE 000129F8 - 00012D34 (0x33d bytes), align: 0
   Segment part 14.            Intra module refs:   printHelp
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012D3D - 00012D43 (0x7 bytes), align: 0
+  Relative segment, address: CODE 00012D35 - 00012D3B (0x7 bytes), align: 0
   Segment part 20.            Intra module refs:   Segment part 22
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           endpointDescription     00012D3D 
+           endpointDescription     00012D35 
     -------------------------------------------------------------------------
 NEAR_Z
   Relative segment, address: DATA 00000CD4 - 00000D37 (0x64 bytes), align: 0
@@ -4462,11 +4460,11 @@ NEAR_Z
            globalBuffer            00000CD4        handleSinkQuery (common)
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012D44 - 00012D51 (0xe bytes), align: 0
+  Relative segment, address: CODE 00012D3C - 00012D49 (0xe bytes), align: 0
   Segment part 25.            Intra module refs:   Segment part 96
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           tune                    00012D44 
+           tune                    00012D3C 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 0000205A - 0000218D (0x134 bytes), align: 1
@@ -5034,19 +5032,19 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000130D9 - 000130FF (0x27 bytes), align: 0
+  Relative segment, address: CODE 000130C9 - 000130EF (0x27 bytes), align: 0
   Segment part 16.            Intra module refs:   Segment part 15
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013100 - 00013100 (0x1 bytes), align: 0
+  Relative segment, address: CODE 000130F0 - 000130F0 (0x1 bytes), align: 0
   Segment part 19.            Intra module refs:   emberEndpointCount
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013101 - 0001310A (0xa bytes), align: 0
+  Relative segment, address: CODE 000130F1 - 000130FA (0xa bytes), align: 0
   Segment part 22.            Intra module refs:   emberEndpoints
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001310B - 0001310B (0x1 bytes), align: 0
+  Relative segment, address: CODE 000130FB - 000130FB (0x1 bytes), align: 0
   Segment part 27.            Intra module refs:   networkFormMethod
     -------------------------------------------------------------------------
 SWITCH
@@ -5059,7 +5057,7 @@ SWITCH
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\source-route-common.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\source-route-common.r90
   PROGRAM MODULE, NAME : source-route-common
 
   SEGMENTS IN THE MODULE
@@ -5097,12 +5095,12 @@ CODE
                                                    sourceRouteAddEntry
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001310C - 0001310D (0x2 bytes), align: 0
+  Relative segment, address: CODE 000130FC - 000130FD (0x2 bytes), align: 0
   Segment part 8.             Intra module refs:   Segment part 7
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\source-route.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\source-route.r90
   PROGRAM MODULE, NAME : source-route
 
   SEGMENTS IN THE MODULE
@@ -5175,16 +5173,16 @@ CODE
   Segment part 20.            Intra module refs:   emberAppendSourceRouteHandler
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001310E - 0001310E (0x1 bytes), align: 0
+  Relative segment, address: CODE 000130FE - 000130FE (0x1 bytes), align: 0
   Segment part 10.            Intra module refs:   sourceRouteTableSize
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001310F - 00013110 (0x2 bytes), align: 0
+  Relative segment, address: CODE 000130FF - 00013100 (0x2 bytes), align: 0
   Segment part 13.            Intra module refs:   sourceRouteTable
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\spi.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\spi.r90
   PROGRAM MODULE, NAME : spi
 
   SEGMENTS IN THE MODULE
@@ -5239,7 +5237,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\symbol-timer.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\symbol-timer.r90
   PROGRAM MODULE, NAME : symbol-timer
 
   SEGMENTS IN THE MODULE
@@ -5387,12 +5385,12 @@ INTVEC
                                    00000138 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012D52 - 00012DA6 (0x55 bytes), align: 0
+  Relative segment, address: CODE 00012D4A - 00012D9A (0x51 bytes), align: 0
   Segment part 17.            Intra module refs:   Segment part 23
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\system-timer.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\system-timer.r90
   PROGRAM MODULE, NAME : system-timer
 
   SEGMENTS IN THE MODULE
@@ -5580,12 +5578,12 @@ INTVEC
                                    00000140 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012DA7 - 00012DFB (0x55 bytes), align: 0
+  Relative segment, address: CODE 00012D9B - 00012DEB (0x51 bytes), align: 0
   Segment part 15.            Intra module refs:   halInternalStartSystemTimer
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\token.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\token.r90
   PROGRAM MODULE, NAME : token
 
   SEGMENTS IN THE MODULE
@@ -5772,56 +5770,56 @@ CODE
                RSTACK = 00000000 ( 00000004 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013111 - 00013112 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013101 - 00013102 (0x2 bytes), align: 0
   Segment part 11.            Intra module refs:   TOKEN_MFG_EUI_64
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013113 - 00013114 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013103 - 00013104 (0x2 bytes), align: 0
   Segment part 17.            Intra module refs:   TOKEN_MFG_RADIO_BANDS_SUPPORTED
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013115 - 00013116 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013105 - 00013106 (0x2 bytes), align: 0
   Segment part 33.            Intra module refs:   TOKEN_STACK_APS_FRAME_COUNTER
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013117 - 00013118 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013107 - 00013108 (0x2 bytes), align: 0
   Segment part 35.            Intra module refs:   TOKEN_STACK_ALTERNATE_KEY
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013119 - 0001311A (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013109 - 0001310A (0x2 bytes), align: 0
   Segment part 37.            Intra module refs:   TOKEN_STACK_BOOT_COUNTER
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001311B - 0001311C (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001310B - 0001310C (0x2 bytes), align: 0
   Segment part 39.            Intra module refs:   TOKEN_STACK_NONCE_COUNTER
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001311D - 0001311E (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001310D - 0001310E (0x2 bytes), align: 0
   Segment part 43.            Intra module refs:   TOKEN_STACK_KEYS
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001311F - 00013120 (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001310F - 00013110 (0x2 bytes), align: 0
   Segment part 45.            Intra module refs:   TOKEN_STACK_NODE_DATA
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013121 - 00013122 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013111 - 00013112 (0x2 bytes), align: 0
   Segment part 49.            Intra module refs:   TOKEN_STACK_TRUST_CENTER
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013123 - 00013124 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013113 - 00013114 (0x2 bytes), align: 0
   Segment part 51.            Intra module refs:   TOKEN_STACK_NETWORK_MANAGEMENT
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013125 - 00013126 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013115 - 00013116 (0x2 bytes), align: 0
   Segment part 53.            Intra module refs:   TOKEN_STACK_BINDING_TABLE
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013127 - 00013128 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013117 - 00013118 (0x2 bytes), align: 0
   Segment part 55.            Intra module refs:   TOKEN_STACK_CHILD_TABLE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\trust-center.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\trust-center.r90
   PROGRAM MODULE, NAME : trust-center
 
   SEGMENTS IN THE MODULE
@@ -5876,20 +5874,20 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013129 - 0001312A (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013119 - 0001311A (0x2 bytes), align: 0
   Segment part 10.            Intra module refs:   Segment part 9
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012DFC - 00012E46 (0x4b bytes), align: 0
+  Relative segment, address: CODE 00012DEC - 00012E36 (0x4b bytes), align: 0
   Segment part 7.             Intra module refs:   trustCenterInit
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E47 - 00012E6F (0x29 bytes), align: 0
+  Relative segment, address: CODE 00012E37 - 00012E5F (0x29 bytes), align: 0
   Segment part 8.             Intra module refs:   trustCenterPermitJoins
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\uart.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\build\Sink_Atmega128\Obj\uart.r90
   PROGRAM MODULE, NAME : uart
 
   SEGMENTS IN THE MODULE
@@ -5962,11 +5960,11 @@ ABSOLUTE
            _A_UCSR1C               0000009D 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E70 - 00012E91 (0x22 bytes), align: 0
+  Relative segment, address: CODE 00012E60 - 00012E81 (0x22 bytes), align: 0
   Segment part 17.            Intra module refs:   halInternalUartInit
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           baudSettings            00012E70 
+           baudSettings            00012E60 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 00003192 - 00003211 (0x80 bytes), align: 1
@@ -6130,7 +6128,7 @@ INTVEC
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\alarm-library-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\alarm-library-em2420-mega128.r90
   PROGRAM MODULE, NAME : alarm
 
   SEGMENTS IN THE MODULE
@@ -6283,7 +6281,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\binding-table-library-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\binding-table-library-em2420-mega128.r90
   PROGRAM MODULE, NAME : binding-table
 
   SEGMENTS IN THE MODULE
@@ -6667,35 +6665,35 @@ CODE
            ?Subroutine3            00003BDE 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E92 - 00012E93 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00012E82 - 00012E83 (0x2 bytes), align: 0
   Segment part 7.             Intra module refs:   emHandleBindUnbindRequests
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E94 - 00012E98 (0x5 bytes), align: 0
+  Relative segment, address: CODE 00012E84 - 00012E88 (0x5 bytes), align: 0
   Segment part 8.             Intra module refs:   emHandleBindingTableRequest
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\cbke-stub-library-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\cbke-stub-library-em2420-mega128.r90
   PROGRAM MODULE, NAME : cbke-crypto-engine-stub
 
   SEGMENTS IN THE MODULE
   ======================
 FAR_F
-  Relative segment, address: CODE 00012E99 - 00012E99 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00012E89 - 00012E89 (0x1 bytes), align: 0
   Segment part 9.             Intra module refs:   emAreKeysAuthorizedByDefault
            LOCAL                   ADDRESS         
            =====                   =======         
            emKeysAuthorizedByDefault
-                                   00012E99 
+                                   00012E89 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E9A - 00012E9A (0x1 bytes), align: 0
+  Relative segment, address: CODE 00012E8A - 00012E8A (0x1 bytes), align: 0
   Segment part 10.            Intra module refs:   emDoesSecurityPolicyAllowAppKeyRequests
            LOCAL                   ADDRESS         
            =====                   =======         
            emAppKeyRequestsAreAllowed
-                                   00012E9A 
+                                   00012E8A 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 00003BE4 - 00003BE5 (0x2 bytes), align: 1
@@ -6767,7 +6765,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\end-device-bind-stub-library-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\end-device-bind-stub-library-em2420-mega128.r90
   PROGRAM MODULE, NAME : end-device-bind-stub
 
   SEGMENTS IN THE MODULE
@@ -6808,7 +6806,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\security-library-core-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\security-library-core-em2420-mega128.r90
   PROGRAM MODULE, NAME : aps-security
 
   SEGMENTS IN THE MODULE
@@ -7497,7 +7495,7 @@ CODE
            ?Subroutine13           00004744 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012E9B - 00012E9F (0x5 bytes), align: 0
+  Relative segment, address: CODE 00012E8B - 00012E8F (0x5 bytes), align: 0
   Segment part 7.             Intra module refs:   emSendUpdateDevice
 
     -------------------------------------------------------------------------
@@ -8601,7 +8599,7 @@ CODE
            ?Subroutine11           00005706 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001312B - 0001312C (0x2 bytes), align: 0
+  Relative segment, address: CODE 0001311B - 0001311C (0x2 bytes), align: 0
   Segment part 9.             Intra module refs:   emSendApplicationMasterKey
 
     -------------------------------------------------------------------------
@@ -8704,12 +8702,12 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001312D - 0001312D (0x1 bytes), align: 0
+  Relative segment, address: CODE 0001311D - 0001311D (0x1 bytes), align: 0
   Segment part 8.             Intra module refs:   emHighSecurityModeSupported
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\security-library-link-keys-stub-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\security-library-link-keys-stub-em2420-mega128.r90
   PROGRAM MODULE, NAME : aps-keys-full-stub
 
   SEGMENTS IN THE MODULE
@@ -8749,7 +8747,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : F:\Firmware\emberZNet\firmware\EmberZNet\avr\stack\build\zigbee-pro-stack-em2420-mega128.r90
+  FILE NAME : D:\Firmware\EZ\EZ\firmware\EmberZNet\avr\stack\build\zigbee-pro-stack-em2420-mega128.r90
   PROGRAM MODULE, NAME : crypto
 
   SEGMENTS IN THE MODULE
@@ -9363,29 +9361,29 @@ NEAR_Z
            emRadioRebootCount      00000DAF 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012EA0 - 00012EA5 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00012E90 - 00012E95 (0x6 bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine36
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012EA6 - 00012EC5 (0x20 bytes), align: 0
+  Relative segment, address: CODE 00012E96 - 00012EB5 (0x20 bytes), align: 0
   Segment part 16.            Intra module refs:   emRadioSetChannel
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           emChannelSettings       00012EA6 
+           emChannelSettings       00012E96 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012EC6 - 00012F05 (0x40 bytes), align: 0
+  Relative segment, address: CODE 00012EB6 - 00012EF5 (0x40 bytes), align: 0
   Segment part 17.            Intra module refs:   emberSetRadioPower
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           emPowerSettings         00012EC6 
+           emPowerSettings         00012EB6 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F06 - 00012F0C (0x7 bytes), align: 0
+  Relative segment, address: CODE 00012EF6 - 00012EFC (0x7 bytes), align: 0
   Segment part 18.            Intra module refs:   emCostDivision
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           emCostDivisions         00012F06 
+           emCostDivisions         00012EF6 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 00005E04 - 00005E15 (0x12 bytes), align: 1
@@ -10503,11 +10501,11 @@ CODE
            ?Subroutine63           00006B54 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001312E - 00013165 (0x38 bytes), align: 0
+  Relative segment, address: CODE 0001311E - 00013155 (0x38 bytes), align: 0
   Segment part 9.             Intra module refs:   Segment part 8
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013166 - 00013166 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013156 - 00013156 (0x1 bytes), align: 0
   Segment part 14.            Intra module refs:   phyEnableAck
 
     -------------------------------------------------------------------------
@@ -10704,7 +10702,7 @@ CODE
            ?Subroutine5            00006E70 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F0D - 00012F12 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00012EFD - 00012F02 (0x6 bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine4
 
     -------------------------------------------------------------------------
@@ -10860,7 +10858,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F13 - 00012F1F (0xd bytes), align: 0
+  Relative segment, address: CODE 00012F03 - 00012F0F (0xd bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine0
 
     -------------------------------------------------------------------------
@@ -11083,15 +11081,15 @@ CODE
            ?Subroutine1            000073E2 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013167 - 00013177 (0x11 bytes), align: 0
+  Relative segment, address: CODE 00013157 - 00013167 (0x11 bytes), align: 0
   Segment part 9.             Intra module refs:   Segment part 8
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013178 - 00013179 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00013168 - 00013169 (0x2 bytes), align: 0
   Segment part 12.            Intra module refs:   emMacToNetworkQueue
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F20 - 00012F2D (0xe bytes), align: 0
+  Relative segment, address: CODE 00012F10 - 00012F1D (0xe bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine1
 
     -------------------------------------------------------------------------
@@ -11488,11 +11486,11 @@ CODE
            ?Subroutine18           00007B2A 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 0001317A - 00013191 (0x18 bytes), align: 0
+  Relative segment, address: CODE 0001316A - 00013181 (0x18 bytes), align: 0
   Segment part 9.             Intra module refs:   Segment part 8
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F2E - 00012F34 (0x7 bytes), align: 0
+  Relative segment, address: CODE 00012F1E - 00012F24 (0x7 bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine7
 
     -------------------------------------------------------------------------
@@ -11880,11 +11878,11 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F35 - 00012F7C (0x48 bytes), align: 0
+  Relative segment, address: CODE 00012F25 - 00012F6C (0x48 bytes), align: 0
   Segment part 8.             Intra module refs:   emberTick
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           stackEvents             00012F35 
+           stackEvents             00012F25 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 00007FA8 - 00007FED (0x46 bytes), align: 1
@@ -11968,7 +11966,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013192 - 00013192 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013182 - 00013182 (0x1 bytes), align: 0
   Segment part 10.            Intra module refs:   emAvailableStackBuffer
 
     -------------------------------------------------------------------------
@@ -12924,11 +12922,11 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013193 - 00013193 (0x1 bytes), align: 0
+  Relative segment, address: CODE 00013183 - 00013183 (0x1 bytes), align: 0
   Segment part 9.             Intra module refs:   freelist
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F7D - 00012F8C (0x10 bytes), align: 0
+  Relative segment, address: CODE 00012F6D - 00012F7C (0x10 bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine20
 
     -------------------------------------------------------------------------
@@ -13202,15 +13200,15 @@ CODE
            ?Subroutine6            000089E8 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F8D - 00012F9C (0x10 bytes), align: 0
+  Relative segment, address: CODE 00012F7D - 00012F8C (0x10 bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine6
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012F9D - 00012FAC (0x10 bytes), align: 0
+  Relative segment, address: CODE 00012F8D - 00012F9C (0x10 bytes), align: 0
   Segment part 8.             Intra module refs:   emMacHeaderLength
            LOCAL                   ADDRESS         
            =====                   =======         
-           baseHeaderLength        00012F9D 
+           baseHeaderLength        00012F8D 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 000089F4 - 00008A37 (0x44 bytes), align: 1
@@ -13558,7 +13556,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013194 - 00013197 (0x4 bytes), align: 0
+  Relative segment, address: CODE 00013184 - 00013187 (0x4 bytes), align: 0
   Segment part 8.             Intra module refs:   emLocalNodeId
 
     -------------------------------------------------------------------------
@@ -15251,19 +15249,19 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 00013198 - 000131C4 (0x2d bytes), align: 0
+  Relative segment, address: CODE 00013188 - 000131B4 (0x2d bytes), align: 0
   Segment part 10.            Intra module refs:   Segment part 9
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131C5 - 000131CA (0x6 bytes), align: 0
+  Relative segment, address: CODE 000131B5 - 000131BA (0x6 bytes), align: 0
   Segment part 13.            Intra module refs:   rejoinUpdateDeviceStatusValues
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FAD - 00012FAE (0x2 bytes), align: 0
+  Relative segment, address: CODE 00012F9D - 00012F9E (0x2 bytes), align: 0
   Segment part 7.             Intra module refs:   emAssociationHandler
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FAF - 00012FBC (0xe bytes), align: 0
+  Relative segment, address: CODE 00012F9F - 00012FAC (0xe bytes), align: 0
   Segment part 8.             Intra module refs:   emScanCompleteHandler
 
     -------------------------------------------------------------------------
@@ -16386,11 +16384,11 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FBD - 00012FC3 (0x7 bytes), align: 0
+  Relative segment, address: CODE 00012FAD - 00012FB3 (0x7 bytes), align: 0
   Segment part 13.            Intra module refs:   emIsMobileJoinRequest
            LOCAL                   ADDRESS         
            =====                   =======         
-           mobileJoinApsFrame      00012FBD 
+           mobileJoinApsFrame      00012FAD 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 0000B900 - 0000B95D (0x5e bytes), align: 1
@@ -16487,7 +16485,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131CB - 000131CC (0x2 bytes), align: 0
+  Relative segment, address: CODE 000131BB - 000131BC (0x2 bytes), align: 0
   Segment part 8.             Intra module refs:   emNetworkToApplicationQueue
     -------------------------------------------------------------------------
 SWITCH
@@ -16664,7 +16662,7 @@ CODE
            ?Subroutine6            0000BCD2 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131CD - 000131D2 (0x6 bytes), align: 0
+  Relative segment, address: CODE 000131BD - 000131C2 (0x6 bytes), align: 0
   Segment part 8.             Intra module refs:   emSleepyBroadcastEvent
 
     -------------------------------------------------------------------------
@@ -16928,7 +16926,7 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131D3 - 000131D8 (0x6 bytes), align: 0
+  Relative segment, address: CODE 000131C3 - 000131C8 (0x6 bytes), align: 0
   Segment part 8.             Intra module refs:   emNetworkManagementEvent
 
     -------------------------------------------------------------------------
@@ -17248,7 +17246,7 @@ CODE
            ?Subroutine3            0000C548 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131D9 - 000131DA (0x2 bytes), align: 0
+  Relative segment, address: CODE 000131C9 - 000131CA (0x2 bytes), align: 0
   Segment part 10.            Intra module refs:   blacklistedIdBytes
 
     -------------------------------------------------------------------------
@@ -18167,11 +18165,11 @@ CODE
            ?Subroutine0            0000D446 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131DB - 000131DC (0x2 bytes), align: 0
+  Relative segment, address: CODE 000131CB - 000131CC (0x2 bytes), align: 0
   Segment part 10.            Intra module refs:   sendFromChild
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131DD - 000131DD (0x1 bytes), align: 0
+  Relative segment, address: CODE 000131CD - 000131CD (0x1 bytes), align: 0
   Segment part 13.            Intra module refs:   emUseApsMulticast
     -------------------------------------------------------------------------
 SWITCH
@@ -18961,23 +18959,23 @@ CODE
            ?Subroutine3            0000E200 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131DE - 000131DE (0x1 bytes), align: 0
+  Relative segment, address: CODE 000131CE - 000131CE (0x1 bytes), align: 0
   Segment part 16.            Intra module refs:   emHaveFullZdo
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FC4 - 00012FC5 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00012FB4 - 00012FB5 (0x2 bytes), align: 0
   Segment part 7.             Intra module refs:   emZigbeeDeviceRequestHandler
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FC6 - 00012FCB (0x6 bytes), align: 0
+  Relative segment, address: CODE 00012FB6 - 00012FBB (0x6 bytes), align: 0
   Segment part 8.             Intra module refs:   maybeSendAddressResponse
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FCC - 00012FCF (0x4 bytes), align: 0
+  Relative segment, address: CODE 00012FBC - 00012FBF (0x4 bytes), align: 0
   Segment part 11.            Intra module refs:   emSendOurEndDeviceAnnouncement
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FD0 - 00012FD3 (0x4 bytes), align: 0
+  Relative segment, address: CODE 00012FC0 - 00012FC3 (0x4 bytes), align: 0
   Segment part 12.            Intra module refs:   emNetworkAddressRequest
 
     -------------------------------------------------------------------------
@@ -19345,7 +19343,7 @@ CODE
   SEGMENTS IN THE MODULE
   ======================
 FAR_F
-  Relative segment, address: CODE 00012FD4 - 00012FE1 (0xe bytes), align: 0
+  Relative segment, address: CODE 00012FC4 - 00012FD1 (0xe bytes), align: 0
   Segment part 7.             Intra module refs:   noteDiscoveryTimeout
     -------------------------------------------------------------------------
 CODE
@@ -20033,7 +20031,7 @@ CODE
            ?Subroutine9            0000F1D4 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FE2 - 00012FF3 (0x12 bytes), align: 0
+  Relative segment, address: CODE 00012FD2 - 00012FE3 (0x12 bytes), align: 0
   Segment part 7.             Intra module refs:   emHandleRouteCommand
 
     -------------------------------------------------------------------------
@@ -20742,7 +20740,7 @@ CODE
            ?Subroutine11           0000F860 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FF4 - 00012FFE (0xb bytes), align: 0
+  Relative segment, address: CODE 00012FE4 - 00012FEE (0xb bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine35
 
     -------------------------------------------------------------------------
@@ -21440,11 +21438,11 @@ CODE
            ?Subroutine26           00010482 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131DF - 000131E7 (0x9 bytes), align: 0
+  Relative segment, address: CODE 000131CF - 000131D7 (0x9 bytes), align: 0
   Segment part 9.             Intra module refs:   emMacIndirectEvent
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00012FFF - 00013000 (0x2 bytes), align: 0
+  Relative segment, address: CODE 00012FEF - 00012FF0 (0x2 bytes), align: 0
   Segment part 7.             Intra module refs:   timeoutPools
 
     -------------------------------------------------------------------------
@@ -21453,11 +21451,11 @@ FAR_F
   SEGMENTS IN THE MODULE
   ======================
 FAR_F
-  Relative segment, address: CODE 00013001 - 00013006 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00012FF1 - 00012FF6 (0x6 bytes), align: 0
   Segment part 10.
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           emCapabilityBytes       00013001        emGetLocalCapabilities (association)
+           emCapabilityBytes       00012FF1        emGetLocalCapabilities (association)
     -------------------------------------------------------------------------
 NEAR_I
   Relative segment, address: DATA 00000617 - 0000061B (0x5 bytes), align: 0
@@ -22219,7 +22217,7 @@ CODE
            ?Subroutine12           00010C14 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131E8 - 000131EC (0x5 bytes), align: 0
+  Relative segment, address: CODE 000131D8 - 000131DC (0x5 bytes), align: 0
   Segment part 8.             Intra module refs:   Segment part 7
 
     -------------------------------------------------------------------------
@@ -22236,17 +22234,17 @@ NEAR_I
            emPowerDescriptor       0000061E 
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00013007 - 00013030 (0x2a bytes), align: 0
+  Relative segment, address: CODE 00012FF7 - 00013020 (0x2a bytes), align: 0
   Segment part 7.             Intra module refs:   ?Subroutine6
                                                    ?Subroutine8
                                                    emAuxiliaryZdoRequestHandler
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00013031 - 00013036 (0x6 bytes), align: 0
+  Relative segment, address: CODE 00013021 - 00013026 (0x6 bytes), align: 0
   Segment part 11.            Intra module refs:   emAuxiliaryZdoRequestHandler
            LOCAL                   ADDRESS         
            =====                   =======         
-           mtorFlags               00013031 
+           mtorFlags               00013021 
     -------------------------------------------------------------------------
 CODE
   Relative segment, address: CODE 00010C1E - 000112CB (0x6ae bytes), align: 1
@@ -22391,7 +22389,7 @@ CODE
            ?Subroutine0            0001134C 
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131ED - 000131F0 (0x4 bytes), align: 0
+  Relative segment, address: CODE 000131DD - 000131E0 (0x4 bytes), align: 0
   Segment part 9.             Intra module refs:   Segment part 8
     -------------------------------------------------------------------------
 SWITCH
@@ -22664,15 +22662,15 @@ CODE
                RSTACK = 00000000 ( 00000002 )
     -------------------------------------------------------------------------
 NEAR_ID
-  Relative segment, address: CODE 000131F1 - 000131FC (0xc bytes), align: 0
+  Relative segment, address: CODE 000131E1 - 000131EC (0xc bytes), align: 0
   Segment part 10.            Intra module refs:   emChannelChangeEvent
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 00013037 - 0001303B (0x5 bytes), align: 0
+  Relative segment, address: CODE 00013027 - 0001302B (0x5 bytes), align: 0
   Segment part 7.             Intra module refs:   emHandleNwkUpdateRequest
     -------------------------------------------------------------------------
 FAR_F
-  Relative segment, address: CODE 0001303C - 00013042 (0x7 bytes), align: 0
+  Relative segment, address: CODE 0001302C - 00013032 (0x7 bytes), align: 0
   Segment part 8.             Intra module refs:   makeChannelScanResultsMessage
 
     -------------------------------------------------------------------------
@@ -22763,7 +22761,7 @@ CODE
 
     *************************************************************************
 
-  FILE NAME : D:\Program Files\IAR Systems\Embedded Workbench 5.4\avr\LIB\CLIB\cl3s-ec_mul.r90
+  FILE NAME : C:\Program Files\IAR Systems\Embedded Workbench 5.4\avr\LIB\CLIB\cl3s-ec_mul.r90
   LIBRARY MODULE, NAME : ?__exit
 
   SEGMENTS IN THE MODULE
@@ -24712,9 +24710,9 @@ INTVEC               CODE          00000100 - 0000017F          80   com    1
 ?FILL1               CODE          00000180 - 0000018B           C   rel    0
 SWITCH               CODE          0000018C - 00000263          D8   rel    1
 CODE                 CODE          00000264 - 00011AFD       1189A   rel    1
-FAR_F                CODE          00011AFE - 00013042        1545   rel    0
-INITTAB              CODE          00013043 - 00013050           E   rel    0
-NEAR_ID              CODE          00013051 - 000131FC         1AC   rel    0
+FAR_F                CODE          00011AFE - 00013032        1535   rel    0
+INITTAB              CODE          00013033 - 00013040           E   rel    0
+NEAR_ID              CODE          00013041 - 000131EC         1AC   rel    0
 ABSOLUTE             DATA               0000001C                     rel    0
                      DATA               0000001D                   
                      DATA               0000001E                   
@@ -24745,7 +24743,7 @@ ABSOLUTE             DATA          000010DE - 000010FF          22   rel    0
                 *                                      *
                 ****************************************
 
- 78 065 bytes of CODE memory (+             12 range fill )
+ 78 049 bytes of CODE memory (+             12 range fill )
   3 609 bytes of DATA memory (+ 89 absolute )
 
 Errors: none
