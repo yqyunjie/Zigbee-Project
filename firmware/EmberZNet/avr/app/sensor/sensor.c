@@ -836,6 +836,7 @@ void sendData(void) {
   EmberMessageBuffer buffer;
   int8u i;
   int8u sendDataSize = SEND_DATA_SIZE;
+  int8u str[20];
 
   switch (dataMode) {
     default:
@@ -889,10 +890,16 @@ void sendData(void) {
 
   // the data - my long address and data
   MEMCOPY(&(globalBuffer[0]), emberGetEui64(), EUI64_SIZE);
-  for (i=0; i<(sendDataSize / 2); i++) {
-    globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
-    globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
-  }
+
+  tempC = voltsToCelsius(fvolts);
+  formatFixed(str, tempC, 5, 4, TRUE);
+  emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", str);
+  MEMCOPY(&(globalBuffer[EUI64_SIZE]), str, strlen(str));
+	
+  //for (i=0; i<(sendDataSize / 2); i++) {
+  //  globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
+  //  globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
+  //}
 
   // copy the data into a packet buffer
   buffer = emberFillLinkedBuffers(globalBuffer,

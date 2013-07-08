@@ -512,11 +512,12 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
                         length,
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 1));*/
-      emberSerialPrintf(APP_SERIAL, "\r\ndata part: 0x");
+      emberSerialPrintf(APP_SERIAL, "\r\ndata part: ");
       for(int8u i = EUI64_SIZE; i < length; i++) {
-         emberSerialPrintf(APP_SERIAL, "%02X ",
+         emberSerialPrintf(APP_SERIAL, "%c",
                         emberGetLinkedBuffersByte(message, i));
       }
+	  emberSerialPrintf(APP_SERIAL, "\r\n");
 #ifdef DEBUG
       emberDebugPrintf("Sink received data: 0x%x%x \r\n",
                         emberGetLinkedBuffersByte(message, EUI64_SIZE + 0),

@@ -7,7 +7,7 @@
 // *******************************************************************
 
 #include PLATFORM_HEADER //compiler/micro specifics, types
-
+#include <string.h>
 #include "stack/include/ember.h"
 
 #include "stack/include/error.h"
