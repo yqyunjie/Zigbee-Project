@@ -21,15 +21,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>..\..\..\build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Exe</state>
+          <state>build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>..\..\..\build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Obj</state>
+          <state>build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>..\..\..\build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Lst</state>
+          <state>build\sleepy-sensor-cortexm3-iar-em357-em3xx-dev0680\Lst</state>
         </option>
         <option>
           <name>Variant</name>

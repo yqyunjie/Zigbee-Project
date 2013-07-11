@@ -1,23 +1,112 @@
 ###############################################################################
 #                                                                             #
-# IAR ELF Linker V6.40.4.54170/W32 for ARM              11/Jul/2013  21:48:00 #
+# IAR ELF Linker V6.40.4.54170/W32 for ARM              11/Jul/2013  22:06:58 #
 # Copyright 2007-2012 IAR Systems AB.                                         #
 #                                                                             #
-#    Output file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Exe\sensor.ou #
-#                    t                                                        #
-#    Map file     =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\sensor.ma #
-#                    p                                                        #
-#    Command line =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\ala #
-#                    rm-library-cortexm3-iar-em357-em3xx-debug\alarm-library. #
-#                    a F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\b #
-#                    inding-table-library-cortexm3-iar-em357-em3xx-debug\bind #
-#                    ing-table-library.a F:\Firmware\emberZNet\firmware\Ember #
-#                    ZNet\EM35x\build\cbke-stub-library-cortexm3-iar-em357-em #
-#                    3xx\cbke-stub-library.a F:\Firmware\emberZNet\firmware\E #
-#                    mberZNet\EM35x\build\end-device-bind-stub-library-cortex #
-#                    m3-iar-em357-em3xx\end-device-bind-stub-library.a        #
+#    Output file  =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Exe\sensor.out                                   #
+#    Map file     =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Lst\sensor.map                                   #
+#    Command line =  F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\adc.o F:\Firmware\emberZNet\firmware\EmberZN #
+#                    et\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-iar- #
+#                    em357-em3xx-dev0680-debug\Obj\bootload-utils.o           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\bootloader-interface-app.o                   #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\bootloader-interface-standalone.o            #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\bootloader-interface.o                       #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\button.o F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-i #
+#                    ar-em357-em3xx-dev0680-debug\Obj\buzzer.o                #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\common.o F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-i #
+#                    ar-em357-em3xx-dev0680-debug\Obj\crc.o                   #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\cstartup-iar-common.o                        #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\diagnostic.o F:\Firmware\emberZNet\firmware\ #
+#                    EmberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortex #
+#                    m3-iar-em357-em3xx-dev0680-debug\Obj\ember-configuration #
+#                    .o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\se #
+#                    nsor\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev #
+#                    0680-debug\Obj\endian.o F:\Firmware\emberZNet\firmware\E #
+#                    mberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm #
+#                    3-iar-em357-em3xx-dev0680-debug\Obj\faults.o             #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\form-and-join-node-adapter.o                 #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\form-and-join-node-callbacks.o               #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\form-and-join.o                              #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\isr-stubs.o F:\Firmware\emberZNet\firmware\E #
+#                    mberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm #
+#                    3-iar-em357-em3xx-dev0680-debug\Obj\led.o                #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\mem-util.o F:\Firmware\emberZNet\firmware\Em #
+#                    berZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3 #
+#                    -iar-em357-em3xx-dev0680-debug\Obj\mfg-token.o           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\micro-common.o F:\Firmware\emberZNet\firmwar #
+#                    e\EmberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cort #
+#                    exm3-iar-em357-em3xx-dev0680-debug\Obj\micro.o           #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\mpu.o F:\Firmware\emberZNet\firmware\EmberZN #
+#                    et\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-iar- #
+#                    em357-em3xx-dev0680-debug\Obj\node.o                     #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\random.o F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-i #
+#                    ar-em357-em3xx-dev0680-debug\Obj\security-common.o       #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\sensor.o F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-i #
+#                    ar-em357-em3xx-dev0680-debug\Obj\serial.o                #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\sim-eeprom.o F:\Firmware\emberZNet\firmware\ #
+#                    EmberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortex #
+#                    m3-iar-em357-em3xx-dev0680-debug\Obj\sleep.o             #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\token-def.o F:\Firmware\emberZNet\firmware\E #
+#                    mberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm #
+#                    3-iar-em357-em3xx-dev0680-debug\Obj\token.o              #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Obj\uart.o F:\Firmware\emberZNet\firmware\EmberZ #
+#                    Net\EM35x\build\alarm-library-cortexm3-iar-em357-em3xx-d #
+#                    ebug\alarm-library.a F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\build\binding-table-library-cortexm3-iar-em3 #
+#                    57-em3xx-debug\binding-table-library.a                   #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\cbk #
+#                    e-stub-library-cortexm3-iar-em357-em3xx\cbke-stub-librar #
+#                    y.a F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build #
+#                    \end-device-bind-stub-library-cortexm3-iar-em357-em3xx\e #
+#                    nd-device-bind-stub-library.a                            #
 #                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\hal #
 #                    -library-cortexm3-iar-em357-em3xx-debug\hal-library.a    #
 #                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\ins #
@@ -33,95 +122,25 @@
 #                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sec #
 #                    urity-library-link-keys-stub-cortexm3-iar-em357-em3xx\se #
 #                    curity-library-link-keys-stub.a                          #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\adc.o     #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\bootload- #
-#                    utils.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\b #
-#                    uild\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\b #
-#                    ootloader-interface-app.o F:\Firmware\emberZNet\firmware #
-#                    \EmberZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-d #
-#                    ev0680-debug\Obj\bootloader-interface-standalone.o       #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\bootloade #
-#                    r-interface.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\button.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\buzzer.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\common.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\crc.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35 #
-#                    x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Ob #
-#                    j\cstartup-iar-common.o F:\Firmware\emberZNet\firmware\E #
-#                    mberZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev #
-#                    0680-debug\Obj\diagnostic.o                              #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\ember-con #
-#                    figuration.o F:\Firmware\emberZNet\firmware\EmberZNet\EM #
-#                    35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ #
-#                    Obj\endian.o F:\Firmware\emberZNet\firmware\EmberZNet\EM #
-#                    35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ #
-#                    Obj\faults.o F:\Firmware\emberZNet\firmware\EmberZNet\EM #
-#                    35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\ #
-#                    Obj\form-and-join-node-adapter.o                         #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\form-and- #
-#                    join-node-callbacks.o F:\Firmware\emberZNet\firmware\Emb #
-#                    erZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev06 #
-#                    80-debug\Obj\form-and-join.o                             #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\isr-stubs #
-#                    .o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\ #
-#                    sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\led.o  #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\mem-util. #
-#                    o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\s #
-#                    ensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\mfg-tok #
-#                    en.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\buil #
-#                    d\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\micr #
-#                    o-common.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35 #
-#                    x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Ob #
-#                    j\micro.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x #
-#                    \build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj #
-#                    \mpu.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\bu #
-#                    ild\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\no #
-#                    de.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\buil #
-#                    d\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\rand #
-#                    om.o F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\buil #
-#                    d\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj\secu #
-#                    rity-common.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\sensor.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\serial.o F:\Firmware\emberZNet\firmware\EmberZNet\E #
-#                    M35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug #
-#                    \Obj\sim-eeprom.o F:\Firmware\emberZNet\firmware\EmberZN #
-#                    et\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-d #
-#                    ebug\Obj\sleep.o F:\Firmware\emberZNet\firmware\EmberZNe #
-#                    t\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-de #
-#                    bug\Obj\token-def.o F:\Firmware\emberZNet\firmware\Ember #
-#                    ZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680 #
-#                    -debug\Obj\token.o F:\Firmware\emberZNet\firmware\EmberZ #
-#                    Net\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680- #
-#                    debug\Obj\uart.o F:\Firmware\emberZNet\firmware\EmberZNe #
-#                    t\EM35x\build\zigbee-pro-stack-cortexm3-iar-em357-em3xx- #
-#                    debug\zigbee-pro-stack.a F:\Firmware\emberZNet\firmware\ #
-#                    EmberZNet\EM35x\build\zll-stub-library-cortexm3-iar-em35 #
-#                    7-em3xx\zll-stub-library.a --redirect                    #
-#                    _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o      #
-#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sen #
-#                    sor-cortexm3-iar-em357-em3xx-dev0680-debug\Exe\sensor.ou #
-#                    t --map F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\b #
-#                    uild\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Lst\s #
-#                    ensor.map --log initialization,modules,sections,veneers  #
-#                    --log_file F:\Firmware\emberZNet\firmware\EmberZNet\EM35 #
-#                    x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Ls #
-#                    t\sensor.log --config F:\Firmware\emberZNet\firmware\Emb #
-#                    erZNet\EM35x\app\sensor\ewb-em357/../../../hal/micro/cor #
-#                    texm3/em35x/em357/iar-cfg.icf --diag_suppress Lp012      #
-#                    --entry halEntryPoint --vfe                              #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\zig #
+#                    bee-pro-stack-cortexm3-iar-em357-em3xx-debug\zigbee-pro- #
+#                    stack.a F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\b #
+#                    uild\zll-stub-library-cortexm3-iar-em357-em3xx\zll-stub- #
+#                    library.a --redirect _Printf=_PrintfFull --redirect      #
+#                    _Scanf=_ScanfFull -o F:\Firmware\emberZNet\firmware\Embe #
+#                    rZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-i #
+#                    ar-em357-em3xx-dev0680-debug\Exe\sensor.out --map        #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Lst\sensor.map --log                             #
+#                    initialization,modules,sections,veneers --log_file       #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev068 #
+#                    0-debug\Lst\sensor.log --config                          #
+#                    F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\senso #
+#                    r\ewb-em357/../../../hal/micro/cortexm3/em35x/em357/iar- #
+#                    cfg.icf --diag_suppress Lp012 --entry halEntryPoint      #
+#                    --vfe                                                    #
 #                                                                             #
 #                                                                             #
 ###############################################################################
@@ -551,7 +570,7 @@ __SystemLibrary = DLib
 
     Module                             ro code  ro data  rw data
     ------                             -------  -------  -------
-F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj: [1]
+F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj: [1]
     adc.o                                  672                30
     bootload-utils.o                     2 908       44      244
     bootloader-interface-standalone.o      120
@@ -2781,7 +2800,7 @@ zigDevApsStruct         0x20002eac     0x4  Data  Lc  zigbee-device-util.o [15]
 zigDevRequestSequence   0x20002ea8     0x1  Data  Lc  zigbee-device-util.o [15]
 
 
-[1] = F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj
+[1] = F:\Firmware\emberZNet\firmware\EmberZNet\EM35x\app\sensor\ewb-em357\build\sensor-cortexm3-iar-em357-em3xx-dev0680-debug\Obj
 [2] = command line
 [3] = alarm-library.a
 [4] = binding-table-library.a
