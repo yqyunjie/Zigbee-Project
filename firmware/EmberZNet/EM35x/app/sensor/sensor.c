@@ -142,6 +142,10 @@ int8u globalBuffer[128];
 // send a response
 int8u dataBuffer[20];
 
+// constant string for temperature store
+const char * adcTemp = "ADC Temp = ";
+const char * adcTempUnit = "celsius";
+
 // Indicates if we are in MFG_MODE
 
 #ifdef USE_MFG_CLI
@@ -864,6 +868,8 @@ void sendData(void) {
   EmberMessageBuffer buffer;
   int8u i;
   int8u sendDataSize = SEND_DATA_SIZE;
+  int8u tempString[20];
+  int8u Str[40];
 
   switch (dataMode) {
     default:
@@ -917,10 +923,19 @@ void sendData(void) {
 
   // the data - my long address and data
   MEMCOPY(&(globalBuffer[0]), emberGetEui64(), EUI64_SIZE);
-  for (i=0; i<(sendDataSize / 2); i++) {
-    globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
-    globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
-  }
+  i = 0;
+  tempC = voltsToCelsius(fvolts);
+  formatFixed(tempString, tempC, 5, 4, TRUE);
+  emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", tempString);
+  MEMCOPY(&(globalBuffer[EUI64_SIZE]), adcTemp, strlen(adcTemp));
+  i += strlen(adcTemp);	
+  MEMCOPY(&(globalBuffer[EUI64_SIZE + i]), tempString, strlen(tempString));
+  i += strlen(tempString);
+  MEMCOPY(&(globalBuffer[EUI64_SIZE + i]), adcTempUnit, strlen(adcTempUnit));
+  //for (i=0; i<(sendDataSize / 2); i++) {
+  //  globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
+  //  globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
+  //}
 
   // copy the data into a packet buffer
   buffer = emberFillLinkedBuffers(globalBuffer,
