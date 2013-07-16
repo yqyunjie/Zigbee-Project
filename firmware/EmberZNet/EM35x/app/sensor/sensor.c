@@ -316,7 +316,11 @@ void main(void)
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
-  display_128x64(bmp1);
+  //display_128x64(bmp1);
+  //display_string_5x7(6,1,"year 2004.Focus LCM. ");/*显示一串 5x7 点阵的 ASCII 字*/
+  //display_GB2312_string(3,1,"3333333333333333");
+  display_graphic_16x16(7,97,jiong1);
+  display_graphic_16x16(7,113,lei1);
 
   // event loop
   while(TRUE) {
