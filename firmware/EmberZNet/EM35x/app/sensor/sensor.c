@@ -74,6 +74,7 @@
 // *******************************************************************
 
 #include "app/sensor/common.h"
+#include "app/sensor/lcd.h"
 #ifdef  PHY_BRIDGE
  #ifdef  CORTEXM3
   #include "hal/micro/cortexm3/diagnostic.h"
@@ -310,6 +311,12 @@ void main(void)
          "SENSOR APP: push button 0 to join a network\r\n");
   }
   emberSerialWaitSend(APP_SERIAL);
+
+  ROM_CS(1);	//Rom_CS=1;
+  LCD_CS1(0);	//lcd_cs1=0;
+  initial_lcd();
+  clear_screen();    //clear all dots
+  display_128x64(bmp1);
 
   // event loop
   while(TRUE) {
@@ -928,7 +935,7 @@ void sendData(void) {
   formatFixed(tempString, tempC, 5, 4, TRUE);
   emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", tempString);
   MEMCOPY(&(globalBuffer[EUI64_SIZE]), adcTemp, strlen(adcTemp));
-  i += strlen(adcTemp);	
+  i += strlen(adcTemp);
   MEMCOPY(&(globalBuffer[EUI64_SIZE + i]), tempString, strlen(tempString));
   i += strlen(tempString);
   MEMCOPY(&(globalBuffer[EUI64_SIZE + i]), adcTempUnit, strlen(adcTempUnit));

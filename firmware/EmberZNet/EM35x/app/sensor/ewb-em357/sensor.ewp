@@ -1114,6 +1114,12 @@
     <name>$PROJ_DIR$\..\common.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\lcd.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\lcd.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\sensor.c</name>
   </file>
 </project>
