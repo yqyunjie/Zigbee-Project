@@ -5,10 +5,15 @@
 //
 //  Copyright by kaiser. All rights reserved.
 // *******************************************************************
-
+/*----------------------------------------------------------------------------
+ *        Includes
+ *----------------------------------------------------------------------------*/
 #include "app/sensor/common.h"
 #include "app/sensor/lcd.h"
-
+#include "app/sensor/Language.h"
+/*----------------------------------------------------------------------------
+ *        Global Variable
+ *----------------------------------------------------------------------------*/
 /*--  文字:  囧  --*/
 /*--  宋体 12;  此字体下对应的点阵为：宽 x 高=16x16   --*/
 const int8u jiong1[]={
@@ -43,7 +48,12 @@ const int8u bmp2[]={
 
 };
 
-/*写指令到 LCD 模块*/
+/*----------------------------------------------------------------------------
+ *        Functions
+ *----------------------------------------------------------------------------*/
+/****************************************************
+ * Write command into LCD module.
+***************************************************/
 void transfer_command_lcd(int8u data1)
 {
  char i;
@@ -60,7 +70,9 @@ void transfer_command_lcd(int8u data1)
  }
 }
 
-/*写数据到 LCD 模块*/
+/****************************************************
+ * Write data into LCD module.
+***************************************************/
 void transfer_data_lcd(int8u data1)
 {
  char i;
@@ -77,7 +89,9 @@ void transfer_data_lcd(int8u data1)
  }
 }
 
-/*延时*/
+/****************************************************
+ * Delay.
+***************************************************/
 void delay(int n_ms)
 {
  int j,k;
@@ -85,20 +99,9 @@ void delay(int n_ms)
    for(k=0;k<110;k++);
 }
 
-
-/*等待一个按键，我的主板是用 P2.0 与 GND 之间接一个按键*/
-void waitkey()
-{
- /*repeat:
-    if (P2&0x01) goto repeat;
- else delay(6);
- if (P2&0x01) goto repeat;
- else
- delay(40);; */
-}
-
-
-/*LCD 模块初始化*/
+/****************************************************
+ * LCD module initial.
+***************************************************/
 void initial_lcd()
 {
   /** initial LCD pins configuration. */
@@ -138,7 +141,10 @@ void initial_lcd()
    LCD_CS1(1);	//lcd_cs1=1;
 }
 
-void lcd_address(uint page,uint column)
+/****************************************************
+ * LCD address calculation.
+***************************************************/
+void lcd_address(int32u page,int32u column)
 {
 
  column=column-0x01;
@@ -147,7 +153,9 @@ void lcd_address(uint page,uint column)
  transfer_command_lcd(column&0x0f);  /*设置列地址的低 4 位*/
 }
 
-/*全屏清屏*/
+/****************************************************
+ * LCD screen clear.
+***************************************************/
 void clear_screen()
 {
  unsigned char i,j;
@@ -166,10 +174,12 @@ void clear_screen()
  LCD_CS1(1);	//lcd_cs1=1;
 }
 
-/*显示 128x64 点阵图像*/
+/****************************************************
+ * Display image by 128*64 pixel.
+***************************************************/
 void display_128x64(const int8u *dp)
 {
- uint i,j;
+ int32u i,j;
  LCD_CS1(0);	//lcd_cs1=0;
  for(j=0;j<8;j++)
  {
@@ -183,11 +193,12 @@ void display_128x64(const int8u *dp)
  LCD_CS1(1);	//lcd_cs1=1;
 }
 
-
-/*显示 16x16 点阵图像、汉字、生僻字或 16x16 点阵的其他图标*/
-void display_graphic_16x16(uint page,uint column,uchar *dp)
+/****************************************************
+ * Display by 16*16 pixel.
+***************************************************/
+void display_graphic_16x16(int32u page,int32u column, const int8u *dp)
 {
- uint i,j;
+ int32u i,j;
  LCD_CS1(0);	//lcd_cs1=0;
  ROM_CS(1);		//Rom_CS = 1;
  for(j=0;j<2;j++)
@@ -203,10 +214,12 @@ void display_graphic_16x16(uint page,uint column,uchar *dp)
 }
 
 
-/*显示 8x16 点阵图像、ASCII, 或 8x16 点阵的自造字符、其他图标*/
-void display_graphic_8x16(uint page,uchar column,uchar *dp)
+/****************************************************
+ * Display string and image by 8*16 pixel
+***************************************************/
+void display_graphic_8x16( int32u page, int8u column, int8u *dp)
 {
- uint i,j;
+ int8u i,j;
  LCD_CS1(0);	//lcd_cs1=0;
  for(j=0;j<2;j++)
  {
@@ -219,12 +232,16 @@ void display_graphic_8x16(uint page,uchar column,uchar *dp)
  }
  LCD_CS1(1);	//lcd_cs1=1;
 }
-/*显示 5*7 点阵图像、ASCII, 或 5x7 点阵的自造字符、其他图标*/
-void display_graphic_5x7(uint page,uchar column,uchar *dp)
+
+
+/****************************************************
+ * Display string and image by 5*7 pixel
+***************************************************/
+void display_graphic_5x7(int32u page,int8u column,int8u *dp)
 {
- uint col_cnt;
- uchar page_address;
- uchar column_address_L,column_address_H;
+ int32u col_cnt;
+ int8u page_address;
+ int8u column_address_L,column_address_H;
  page_address = 0xb0+page-1;
 
  LCD_CS1(0);	//lcd_cs1=0;
@@ -244,10 +261,12 @@ void display_graphic_5x7(uint page,uchar column,uchar *dp)
  LCD_CS1(1);	//lcd_cs1=1;
 }
 
-/****送指令到晶联讯字库 IC***/
-void send_command_to_ROM( uchar datu )
+/****************************************************
+ * Send command into LCD ROM
+***************************************************/
+void send_command_to_ROM( int8u datu )
 {
- uchar i;
+ int8u i;
  for(i=0;i<8;i++ )
  {
    if(datu&0x80)
@@ -260,11 +279,13 @@ void send_command_to_ROM( uchar datu )
  }
 }
 
-/****从晶联讯字库 IC 中取汉字或字符数据（1 个字节）***/
-static uchar get_data_from_ROM( void )
+/****************************************************
+ * Get one char from ROM.
+***************************************************/
+static int8u get_data_from_ROM( void )
 {
- uchar i;
- uchar ret_data=0;
+ int8u i;
+ int8u ret_data=0;
  ROM_SCK(1);	//Rom_SCK=1;
  for(i=0;i<8;i++)
  {
@@ -282,12 +303,12 @@ static uchar get_data_from_ROM( void )
 
 
 
-/*从相关地址（addrHigh：地址高字节,addrMid：地址中字节,addrLow：地址低字节）中连续读出 DataLen 个字节的数据到 pBuff 的地
-址*/
-/*连续读取*/
-void get_n_bytes_data_from_ROM(uchar addrHigh,uchar addrMid,uchar addrLow,uchar *pBuff,uchar DataLen )
+/****************************************************
+ * Get a string data from ROM.
+***************************************************/
+void get_n_bytes_data_from_ROM(int8u addrHigh,int8u addrMid,int8u addrLow,int8u *pBuff,int8u DataLen )
 {
- uchar i;
+ int8u i;
  ROM_CS(0);	//Rom_CS = 0;
  LCD_CS1(1);	//lcd_cs1=1;
  ROM_SCK(0);	//Rom_SCK=0;
@@ -301,14 +322,15 @@ void get_n_bytes_data_from_ROM(uchar addrHigh,uchar addrMid,uchar addrLow,uchar 
 }
 
 
-/******************************************************************/
-
-ulong  fontaddr=0;
-void display_GB2312_string(uchar y,uchar x,uchar *text)
+/****************************************************
+ * Display GB2312 string.
+***************************************************/
+int32u  fontaddr=0;
+void display_GB2312_string(int8u y,int8u x,int8u *text)
 {
- uchar i= 0;
- uchar addrHigh,addrMid,addrLow ;
- uchar fontbuf[32];
+ int8u i= 0;
+ int8u addrHigh,addrMid,addrLow ;
+ int8u fontbuf[32];
  while((text[i]>0x00))
  {
    if(((text[i]>=0xb0) &&(text[i]<=0xf7))&&(text[i+1]>=0xa1))
@@ -318,7 +340,7 @@ void display_GB2312_string(uchar y,uchar x,uchar *text)
      /*由于担心 8 位单片机有乘法溢出问题，所以分三部取地址*/
      fontaddr = (text[i]- 0xb0)*94;
      fontaddr += (text[i+1]-0xa1)+846;
-     fontaddr = (ulong)(fontaddr*32);
+     fontaddr = (int32u)(fontaddr*32);
 
      addrHigh = (fontaddr&0xff0000)>>16;  /*地址的高 8 位,共 24 位*/
      addrMid = (fontaddr&0xff00)>>8;      /*地址的中 8 位,共 24 位*/
@@ -350,7 +372,10 @@ void display_GB2312_string(uchar y,uchar x,uchar *text)
 
 }
 
-void display_string_5x7(uchar y,uchar x,uchar *text)
+/****************************************************
+ * Display string by 5*7 pixel.
+***************************************************/
+void display_string_5x7(int8u y,int8u x,int8u *text)
 {
  unsigned char i= 0;
  unsigned char addrHigh,addrMid,addrLow ;
@@ -375,6 +400,24 @@ void display_string_5x7(uchar y,uchar x,uchar *text)
    else
      i++;
  }
+}
+/****************************************************
+ * Display string by 8x16 pixels.
+***************************************************/
+void display_string_8x16(int8u row, int8u col, int8u* str)
+{
+  int8u* ptr = NULL;
+
+  while(*str != 0){
+	ptr = (int8u*)CharSetASCII_8x16[*str];
+  	display_graphic_8x16(row, col, ptr);
+	str++;
+	col += 8;
+	if(col > 120){
+	  col = 0;
+	  row += 2;
+	}
+  }
 }
 
 //eof

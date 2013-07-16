@@ -7,6 +7,11 @@
 // *******************************************************************
 #ifndef _LCD_H_
 #define _LCD_H_
+
+
+/*----------------------------------------------------------------------------
+ *        Macro
+ *----------------------------------------------------------------------------*/
 #define GPIO_PxCLR_BASE (GPIO_PACLR_ADDR)
 #define GPIO_PxSET_BASE (GPIO_PASET_ADDR)
 #define GPIO_PxOUT_BASE (GPIO_PAOUT_ADDR)
@@ -24,7 +29,7 @@
 #define ROM_SCK_PIN  PORTA_PIN(2)   /*字库 IC 接口定义:Rom_SCK 就是字库 IC 的 SCK*/
 #define ROM_CS_PIN   PORTC_PIN(2)    /*字库 IC 接口定义 Rom_CS 就是字库 IC 的 CS#*/
 
-#define LCD_PIN_OUT_MODE GPIOCFG_OUT_OD
+#define LCD_PIN_OUT_MODE GPIOCFG_OUT
 
 /* LCD_SCK_ACTION **/
 #define LCD_SCK(x)        \
@@ -115,26 +120,65 @@
 		}while(0)
 
 
+/*----------------------------------------------------------------------------
+ *        Typedef
+ *----------------------------------------------------------------------------*/
 
-typedef  unsigned char  uchar;
-typedef  unsigned int   uint;
-typedef  unsigned long  ulong;
 
 
+/*----------------------------------------------------------------------------
+ *        Global Extern
+ *----------------------------------------------------------------------------*/
 extern const int8u jiong1[];
 extern const int8u lei1[];
 extern const int8u bmp1[];
 
-
-/*LCD 模块初始化*/
+/*----------------------------------------------------------------------------
+ *        Prototype
+ *----------------------------------------------------------------------------*/
+/****************************************************
+ * LCD module initial.
+***************************************************/
 void initial_lcd();
 
-/*全屏清屏*/
+/****************************************************
+ * LCD screen clear.
+***************************************************/
 void clear_screen();
 
-/*显示 128x64 点阵图像*/
+/****************************************************
+ * Display image by 128*64 pixel.
+***************************************************/
 void display_128x64(const int8u *dp);
 
+/****************************************************
+ * Display string by 5*7 pixel.
+***************************************************/
+void display_string_5x7(int8u y, int8u x, int8u *text);
 
+/****************************************************
+ * Display by 16*16 pixel.
+***************************************************/
+void display_graphic_16x16(int32u page, int32u column, const int8u *dp);
+
+/****************************************************
+ * Display string and image by 8*16 pixel
+***************************************************/
+void display_graphic_8x16(int32u page, int8u column, int8u *dp);
+
+/****************************************************
+ * Display string and image by 5*7 pixel
+***************************************************/
+void display_graphic_5x7(int32u page, int8u column, int8u *dp);
+
+/****************************************************
+ * Display GB2312 string.
+***************************************************/
+void display_GB2312_string(int8u y, int8u x, int8u *text);
+
+/****************************************************
+ * Display string by 8x16 pixels.
+***************************************************/
+void display_string_8x16(int8u row, int8u col, int8u* str);
 #endif//_LCD_H_
 //eof
