@@ -410,12 +410,12 @@ void display_string_8x16(int8u row, int8u col, int8u* str)
 
   while(*str != 0){
 	ptr = (int8u*)CharSetASCII_8x16[*str];
-  	display_graphic_8x16(row, col, ptr);
+  	display_graphic_8x16(row*2 + 1 , col, ptr);
 	str++;
 	col += 8;
 	if(col > 120){
 	  col = 0;
-	  row += 2;
+	  row += 1;
 	}
   }
 }

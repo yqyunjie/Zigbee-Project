@@ -75,6 +75,7 @@
 
 #include "app/sensor/common.h"
 #include "app/sensor/lcd.h"
+#include <stdio.h>
 //#include "app/sensor/Language.h"
 #ifdef  PHY_BRIDGE
  #ifdef  CORTEXM3
@@ -321,14 +322,15 @@ void main(void)
   //display_string_5x7(6,1,"year 2004.Focus LCM. ");/*显示一串 5x7 点阵的 ASCII 字*/
   //display_GB2312_string(3,1,"3333333333333333");
   //display_graphic_16x16(1, 0, jiong1);
-  //{
-	//int8u* ptr = (int8u*)CharSetASCII_8x16[0x33];
-  	//display_graphic_8x16(7, 2, ptr);
-  //}
-  display_string_8x16(1, 0, "1234567890abcdefghijklmnemberSerialWaitSend(APP_SERIAL);");
-
-  //display_graphic_16x16(7, 113, lei1);
-
+  {
+    int8u dspBuf[20];
+    sprintf(dspBuf, "I am 0x%x", 0x31);
+  	 display_string_8x16(0, 0, dspBuf);
+  }
+  display_string_8x16(0, 0, "CharSetASCII_8x16GB2312");
+  display_string_8x16(1, 16, "emberTick");
+  display_string_8x16(2, 32, "Focus");
+  display_string_8x16(3, 48, "jiong1");
   // event loop
   while(TRUE) {
 
