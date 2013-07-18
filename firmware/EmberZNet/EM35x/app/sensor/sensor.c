@@ -945,7 +945,7 @@ void sendData(void) {
   MEMCOPY(&(globalBuffer[0]), emberGetEui64(), EUI64_SIZE);
   i = 0;
   tempC = voltsToCelsius(fvolts);
-  formatFixed(tempString, tempC, 5, 4, TRUE);
+  formatFixed(tempString, tempC/100, 2, 2, TRUE);
   emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", tempString);
   MEMCOPY(&(globalBuffer[EUI64_SIZE]), adcTemp, strlen(adcTemp));
   i += strlen(adcTemp);
@@ -960,7 +960,7 @@ void sendData(void) {
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
-  sprintf(Str, "ADC temp = %s celsius", tempString);
+  sprintf(Str, "ADC temp=%s celsius", tempString);
   display_string_8x16(0, 0, (int8u*)Str);
 
   // copy the data into a packet buffer

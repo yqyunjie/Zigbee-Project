@@ -104,7 +104,7 @@
 // This define determines how often data is collected and sent to the sink.
 // The value is in quarter seconds and the default setting is 80 qs = 20 sec.
 // The minimum value allowed is 2 qa = 0.5 sec
-#define SEND_DATA_RATE  80 // rate sent in quarter-seconds
+#define SEND_DATA_RATE  10 // rate sent in quarter-seconds
 
 // num of pkts to miss before deciding that other node is gone
 #define MISS_PACKET_TOLERANCE    3
