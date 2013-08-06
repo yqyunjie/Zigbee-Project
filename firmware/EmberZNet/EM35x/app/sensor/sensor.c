@@ -215,6 +215,12 @@ void main(void)
   EmberStatus status;
   EmberNodeType nodeType;
   EmberNetworkParameters parameters;
+  int16u time;
+  int16s fvolts;
+  int32s tempC;
+  int16u data;
+  int8u tempString[20];
+  char Str[40];
 
   //Initialize the hal
   halInit();
@@ -314,23 +320,22 @@ void main(void)
   }
   emberSerialWaitSend(APP_SERIAL);
 
-  ROM_CS(1);	//Rom_CS=1;
+  //ROM_CS(1);	//Rom_CS=1;
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
-  //display_128x64(bmp1);
-  //display_string_5x7(6,1,"year 2004.Focus LCM. ");/*显示一串 5x7 点阵的 ASCII 字*/
-  //display_GB2312_string(3,1,"3333333333333333");
-  //display_graphic_16x16(1, 0, jiong1);
+
+#if 0
   {
     char dspBuf[20];
     sprintf(dspBuf, "I am 0x%x", 0x31);
-  	display_string_8x16(0, 0, (int8u*)dspBuf);
+  	 display_string_8x16(0, 0, (int8u*)dspBuf);
   }
   display_string_8x16(0, 0, "CharSetASCII_8x16GB2312");
   display_string_8x16(1, 16, "emberTick");
   display_string_8x16(2, 32, "Focus");
   display_string_8x16(3, 48, "jiong1");
+#endif
   // event loop
   while(TRUE) {
 
@@ -350,11 +355,27 @@ void main(void)
 #endif
 
     // only blink LEDs if app is joined
-    if (emberNetworkState() == EMBER_JOINED_NETWORK)
+    //if (emberNetworkState() == EMBER_JOINED_NETWORK)
       applicationTick(); // check timeouts, buttons, flash LEDs
-    else
+    //else
       checkButtonEvents();
-
+#if 0    
+    time = halCommonGetInt16uMillisecondTick();
+    if( 0 == ( time%2000 ) ){
+      halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
+                              ADC_CONVERSION_TIME_US_256);
+    }
+    else if ( 250 == ( time%2000 ) ){
+      if(halRequestAdcData(ADC_USER_APP2, &data) == EMBER_ADC_CONVERSION_DONE) {
+        fvolts = halConvertValueToVolts(data / TEMP_SENSOR_SCALE_FACTOR);
+        tempC = voltsToCelsius(fvolts) / 100;
+        formatFixed(tempString, tempC/100, 2, 2, TRUE);
+        clear_screen();    //clear all dots
+        sprintf(Str, "ADC temp=%s celsius", tempString);
+        display_string_8x16(0, 0, (int8u*)Str);
+      }
+    }
+#endif
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif
@@ -740,7 +761,7 @@ static void applicationTick(void) {
     // if we are gathering data (we have a sink)
     // then see if it is time to send data
     // ********************************************/
-    if (mainSinkFound == TRUE) {
+    //if (mainSinkFound == TRUE) {
       if (sendDataCountdown == SEND_DATA_RATE) {
         halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
                               ADC_CONVERSION_TIME_US_256);
@@ -751,7 +772,7 @@ static void applicationTick(void) {
         sendDataCountdown = SEND_DATA_RATE;
         sendData();
       }
-    }
+    //}
 
   }
 }
