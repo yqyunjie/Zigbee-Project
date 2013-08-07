@@ -252,13 +252,6 @@ void main(void)
   #endif
 #endif//PHY_BRIDGE
 
-#if defined CORTEXM3_EM357
-  emberSerialGuaranteedPrintf(APP_SERIAL, "EM357 ");
-#elif defined CORTEXM3_EM351
-  emberSerialGuaranteedPrintf(APP_SERIAL, "EM351 ");
-#else
-    #error Unknown CORTEXM3 micro
-#endif
   emberSerialGuaranteedPrintf(APP_SERIAL,
 							  "Build on: "__TIME__" "__DATE__"\r\n");
 
@@ -286,8 +279,8 @@ void main(void)
                     "\r\nINIT: TIMER ");
 
   //printEUI64(APP_SERIAL, (EmberEUI64*) emberGetEui64());
-  emberSerialPrintf(APP_SERIAL, "\r\n");
-  emberSerialWaitSend(APP_SERIAL);
+  //emberSerialPrintf(APP_SERIAL, "\r\n");
+  //emberSerialWaitSend(APP_SERIAL);
 
   #ifdef USE_BOOTLOADER_LIB
     // Using the same port for application serial print and passthru
@@ -307,21 +300,24 @@ void main(void)
   {
     // were able to join the old network
     emberGetNetworkParameters(&parameters);
-    emberSerialPrintf(APP_SERIAL,
-                      "SENSOR APP: joining network - ");
-    printNetInfo(&parameters);
+    //emberSerialPrintf(APP_SERIAL,
+    //                  "SENSOR APP: joining network - ");
+    //printNetInfo(&parameters);
   } else {
     // were not able to join the old network
-    emberSerialPrintf(APP_SERIAL,
-         "SENSOR APP: push button 0 to join a network\r\n");
+    //emberSerialPrintf(APP_SERIAL,
+    //     "SENSOR APP: push button 0 to join a network\r\n");
   }
-  emberSerialWaitSend(APP_SERIAL);
+  //emberSerialWaitSend(APP_SERIAL);
 
   /* Initial LCD module.  */
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
-
+  
+  /** timer initial. */
+  tmr_init();
+  
   // event loop
   while(TRUE) {
 

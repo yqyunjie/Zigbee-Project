@@ -5,9 +5,12 @@
 //
 //  Copyright by kaiser. All rights reserved.
 // *******************************************************************
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#ifndef _TIMER_H_
+#define _TIMER_H_
 
-
+/*----------------------------------------------------------------------------
+ *        Prototype
+ *----------------------------------------------------------------------------*/
+void tmr_init(void);
 
 #endif /*_LANGUAGE_H_*/

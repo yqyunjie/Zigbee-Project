@@ -1113,36 +1113,39 @@
       <name>$PROJ_DIR$\..\..\..\build\zll-stub-library-cortexm3-iar-em357-em3xx\zll-stub-library.a</name>
     </file>
   </group>
-  <file>
-    <name>$PROJ_DIR$\..\common.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\common.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\Language.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\Language.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\lcd.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\lcd.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\main.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\sensor-configuration.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\Timer.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\..\Timer.h</name>
-  </file>
+  <group>
+    <name>SRC</name>
+    <file>
+      <name>$PROJ_DIR$\..\common.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\common.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Language.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Language.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\lcd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\lcd.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\sensor-configuration.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Timer.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Timer.h</name>
+    </file>
+  </group>
 </project>
 
 
