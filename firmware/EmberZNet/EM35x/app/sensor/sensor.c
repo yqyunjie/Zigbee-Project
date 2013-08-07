@@ -149,6 +149,9 @@ int8u dataBuffer[20];
 const char * adcTemp = "ADC Temp = ";
 const char * adcTempUnit = "celsius";
 
+// signed variable for adc temp raw value
+int16s fvolts;
+
 // Indicates if we are in MFG_MODE
 
 #ifdef USE_MFG_CLI
@@ -216,7 +219,6 @@ void main(void)
   EmberNodeType nodeType;
   EmberNetworkParameters parameters;
   int16u time;
-  int16s fvolts;
   int32s tempC;
   int16u data;
   int8u tempString[20];
@@ -359,20 +361,32 @@ void main(void)
       applicationTick(); // check timeouts, buttons, flash LEDs
     //else
       checkButtonEvents();
-#if 0    
+#if 1
     time = halCommonGetInt16uMillisecondTick();
-    if( 0 == ( time%2000 ) ){
-      halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
-                              ADC_CONVERSION_TIME_US_256);
-    }
-    else if ( 250 == ( time%2000 ) ){
-      if(halRequestAdcData(ADC_USER_APP2, &data) == EMBER_ADC_CONVERSION_DONE) {
+    if( 0 == ( time % 2000 ) ){
+	  halSetLed(BOARDLED1);
+	  emberSerialPrintf(APP_SERIAL, "Getting sensor data...\r\n");
+  	  halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
+                        ADC_CONVERSION_TIME_US_256);
+      emberSerialWaitSend(APP_SERIAL);
+      status = halReadAdcBlocking(ADC_USER_APP2, &data);
+	  if( status == EMBER_ADC_CONVERSION_DONE) {
         fvolts = halConvertValueToVolts(data / TEMP_SENSOR_SCALE_FACTOR);
-        tempC = voltsToCelsius(fvolts) / 100;
-        formatFixed(tempString, tempC/100, 2, 2, TRUE);
+		formatFixed(tempString, fvolts, 5, 4, TRUE);
+		emberSerialPrintf(APP_SERIAL, "ADC Voltage V = %s\r\n", tempString);
+
+        tempC = voltsToCelsius(fvolts);
+        formatFixed(tempString, tempC, 5, 4, TRUE);
+		emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius\r\n\r\n", tempString);
+
         clear_screen();    //clear all dots
-        sprintf(Str, "ADC temp=%s celsius", tempString);
+        sprintf(Str, "ADC temp=");
         display_string_8x16(0, 0, (int8u*)Str);
+
+		sprintf(Str, "%s C", tempString);
+        display_string_8x16(1, 0, (int8u*)Str);
+
+		halClearLed(BOARDLED1);
       }
     }
 #endif
@@ -761,18 +775,18 @@ static void applicationTick(void) {
     // if we are gathering data (we have a sink)
     // then see if it is time to send data
     // ********************************************/
-    //if (mainSinkFound == TRUE) {
-      if (sendDataCountdown == SEND_DATA_RATE) {
-        halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
-                              ADC_CONVERSION_TIME_US_256);
-      }
+    if (mainSinkFound == TRUE) {
+      //if (sendDataCountdown == SEND_DATA_RATE) {
+      //  halStartAdcConversion(ADC_USER_APP2, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
+      //                        ADC_CONVERSION_TIME_US_256);
+      //}
       sendDataCountdown = sendDataCountdown - 1;
       if (sendDataCountdown == 0) {
-        //emberSerialPrintf(APP_SERIAL, "sending data...\r\n");
+        emberSerialPrintf(APP_SERIAL, "sending data...\r\n");
         sendDataCountdown = SEND_DATA_RATE;
         sendData();
       }
-    //}
+    }
 
   }
 }
@@ -902,7 +916,7 @@ void checkButtonEvents(void) {
 void sendData(void) {
   EmberApsFrame apsFrame;
   int16u data;
-  int16s fvolts;
+  //int16s fvolts;
   int32s tempC;
   int8u maximumPayloadLength;
   EmberStatus status;
@@ -910,7 +924,7 @@ void sendData(void) {
   int8u i;
   int8u sendDataSize = SEND_DATA_SIZE;
   int8u tempString[20];
-  char Str[40];
+  //char Str[40];
 
   switch (dataMode) {
     default:
@@ -921,21 +935,21 @@ void sendData(void) {
     case DATA_MODE_VOLTS:
     case DATA_MODE_TEMP:
     case DATA_MODE_BCD_TEMP:
-      if(halRequestAdcData(ADC_USER_APP2, &data) == EMBER_ADC_CONVERSION_DONE) {
-        fvolts = halConvertValueToVolts(data / TEMP_SENSOR_SCALE_FACTOR);
+      //if(halRequestAdcData(ADC_USER_APP2, &data) == EMBER_ADC_CONVERSION_DONE) {
+        //fvolts = halConvertValueToVolts(data / TEMP_SENSOR_SCALE_FACTOR);
         if (dataMode == DATA_MODE_VOLTS) {
           data = (int16u)fvolts;
         } else {
-          tempC = voltsToCelsius(fvolts) / 100;
+          tempC = voltsToCelsius(fvolts);
           if (dataMode == DATA_MODE_TEMP) {
             data = (int16u)tempC;
           } else {
             data = toBCD((int16u)tempC);
           }
         }
-      } else {
-        data = 0xFBAD;
-      }
+      //} else {
+      //  data = 0xFBAD;
+      //}
       break;
    }
 
@@ -966,7 +980,7 @@ void sendData(void) {
   MEMCOPY(&(globalBuffer[0]), emberGetEui64(), EUI64_SIZE);
   i = 0;
   tempC = voltsToCelsius(fvolts);
-  formatFixed(tempString, tempC/100, 2, 2, TRUE);
+  formatFixed(tempString, tempC, 5, 4, TRUE);
   emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", tempString);
   MEMCOPY(&(globalBuffer[EUI64_SIZE]), adcTemp, strlen(adcTemp));
   i += strlen(adcTemp);
@@ -977,12 +991,14 @@ void sendData(void) {
   //  globalBuffer[EUI64_SIZE + (i*2)] = HIGH_BYTE(data);
   //  globalBuffer[EUI64_SIZE + (i*2) + 1] = LOW_BYTE(data);
   //}
+#if 0
   ROM_CS(1);	//Rom_CS=1;
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
   sprintf(Str, "ADC temp=%s celsius", tempString);
   display_string_8x16(0, 0, (int8u*)Str);
+#endif
 
   // copy the data into a packet buffer
   buffer = emberFillLinkedBuffers(globalBuffer,
