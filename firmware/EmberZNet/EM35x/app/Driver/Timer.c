@@ -23,11 +23,32 @@
  *----------------------------------------------------------------------------*/
 void tmr_init(void)
 {
-   TIM2_ARR_REG = 0x1000;
-   TIM2_PSC_REG = 0xF << TIM_PSC_BIT;
+   TIM2_ARR_REG = 2;	//auto load value
+   TIM2_OR_REG = 2;		//32k clock source
+   TIM2_PSC_REG = 0x2 << TIM_PSC_BIT;	//prescaler, 1 << 2, 4
    TIM2_CR2_REG = 0x4 << TIM_MMS_BIT;
-   TIM2_CR1_REG = TIM_ARBE | TIM_CEN;  
+
+   TIM2_CNT_REG = 0;
+   TIM2_ARR_REG = 2;	//auto load value
+
+   TIM2_EGR_REG = TIM_CC2G_BITS << TIM_CC2G_BIT;	//CCR2IF set if output, PA3
+
+   TIM1_CCMR1_REG = 3 << TIM_OC2M_BIT;	//toggle mode if match
+
+   INT_TIM2CFG_REG = 1 << INT_TIMCC2IF_BIT;		//Capture or compare 2 interrupt enable
+
+   INT_CFGSET_REG = INT_TIM2;	//enable timer2 interrupt
+
+   TIM2_CCER = TIM_CC2E;	//enable output
+
+   TIM2_CR1_REG = TIM_ARBE | TIM_CEN;
 }
 
+void halTimer2Isr(void)
+{
+
+  //clear interrupt
+  INT_TIM2FLAG = 0xFFFFFFFF;
+}
 
 //eof
