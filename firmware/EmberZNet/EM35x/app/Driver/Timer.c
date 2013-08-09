@@ -50,5 +50,44 @@ void halTimer2Isr(void)
   //clear interrupt
   INT_TIM2FLAG = 0xFFFFFFFF;
 }
+//@code
+#define PWM_PIN       PORTA_PIN(7)
+#define SET_PWM_PIN() GPIO_PASET = PA7
+#define CLR_PWM_PIN() GPIO_PACLR = PA7
 
+void PWM_GpoiInit(void)
+{
+
+
+    halGpioConfig(PWM_PIN, GPIOCFG_OUT_ALT );
+    CLR_PWM_PIN();
+}
+
+void PWM_Init(void)
+{
+	PWM_GpoiInit();
+    GPIO_DBGCFG &= (~GPIO_EXTREGEN_MASK);
+
+    TIM1_EGR |= TIM_UG;
+
+    //According to emulator.h, buzzer is on pin 15 which is mapped
+    //to channel 2 of TMR1
+    TIM1_OR = 0; //use 12MHz clock
+    TIM1_PSC = 5; // 2^5=32 -> 12MHz/32 = 375kHz = 2.6us tick
+    //TIM1_EGR = 1; // trigger update event to load new prescaler value
+    //TIM1_CCMR1  = 0; //start from a zeroed configuration
+    TIM1_CCMR2  = 0; //start from a zeroed configuration
+    //Output waveform: toggle on CNT reaching TOP
+    //TIM1_CCMR1 |= (0x6 << TIM_OC2M_BIT);
+    TIM1_CCMR2 |= (0x6 << TIM_OC4M_BIT);
+
+    TIM1_ARR = 100<<1; //magical conversion to match our tick period
+    //TIM1_CCR2 = 30<<1;
+    TIM1_CCR4 = 30<<1;
+    TIM1_CNT = 0; //force the counter back to zero to prevent missing BUZZER_TOP
+
+    TIM1_CCER = TIM_CC4E; //enable output on channel 4
+    //TIM1_CCER |= TIM_CC2E; //enable output on channel 4
+    TIM1_CR1 |= TIM_CEN; //enable counting
+}
 //eof

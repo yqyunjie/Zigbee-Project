@@ -12,5 +12,5 @@
  *        Prototype
  *----------------------------------------------------------------------------*/
 void tmr_init(void);
-
+void PWM_Init(void);
 #endif /*_LANGUAGE_H_*/

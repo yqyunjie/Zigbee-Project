@@ -76,7 +76,7 @@
 #include "app/sensor/common.h"
 #include "app/sensor/lcd.h"
 #include <stdio.h>
-//#include "app/sensor/Language.h"
+#include "app/Driver/Timer.h"
 #ifdef  PHY_BRIDGE
  #ifdef  CORTEXM3
   #include "hal/micro/cortexm3/diagnostic.h"
@@ -314,10 +314,11 @@ void main(void)
   LCD_CS1(0);	//lcd_cs1=0;
   initial_lcd();
   clear_screen();    //clear all dots
-  
+
   /** timer initial. */
   tmr_init();
-  
+  PWM_Init();
+
   // event loop
   while(TRUE) {
 
