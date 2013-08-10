@@ -705,7 +705,7 @@
         </option>
         <option>
           <name>IlinkLogFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkLogInitialization</name>
@@ -868,7 +868,7 @@
         </option>
         <option>
           <name>IlinkLogUnusedFragments</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkCrcReverseByteOrder</name>
@@ -1117,18 +1117,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\common.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Language.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Language.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\lcd.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\lcd.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\main.c</name>
