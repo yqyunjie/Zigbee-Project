@@ -266,7 +266,7 @@ void main(void)
   } 
 
   /** timer initial. */
-  pwm_init(500, 20);   //freq = 1000hz duty = 80%
+  pwm_init(1000, 60);   //freq = 1000hz duty = 80%
 
   // event loop
   while(TRUE) {
