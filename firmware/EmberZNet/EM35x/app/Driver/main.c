@@ -255,27 +255,14 @@ void main(void)
   emberSerialGuaranteedPrintf(APP_SERIAL,
 							  "Build on: "__TIME__" "__DATE__"\r\n");
 
-  //if (status != EMBER_SUCCESS) {
-    // report status here
-    //emberSerialGuaranteedPrintf(APP_SERIAL,
-    //          "ERROR: emberInit 0x%x\r\n", status);
-    // the app can choose what to do here, if the app is running
-    // another device then it could stay running and report the
-    // error visually for example. This app asserts.
-    //assert(FALSE);
-  //} else {
-    //emberSerialPrintf(APP_SERIAL, "EVENT: emberInit passed\r\n");
-    //emberSerialWaitSend(APP_SERIAL);
-  //}
-
   // set LEDs
-  appSetLEDsToInitialState();
+  //appSetLEDsToInitialState();
 
   // init application state
   //sensorInit();
 
   // print a startup message
-  emberSerialPrintf(APP_SERIAL,
+  emberSerialGuaranteedPrintf(APP_SERIAL,
                     "\r\nINIT: TIMER ");
 
   //printEUI64(APP_SERIAL, (EmberEUI64*) emberGetEui64());
@@ -310,39 +297,18 @@ void main(void)
   }
   //emberSerialWaitSend(APP_SERIAL);
 
-  /* Initial LCD module.  */
-  LCD_CS1(0);	//lcd_cs1=0;
-  initial_lcd();
-  clear_screen();    //clear all dots
-
   /** timer initial. */
   tmr_init();
-  PWM_Init();
+  //PWM_Init();
 
   // event loop
   while(TRUE) {
 
     halResetWatchdog();
-    halSetLed(BOARDLED1);
-  	halClearLed(BOARDLED1);
+    //halSetLed(BOARDLED1);
+  	//halClearLed(BOARDLED1);
     emberTick();
     emberFormAndJoinTick();
-
-#ifdef USE_MFG_CLI
-    if (mfgMode) {
-      mfgMode = mfgCmdProcessing();
-    } else {
-      processSerialInput();
-    }
-#else
-    //processSerialInput();
-#endif
-
-    // only blink LEDs if app is joined
-    //if (emberNetworkState() == EMBER_JOINED_NETWORK)
-      //applicationTick(); // check timeouts, buttons, flash LEDs
-    //else
-      //checkButtonEvents();
 
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
@@ -1062,77 +1028,6 @@ void sendMulticastHello(void) {
 }
 
 
-// this handles the sink advertisement message on the sensor
-// the sensor responds with a SENSOR_SELECT_SINK message if it
-// is not yet bound to a sink
-void handleSinkAdvertise(int8u* data) {
-  EmberApsFrame apsFrame;
-  EmberStatus status;
-  EmberMessageBuffer buffer;
-
-  // save the EUI64 and short address of the sink so that is a mobile
-  // node becomes a child of this node it can immediately inform the
-  // mobile node who the parent sink is.
-  MEMCOPY(sinkEUI, &(data[0]), EUI64_SIZE);
-  sinkShortAddress = emberFetchLowHighInt16u(&(data[EUI64_SIZE]));
-
-  status = emberSetAddressTableRemoteEui64(SINK_ADDRESS_TABLE_INDEX, sinkEUI);
-  if (status != EMBER_SUCCESS) {
-    emberSerialPrintf(APP_SERIAL,
-           "TX ERROR [sensor select sink], set remote EUI64 failure,"
-           " status 0x%x\r\n",
-           status);
-    return;
-  }
-  emberSetAddressTableRemoteNodeId(SINK_ADDRESS_TABLE_INDEX, sinkShortAddress);
-
-  emberSerialPrintf(APP_SERIAL,
-                    "EVENT: sensor set address table entry %x to sink [",
-                    SINK_ADDRESS_TABLE_INDEX);
-  printEUI64(APP_SERIAL, &sinkEUI);
-  emberSerialPrintf(APP_SERIAL, "]\r\n");
-
-  // send a message picking this sink
-  MEMCOPY(&(globalBuffer[0]), emberGetEui64(), EUI64_SIZE);
-
-  // copy the data into a packet buffer
-  buffer = emberFillLinkedBuffers((int8u*)globalBuffer, EUI64_SIZE);
-
-  // check to make sure a buffer is available
-  if (buffer == EMBER_NULL_MESSAGE_BUFFER) {
-    emberSerialPrintf(APP_SERIAL,
-        "TX ERROR can't send [sensor select sink], OUT OF BUFFERS\r\n");
-    mainSinkFound = FALSE;
-    return;
-  }
-
-  // all of the defined values below are from app/sensor-host/common.h
-  // with the exception of the options from stack/include/ember.h
-  apsFrame.profileId = PROFILE_ID;          // profile unique to this app
-  apsFrame.clusterId = MSG_SENSOR_SELECT_SINK; // the message we are sending
-  apsFrame.sourceEndpoint = ENDPOINT;       // sensor endpoint
-  apsFrame.destinationEndpoint = ENDPOINT;  // sensor endpoint
-  apsFrame.options = EMBER_APS_OPTION_RETRY; // Default to retry
-  //apsFrame.groupId = 0;        // multicast ID not used for unicasts
-  //apsFrame.sequence = 0;       // the stack sets this to the seq num it uses
-
-
-  // send the message
-  status = emberSendUnicast(EMBER_OUTGOING_VIA_ADDRESS_TABLE,
-                            SINK_ADDRESS_TABLE_INDEX,
-                            &apsFrame,
-                            buffer);
-
-  // done with the packet buffer
-  emberReleaseMessageBuffer(buffer);
-
-  emberSerialPrintf(APP_SERIAL,
-                    "TX [sensor select sink], status:0x%x\r\n",
-                    status);
-
-  waitingForSinkReadyMessage = TRUE;
-}
-
 //
 // *******************************************************************
 
@@ -1170,378 +1065,16 @@ void halButtonIsr(int8u button, int8u state)
 // Utility functions
 
 
-// init common state for sensor nodes
-void sensorInit(void) {
-
-  // init the global state
-  mainSinkFound = FALSE;
-  sendDataCountdown = SEND_DATA_RATE;
-  numberOfFailedDataMessages = 0;
-}
-
-
-// *****************************
-// for processing serial cmds
-// *****************************
-void processSerialInput(void) {
-  int8u cmd;
-
-  if(emberSerialReadByte(APP_SERIAL, &cmd) == 0) {
-    if (cmd != '\n') emberSerialPrintf(APP_SERIAL, "\r\n");
-
-    switch(cmd) {
-#ifdef  PHY_BRIDGE
-      // Bridge Tx Control
-    case '>':
-    {
-      EmZigBrgControl txControl = (emZigBrgGetTxControl() + 1) % BRG_CONTROL_ITEMS;
-      (void) emZigBrgSetTxControl(txControl);
-      emberSerialPrintf(APP_SERIAL, "Bridge TxControl %p\r\n", brgControlNames[txControl]);
-      break;
-    }
-      // Bridge Rx Control
-    case '<':
-    {
-      EmZigBrgControl rxControl = (emZigBrgGetRxControl() + 1) % BRG_CONTROL_ITEMS;
-      (void) emZigBrgSetRxControl(rxControl);
-      emberSerialPrintf(APP_SERIAL, "Bridge RxControl %p\r\n", brgControlNames[rxControl]);
-      break;
-    }
-#ifdef  BRIDGE_TRACE
-      // Toggle Bridge Tracing
-    case '#':
-      emZigBrgTrace = !emZigBrgTrace;
-      emberSerialPrintf(APP_SERIAL, "Bridge Trace %p\r\n", emZigBrgTrace ? "on" : "off");
-      break;
-#endif//BRIDGE_TRACE
-#endif//PHY_BRIDGE
-
-      // info
-    case 'i':
-      printNodeInfo();
-      break;
-
-      // help
-    case '?':
-      printHelp();
-      break;
-
-#if EMBER_SECURITY_LEVEL == 5
-     // print keys
-    case 'k':
-      sensorCommonPrintKeys();
-      break;
-#endif //EMBER_SECURITY_LEVEL == 5
-
-      // tune
-    case 't':
-#ifndef DEBUG
-      halPlayTune_P(tune, 0);
-      halPlayTune_P(tune, 0);
-#endif
-      break;
-
-
-      // send random data
-    case 'r':
-      dataMode = DATA_MODE_RANDOM;
-      emberSerialPrintf(APP_SERIAL, "Send random data\r\n");
-      break;
-
-      // send Temp data
-    case 'T':
-      dataMode = DATA_MODE_TEMP;
-      emberSerialPrintf(APP_SERIAL, "Send temp data\r\n");
-      break;
-
-      // send volts data
-    case 'v':
-      dataMode = DATA_MODE_VOLTS;
-      emberSerialPrintf(APP_SERIAL, "Send volts data\r\n");
-      break;
-
-      // send bcd temp data
-    case 'd':
-      dataMode = DATA_MODE_BCD_TEMP;
-      emberSerialPrintf(APP_SERIAL, "Send bcd temp data\r\n");
-      break;
-
-      // read and print sensor data
-    case 's':
-      readAndPrintSensorData();
-      break;
-
-      // bootloader
-    case 'b':
-      emberSerialPrintf(APP_SERIAL, "starting bootloader...\r\n");
-      emberSerialWaitSend(APP_SERIAL);
-      halLaunchStandaloneBootloader(STANDALONE_BOOTLOADER_NORMAL_MODE);
-      break;
-
-#ifdef USE_BOOTLOADER_LIB
-      // This command initiates a passthru bootloading of the first
-      // device in the address table
-    case 'B':
-      {
-        int8u index;
-        EmberEUI64 eui;
-        if (emberGetAddressTableRemoteNodeId(0)
-            == EMBER_TABLE_ENTRY_UNUSED_NODE_ID) {
-          // error
-          emberSerialPrintf(APP_SERIAL,
-                            "ERROR: no device in address table at"
-                            " location 0\r\n");
-          break;
-        }
-        emberGetAddressTableRemoteEui64(0, eui);
-        emberSerialPrintf(APP_SERIAL, "INFO: attempt BL\r\n");
-        if (isMyChild(eui, &index)) {
-          bootloadMySleepyChild(eui);
-        }
-        else if (isMyNeighbor(eui)) {
-          bootloadMyNeighborRouter(eui);
-        }
-        else {
-          // error
-          emberSerialPrintf(APP_SERIAL,
-                            "ERROR: can't bootload device whose address is "
-                            " stored at location 0 of the address table,"
-                            " not neighbor or child\r\n");
-        }
-      }
-      break;
-
-      // This command initiates a passthru bootloading of the first
-      // device in the child table
-    case 'C':
-      {
-        EmberEUI64 eui;
-        EmberNodeType type;
-        EmberStatus status;
-        status = emberGetChildData(0, eui, &type);
-        if (status != EMBER_SUCCESS) {
-          emberSerialPrintf(APP_SERIAL,
-                            "ERROR: first slot in child table is empty\r\n");
-          break;
-        }
-
-        bootloadMySleepyChild(eui);
-      }
-      break;
-
-    case 'Q': // send bootload query to neighbors
-      {
-        // sending a query broadcast (mac only - so just neighbors)
-        // gets responses into bootloadUtilQueryResponseHandler
-        EmberEUI64 addr = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-        bootloadUtilSendQuery(addr);
-      }
-      break;
-#endif // USE_BOOTLOADER_LIB
-
-      // print address table
-    case 'a':
-      printAddressTable(EMBER_ADDRESS_TABLE_SIZE);
-      break;
-
-      // print multicast table
-      // this was removed for debug builds due to size constraints
-    case 'm':
-#ifndef DEBUG
-      printMulticastTable(EMBER_MULTICAST_TABLE_SIZE);
-#endif //DEBUG
-      break;
-
-      // hello - multicast msg
-    case 'l':
-      if (emberNetworkState() == EMBER_JOINED_NETWORK) {
-        sendMulticastHello();
-      } else {
-        emberSerialPrintf(APP_SERIAL, "WARN: app not joined, can't send\r\n");
-      }
-      break;
-
-      // 0 and 1 mean button presses
-    case '0':
-      buttonZeroPress = TRUE;
-      break;
-    case '1':
-      buttonOnePress = TRUE;
-      break;
-
-      // reset node
-    case 'e':
-      emberSerialGuaranteedPrintf(APP_SERIAL, "Resetting node...\r\n");
-      halReboot();
-      break;
-
-      // print the tokens
-      // this was removed for debug builds due to size constraints
-    case 'x':
-#ifndef DEBUG
-      printTokens();
-#endif
-      break;
-
-    // print out the JIT storage
-    case 'j':
-      jitMessageStatus();
-      break;
-
-    // print out the child table
-    case 'c':
-      printChildTable();
-      break;
-
-#ifdef USE_MFG_CLI
-    // ENTER MFG_MODE
-    case 'M':
-      mfgMode = TRUE;
-      break;
-#endif
-
-    case '\n':
-    case '\r':
-      break;
-
-    default:
-      emberSerialPrintf(APP_SERIAL, "unknown cmd\r\n");
-      break;
-     }
-
-    if (cmd != '\n') emberSerialPrintf(APP_SERIAL, "\r\nsensor-node>");
-  }
-
-}
-
 // *********************************
 // print help
 // *********************************
 #define PRINT(x) emberSerialPrintf(APP_SERIAL, x); emberSerialWaitSend(APP_SERIAL)
 
-void printHelp(void)
-{
-  PRINT("? = help\r\n");
-  PRINT("i = print node info\r\n");
-#if EMBER_SECURITY_LEVEL == 5
-  PRINT("k = print keys\r\n");
-#endif //EMBER_SECURITY_LEVEL == 5
-  PRINT("b = send node into bootloader\r\n");
-  PRINT("l = send multicast [hello]\r\n");
-  PRINT("t = play tune\r\n");
-  PRINT("a = print address table\r\n");
-  PRINT("m = print multicast table\r\n");
-  PRINT("0 = simulate button 0: join to network or if already joined,\r\n");
-  PRINT("       turn allow join ON for 60 sec\r\n");
-  PRINT("1 = simulate button 1: leave ZigBee network\r\n");
-  PRINT("e = reset node\r\n");
-  PRINT("x = print node tokens\r\n");
-  PRINT("c = print child table\r\n");
-  PRINT("j = print JIT storage status\r\n");
-  PRINT("B = attempt to bootload the device whose EUI is stored at"
-        " location 0 of the address table\r\n");
-  PRINT("C = attempt to bootload the first device in the child table\r\n");
-  PRINT("Q = send out a BOOTLOADER_QUERY message\r\n");
-  PRINT("s = print sensor data\r\n");
-  PRINT("r = send random data\r\n");
-  PRINT("T = send Temp data\r\n");
-  PRINT("v = send volts data\r\n");
-  PRINT("d = send bcd Temp data\r\n");
-#ifdef USE_MFG_CLI
-  PRINT("M = enter MFGMODE\r\n");
-#endif // ifdef MFG_CLI
-#ifdef  PHY_BRIDGE
-  PRINT("> = cycle to next Bridge TxControl\r\n");
-  PRINT("< = cycle to next Bridge RxControl\r\n");
-#ifdef  BRIDGE_TRACE
-  PRINT("# = toggle Bridge debug tracing\r\n");
-#endif//BRIDGE_TRACE
-#endif//PHY_BRIDGE
-}
+
 
 // Function to read data from the ADC, do conversions to volts and
 // BCD temp and print to the serial port
 
-void readAndPrintSensorData()
-{
-  int16u value;
-  int16s fvolts;
-  int32s tempC, tempF;
-  int8u str[20];
-  EmberStatus readStatus;
-
-  emberSerialPrintf(APP_SERIAL, "Printing sensor data...\r\n");
-  halStartAdcConversion(ADC_USER_APP, ADC_REF_INT, TEMP_SENSOR_ADC_CHANNEL,
-                        ADC_CONVERSION_TIME_US_256);
-  emberSerialWaitSend(APP_SERIAL);
-  readStatus = halReadAdcBlocking(ADC_USER_APP, &value);
-
-  if( readStatus == EMBER_ADC_CONVERSION_DONE) {
-    fvolts = halConvertValueToVolts(value / TEMP_SENSOR_SCALE_FACTOR);
-    formatFixed(str, (int32s)fvolts, 5, 4, TRUE);
-    emberSerialPrintf(APP_SERIAL, "ADC Voltage V = %s\r\n", str);
-
-    tempC = voltsToCelsius(fvolts);
-    formatFixed(str, tempC, 5, 4, TRUE);
-    emberSerialPrintf(APP_SERIAL, "ADC temp = %s celsius, ", str);
-
-    tempF = ((tempC * 9) / 5) + 320000L;
-    formatFixed(str, tempF, 5, 4, TRUE);
-    value = toBCD((int16u)(tempF / 100));
-    emberSerialPrintf(APP_SERIAL, "%sF %2xF)\r\n", str, value);
-    emberSerialWaitSend(APP_SERIAL);
-
-  } else {
-    emberSerialPrintf(APP_SERIAL, "ADC read error: 0x%x\r\n", readStatus);
-    emberSerialWaitSend(APP_SERIAL);
-  }
-}
-
-// Convert volts to celsius in LM20 temp sensor.  The numbers
-// are both in fixed point 4 digit format. I.E. 860 is 0.0860
-
-int32s voltsToCelsius (int16u voltage)
-{
-  // equation: temp = -0.17079*mV + 159.1887
-  return 1591887L - (171 * (int32s)voltage);
-}
-
-int16u toBCD(int16u number)
-{
-  int8u numBuff[3];
-  int8u i;
-
-  for(i = 0; i < 3; i++) {
-    numBuff[i] = number % 10;
-    number /= 10;
-  }
-  number = (number << 4) + numBuff[2];
-  number = (number << 4) + numBuff[1];
-  number = (number << 4) + numBuff[0];
-
-  return number;
-}
-
-void printDataMode(void)
-{
-  switch (dataMode) {
-  case DATA_MODE_RANDOM:
-    emberSerialPrintf(APP_SERIAL, "data mode [random]\r\n");
-    break;
-  case DATA_MODE_VOLTS:
-    emberSerialPrintf(APP_SERIAL, "data mode [volts]\r\n");
-    break;
-  case DATA_MODE_TEMP:
-    emberSerialPrintf(APP_SERIAL, "data mode [temp]\r\n");
-    break;
-  case DATA_MODE_BCD_TEMP:
-    emberSerialPrintf(APP_SERIAL, "data mode [BCD temp]\r\n");
-    break;
-  default:
-    emberSerialPrintf(APP_SERIAL, "data mode [unknown]\r\n");
-    break;
-  }
-}
 
 // End utility functions
 // *******************************************************************

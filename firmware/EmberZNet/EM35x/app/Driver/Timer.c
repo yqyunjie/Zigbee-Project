@@ -23,31 +23,74 @@
  *----------------------------------------------------------------------------*/
 void tmr_init(void)
 {
-   TIM2_ARR_REG = 2;	//auto load value
-   TIM2_OR_REG = 2;		//32k clock source
-   TIM2_PSC_REG = 0x2 << TIM_PSC_BIT;	//prescaler, 1 << 2, 4
-   TIM2_CR2_REG = 0x4 << TIM_MMS_BIT;
+   halGpioConfig(PORTA_PIN(3), GPIOCFG_OUT_ALT );
+   GPIO_PACLR = PA3;
+   /*
+   * 0: PCLK clock source
+   * 1: calibrated 1 kHz
+   * 2: 32 kHz reference clock
+   * 3: TIM2CLK pin
+   */
+   TIM2_OR = 0 << TIM_EXTRIGSEL_BIT;
 
-   TIM2_CNT_REG = 0;
-   TIM2_ARR_REG = 2;	//auto load value
+   /*
+   * fCK_PSC / (2 ^ TIM_PSC), TIM_PSC = 0 ~ 15
+   * prescaler = 1 ~ 32768
+   */
+   TIM2_PSC = 0 << TIM_PSC_BIT;
 
-   TIM2_EGR_REG = TIM_CC2G_BITS << TIM_CC2G_BIT;	//CCR2IF set if output, PA3
+   /*
+   *
+   */
+   TIM2_CR2 = 3 << TIM_MMS_BIT;
 
-   TIM1_CCMR1_REG = 3 << TIM_OC2M_BIT;	//toggle mode if match
+   /*
+   * counter initial
+   * CNT is TMR counter
+   * ARR is auto load conter
+   * CCR is compare/capture counter
+   */
+   TIM2_CNT = 0;
+   TIM2_ARR = 100;
+   TIM2_CCR2 = 90;
 
-   INT_TIM2CFG_REG = 1 << INT_TIMCC2IF_BIT;		//Capture or compare 2 interrupt enable
+   /*
+   * CCR2 Generation, PA3.
+   * Update Generation .
+   */
+   TIM2_EGR = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
 
-   INT_CFGSET_REG = INT_TIM2;	//enable timer2 interrupt
+   /*
+   * CCR2 output Polarity active low
+   * CCR2 output enable
+   */
+   TIM2_CCER = ( 1 << TIM_CC2E_BIT ) /*| ( 1 << TIM_CC2P_BIT)*/;
 
-   TIM2_CCER = TIM_CC2E;	//enable output
+   /*
+   * 6: PWM mode 1
+   */
+   TIM2_CCMR1 = 6 << TIM_OC2M_BIT;
 
-   TIM2_CR1_REG = TIM_ARBE | TIM_CEN;
+   /*
+   * Capture or compare 2 interrupt enable
+   * TIM2, Top -Level Set Interrupts enable
+   *
+   */
+   INT_TIM2CFG = 1 << INT_TIMCC2IF_BIT;
+   INT_CFGSET = INT_TIM2;	//enable timer2 interrupt
+
+   /*
+   * Auto Reload enable
+   * TMR enable
+   */
+   TIM2_CR1 = TIM_ARBE | TIM_CEN;
 }
 
 void halTimer2Isr(void)
 {
 
   //clear interrupt
+  halToggleLed(BOARDLED0);
   INT_TIM2FLAG = 0xFFFFFFFF;
 }
 //@code
