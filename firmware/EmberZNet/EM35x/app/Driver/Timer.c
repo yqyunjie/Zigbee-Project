@@ -13,6 +13,8 @@
   #include "hal/micro/micro.h"
   #include BOARD_HEADER
 #endif
+#include "Timer.h"
+#include "hal/micro/led.h"
 
 /*----------------------------------------------------------------------------
  *        Global Variable

@@ -1111,13 +1111,7 @@
     </file>
   </group>
   <group>
-    <name>SRC</name>
-    <file>
-      <name>$PROJ_DIR$\..\common.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\common.h</name>
-    </file>
+    <name>src</name>
     <file>
       <name>$PROJ_DIR$\..\main.c</name>
     </file>
@@ -1129,6 +1123,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Timer.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\TWI.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\TWI.h</name>
     </file>
   </group>
 </project>
