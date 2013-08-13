@@ -19,10 +19,97 @@
 /*----------------------------------------------------------------------------
  *        Global Variable
  *----------------------------------------------------------------------------*/
+const int16u gpioPWM[2][4] = 
+{{PORTB_PIN(6), PORTB_PIN(7), PORTA_PIN(6),PORTA_PIN(7)},
+{PORTA_PIN(0), PORTA_PIN(3), PORTA_PIN(1),PORTA_PIN(2)}};
 
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
+
+void PWM_Init(PWM_TypeDef* pwm)
+{
+   int32u offset = BLOCK_TIM2_BASE - BLOCK_TIM1_BASE;
+   int32u chT = pwm->chTMR - 1;
+   int32u chC = pwm->chCCR - 1;
+   
+   halGpioConfig(gpioPWM[chT][chC], GPIOCFG_OUT_ALT );
+   //GPIO_PACLR = PA3;
+   /*
+   * 0: PCLK clock source
+   * 1: calibrated 1 kHz
+   * 2: 32 kHz reference clock
+   * 3: TIM2CLK pin
+   */
+   //TIM2_OR = 0 << TIM_EXTRIGSEL_BIT;   //12Mhz
+   *((volatile int32u *)TIM1_OR_ADDR + offset * chT) = pwm->clkSel;
+
+   /*
+   * fCK_PSC / (2 ^ TIM_PSC), TIM_PSC = 0 ~ 15
+   * prescaler = 1 ~ 32768
+   */
+   //TIM2_PSC = 0 << TIM_PSC_BIT;
+   *((volatile int32u *)TIM1_PSC_ADDR + offset * chT) = pwm->prescale ;
+     
+   /*
+   *
+   */
+   //TIM2_CR2 = 3 << TIM_MMS_BIT;
+   *((volatile int32u *)TIM1_CR2_ADDR + offset * chT) = 3 << TIM_MMS_BIT;
+   /*
+   * counter initial
+   * CNT is TMR counter
+   * ARR is auto load conter
+   * CCR is compare/capture counter
+   */
+   //TIM2_CNT = 0;
+   *((volatile int32u *)TIM1_CNT_ADDR + offset * chT) = 0;
+   //TIM2_ARR = 12000000ul/freq;
+   *((volatile int32u *)TIM1_ARR_ADDR + offset * chT) = 12000000ul/pwm->freq;
+   //TIM2_CCR2 = 120000ul * duty /freq;
+   *((volatile int32u *)(TIM1_CCR1_ADDR + chC*4) + offset * chT) = 120000ul * pwm->duty /pwm->freq;
+
+   /*
+   * CCR2 Generation, PA3.
+   * Update Generation .
+   */
+   TIM2_EGR = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
+   //*((volatile int32u *)TIM1_EGR_ADDR + offset * chT) = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
+
+   /*
+   * CCR2 output Polarity active low
+   * CCR2 output enable
+   */
+   TIM2_CCER = ( 1 << TIM_CC2E_BIT ) /*| ( 1 << TIM_CC2P_BIT)*/;
+
+   /*
+   * 6: PWM mode 1
+   */
+   //TIM2_CCMR1 = 6 << TIM_OC2M_BIT;
+   *((volatile int32u *)(TIM1_CCMR1_ADDR + chC/2*4) + offset * chT) = 6 << (TIM_OC1M_BIT + chC/2*8);
+     
+   /*
+   * Capture or compare 2 interrupt enable
+   * TIM2, Top -Level Set Interrupts enable
+   *
+   */
+   if(pwm->chTMR == 1){
+      INT_TIM1CFG = 1 << pwm->chCCR;
+      INT_CFGSET = INT_TIM1;	//enable timer1 interrupt
+   }
+   else if(2 == pwm->chTMR){
+      INT_TIM2CFG = 1 << pwm->chCCR;
+      INT_CFGSET = INT_TIM2;	//enable timer2 interrupt
+   }
+   
+   /*
+   * Auto Reload enable
+   * TMR enable
+   */
+   //TIM2_CR1 = TIM_ARBE | TIM_CEN;
+   *((volatile int32u *)TIM1_CR1_ADDR + offset * chT) = TIM_ARBE | TIM_CEN;
+}
+
 /*
 * Clock Source is PCK 12Mhz and prescaler is 1
 * 1 Ticker = 1/12us
@@ -95,51 +182,12 @@ void pwm_init(int32u freq , int32u duty)
    TIM2_CR1 = TIM_ARBE | TIM_CEN;
 }
 
+
 void halTimer2Isr(void)
 {
 
   //clear interrupt
   halToggleLed(BOARDLED0);
   INT_TIM2FLAG = 0xFFFFFFFF;
-}
-//@code
-#define PWM_PIN       PORTA_PIN(7)
-#define SET_PWM_PIN() GPIO_PASET = PA7
-#define CLR_PWM_PIN() GPIO_PACLR = PA7
-
-void PWM_GpoiInit(void)
-{
-
-
-    halGpioConfig(PWM_PIN, GPIOCFG_OUT_ALT );
-    CLR_PWM_PIN();
-}
-
-void PWM_Init(void)
-{
-	PWM_GpoiInit();
-    GPIO_DBGCFG &= (~GPIO_EXTREGEN_MASK);
-
-    TIM1_EGR |= TIM_UG;
-
-    //According to emulator.h, buzzer is on pin 15 which is mapped
-    //to channel 2 of TMR1
-    TIM1_OR = 0; //use 12MHz clock
-    TIM1_PSC = 5; // 2^5=32 -> 12MHz/32 = 375kHz = 2.6us tick
-    //TIM1_EGR = 1; // trigger update event to load new prescaler value
-    //TIM1_CCMR1  = 0; //start from a zeroed configuration
-    TIM1_CCMR2  = 0; //start from a zeroed configuration
-    //Output waveform: toggle on CNT reaching TOP
-    //TIM1_CCMR1 |= (0x6 << TIM_OC2M_BIT);
-    TIM1_CCMR2 |= (0x6 << TIM_OC4M_BIT);
-
-    TIM1_ARR = 100<<1; //magical conversion to match our tick period
-    //TIM1_CCR2 = 30<<1;
-    TIM1_CCR4 = 30<<1;
-    TIM1_CNT = 0; //force the counter back to zero to prevent missing BUZZER_TOP
-
-    TIM1_CCER = TIM_CC4E; //enable output on channel 4
-    //TIM1_CCER |= TIM_CC2E; //enable output on channel 4
-    TIM1_CR1 |= TIM_CEN; //enable counting
 }
 //eof

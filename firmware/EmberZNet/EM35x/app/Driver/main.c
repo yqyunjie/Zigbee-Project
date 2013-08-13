@@ -8,6 +8,7 @@
 #include "app/sensor/lcd.h"
 #include <stdio.h>
 #include "app/Driver/Timer.h"
+#include "app/Driver/TWI.h"
 
 // *******************************************************************
 // Ember endpoint and interface configuration
@@ -101,7 +102,8 @@ void main(void)
   } 
 
   /** timer initial. */
-  pwm_init(2000, 10);   //freq = 1000hz duty = 80%
+  //pwm_init(2000, 10);   //freq = 1000hz duty = 80%
+  //twi_init();
 
   // event loop
   while(TRUE) {
