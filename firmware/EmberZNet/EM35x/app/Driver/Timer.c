@@ -53,20 +53,10 @@ void PWM_Init(const PWM_TypeDef* pwm)
 
    halGpioConfig(gpioPWM[chT][chC], GPIOCFG_OUT_ALT );
 
-   /*
-   * 0: PCLK clock source
-   * 1: calibrated 1 kHz
-   * 2: 32 kHz reference clock
-   * 3: TIM2CLK pin
-   */
-   //TIM2_OR = 0 << TIM_EXTRIGSEL_BIT;   //12Mhz
+   /* clock source   */
    *((volatile int32u *)(TIM1_OR_ADDR + offset * chT) ) = pwm->clkSel;
 
-   /*
-   * fCK_PSC / (2 ^ TIM_PSC), TIM_PSC = 0 ~ 15
-   * prescaler = 1 ~ 32768
-   */
-   //TIM2_PSC = 0 << TIM_PSC_BIT;
+   /** prescaler = 1 ~ 32768 */
    *((volatile int32u *)( TIM1_PSC_ADDR + offset * chT) ) = pwm->prescale ;
 
 
@@ -74,29 +64,22 @@ void PWM_Init(const PWM_TypeDef* pwm)
    * CCR2 output Polarity active low
    * CCR2 output enable
    */
-   //TIM2_CCER = ( 1 << TIM_CC2E_BIT ) /*| ( 1 << TIM_CC2P_BIT)*/;
    value = 1 << (chC*4) ;
    *((volatile int32u *)( TIM1_CCER_ADDR + offset * chT) ) = value ;
-
 
    /*
    * 6: PWM mode 1
    */
-   //TIM2_CCMR1 = 6 << TIM_OC2M_BIT;
    addr = (TIM1_CCMR1_ADDR + chC/2*4) + offset * chT;
    value = 6 << (TIM_OC1M_BIT + chC % 2 * 8);
    *(volatile int32u*)addr = value;
-   //*((volatile int32u *)( (TIM1_CCMR1_ADDR + chC/2*4) + offset * chT) ) = 6 << (TIM_OC1M_BIT + chC/2*8);
 
-   /*
-    * adjust pwm modulation.
-    */
+   /** adjust pwm modulation.  */
    PWM_Adjust(pwm);
 
    /*
    * Capture or compare 2 interrupt enable
    * TIM2, Top -Level Set Interrupts enable
-   *
    */
    if( pwm->chTMR == 1 ){
       INT_TIM1CFG = 1 << pwm->chCCR;
@@ -107,11 +90,7 @@ void PWM_Init(const PWM_TypeDef* pwm)
       INT_CFGSET = INT_TIM2;	//enable timer2 interrupt
    }
 
-   /*
-   * Auto Reload enable
-   * TMR enable
-   */
-   //TIM2_CR1 = TIM_ARBE | TIM_CEN;
+   /** Auto Reload enable and TMR enable*/
    *((volatile int32u *)( TIM1_CR1_ADDR + offset * chT ) ) = TIM_ARBE | TIM_CEN;
 }
 

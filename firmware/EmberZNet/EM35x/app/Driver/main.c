@@ -32,19 +32,8 @@ boolean mfgMode = FALSE;
 boolean  mfgCmdProcessing(void);
 #endif
 
-// End application specific constants and globals
-// *******************************************************************
-
-// *******************************************************************
-// Forward declarations
-
 //
 // *******************************************************************
-
-void printNetInfo(EmberNetworkParameters * networkParameters)
-{
-
-}
 
 // *******************************************************************
 // Begin main application loop
@@ -52,8 +41,6 @@ void printNetInfo(EmberNetworkParameters * networkParameters)
 void main(void)
 
 {
-  EmberStatus status;
-
   //Initialize the hal
   halInit();
 
@@ -66,7 +53,7 @@ void main(void)
   }
 
   // emberInit must be called before other EmberNet stack functions
-  status = emberInit();
+  emberInit();
 
   // print the reason for the reset
   emberSerialGuaranteedPrintf(APP_SERIAL, "reset: %p\r\n",
@@ -92,11 +79,11 @@ void main(void)
   {
 	const PWM_TypeDef pwm = {
 		.chTMR = 2,
-        .chCCR = 2,
+        .chCCR = 1,
 		.clkSel = timerPCK12MHZ,
 		.prescale = timerPrescale1,
-        .mod.freq = 800,
-		.mod.duty = 10,
+        .mod.freq = 100000,
+		.mod.duty = 90,
 	};
     PWM_Init(&pwm);
 	//pwm_init(1000, 50);   //freq = 1000hz duty = 80%
