@@ -78,11 +78,11 @@ void main(void)
   /** timer initial. */
   {
 	const PWM_TypeDef pwm = {
-		.chTMR = 2,
-        .chCCR = 1,
+		.chTMR = 1,
+        .chCCR = 4,
 		.clkSel = timerPCK12MHZ,
 		.prescale = timerPrescale1,
-        .mod.freq = 100000,
+        .mod.freq = 2000,
 		.mod.duty = 90,
 	};
     PWM_Init(&pwm);

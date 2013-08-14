@@ -1011,6 +1011,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\buzzer.c</name>
+        <excluded>
+          <configuration>Normal</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\hal\micro\cortexm3\cstartup-iar-common.c</name>

@@ -166,6 +166,13 @@ void pwm_init(int32u freq , int32u duty)
    TIM2_CR1 = TIM_ARBE | TIM_CEN;
 }
 
+void halTimer1Isr(void)
+{
+
+  //clear interrupt
+  halToggleLed(BOARDLED1);
+  INT_TIM1FLAG = 0xFFFFFFFF;
+}
 
 void halTimer2Isr(void)
 {
