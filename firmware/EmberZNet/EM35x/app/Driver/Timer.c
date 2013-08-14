@@ -19,22 +19,40 @@
 /*----------------------------------------------------------------------------
  *        Global Variable
  *----------------------------------------------------------------------------*/
-const int16u gpioPWM[2][4] = 
-{{PORTB_PIN(6), PORTB_PIN(7), PORTA_PIN(6),PORTA_PIN(7)},
-{PORTA_PIN(0), PORTA_PIN(3), PORTA_PIN(1),PORTA_PIN(2)}};
+const int16u gpioPWM[2][4] =
+{
+  	{PORTB_PIN(6), PORTB_PIN(7), PORTA_PIN(6),PORTA_PIN(7)},
+	{PORTA_PIN(0), PORTA_PIN(3), PORTA_PIN(1),PORTA_PIN(2)}
+};
 
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
-
-void PWM_Init(PWM_TypeDef* pwm)
+void PWM_Adjust( const PWM_TypeDef* pwm )
 {
    int32u offset = BLOCK_TIM2_BASE - BLOCK_TIM1_BASE;
    int32u chT = pwm->chTMR - 1;
    int32u chC = pwm->chCCR - 1;
-   
+	/*
+   * counter initial
+   * CNT is TMR counter
+   * ARR is auto load conter
+   * CCR is compare/capture counter
+   */
+   *( (volatile int32u *)(TIM1_CNT_ADDR + offset * chT) ) = 0;
+   *((volatile int32u *) ( TIM1_ARR_ADDR + offset * chT ) ) = 12000000ul/pwm->mod.freq;
+   *((volatile int32u *) ( ( TIM1_CCR1_ADDR + chC*4) + offset * chT ) ) = 120000ul * pwm->mod.duty /pwm->mod.freq;
+}
+
+void PWM_Init(const PWM_TypeDef* pwm)
+{
+   int32u offset = BLOCK_TIM2_BASE - BLOCK_TIM1_BASE;
+   int32u chT = pwm->chTMR - 1;
+   int32u chC = pwm->chCCR - 1;
+   int32u addr, value;
+
    halGpioConfig(gpioPWM[chT][chC], GPIOCFG_OUT_ALT );
-   //GPIO_PACLR = PA3;
+
    /*
    * 0: PCLK clock source
    * 1: calibrated 1 kHz
@@ -42,72 +60,59 @@ void PWM_Init(PWM_TypeDef* pwm)
    * 3: TIM2CLK pin
    */
    //TIM2_OR = 0 << TIM_EXTRIGSEL_BIT;   //12Mhz
-   *((volatile int32u *)TIM1_OR_ADDR + offset * chT) = pwm->clkSel;
+   *((volatile int32u *)(TIM1_OR_ADDR + offset * chT) ) = pwm->clkSel;
 
    /*
    * fCK_PSC / (2 ^ TIM_PSC), TIM_PSC = 0 ~ 15
    * prescaler = 1 ~ 32768
    */
    //TIM2_PSC = 0 << TIM_PSC_BIT;
-   *((volatile int32u *)TIM1_PSC_ADDR + offset * chT) = pwm->prescale ;
-     
-   /*
-   *
-   */
-   //TIM2_CR2 = 3 << TIM_MMS_BIT;
-   *((volatile int32u *)TIM1_CR2_ADDR + offset * chT) = 3 << TIM_MMS_BIT;
-   /*
-   * counter initial
-   * CNT is TMR counter
-   * ARR is auto load conter
-   * CCR is compare/capture counter
-   */
-   //TIM2_CNT = 0;
-   *((volatile int32u *)TIM1_CNT_ADDR + offset * chT) = 0;
-   //TIM2_ARR = 12000000ul/freq;
-   *((volatile int32u *)TIM1_ARR_ADDR + offset * chT) = 12000000ul/pwm->freq;
-   //TIM2_CCR2 = 120000ul * duty /freq;
-   *((volatile int32u *)(TIM1_CCR1_ADDR + chC*4) + offset * chT) = 120000ul * pwm->duty /pwm->freq;
+   *((volatile int32u *)( TIM1_PSC_ADDR + offset * chT) ) = pwm->prescale ;
 
-   /*
-   * CCR2 Generation, PA3.
-   * Update Generation .
-   */
-   TIM2_EGR = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
-   //*((volatile int32u *)TIM1_EGR_ADDR + offset * chT) = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
 
    /*
    * CCR2 output Polarity active low
    * CCR2 output enable
    */
-   TIM2_CCER = ( 1 << TIM_CC2E_BIT ) /*| ( 1 << TIM_CC2P_BIT)*/;
+   //TIM2_CCER = ( 1 << TIM_CC2E_BIT ) /*| ( 1 << TIM_CC2P_BIT)*/;
+   value = 1 << (chC*4) ;
+   *((volatile int32u *)( TIM1_CCER_ADDR + offset * chT) ) = value ;
+
 
    /*
    * 6: PWM mode 1
    */
    //TIM2_CCMR1 = 6 << TIM_OC2M_BIT;
-   *((volatile int32u *)(TIM1_CCMR1_ADDR + chC/2*4) + offset * chT) = 6 << (TIM_OC1M_BIT + chC/2*8);
-     
+   addr = (TIM1_CCMR1_ADDR + chC/2*4) + offset * chT;
+   value = 6 << (TIM_OC1M_BIT + chC % 2 * 8);
+   *(volatile int32u*)addr = value;
+   //*((volatile int32u *)( (TIM1_CCMR1_ADDR + chC/2*4) + offset * chT) ) = 6 << (TIM_OC1M_BIT + chC/2*8);
+
+   /*
+    * adjust pwm modulation.
+    */
+   PWM_Adjust(pwm);
+
    /*
    * Capture or compare 2 interrupt enable
    * TIM2, Top -Level Set Interrupts enable
    *
    */
-   if(pwm->chTMR == 1){
+   if( pwm->chTMR == 1 ){
       INT_TIM1CFG = 1 << pwm->chCCR;
       INT_CFGSET = INT_TIM1;	//enable timer1 interrupt
    }
-   else if(2 == pwm->chTMR){
+   else if( 2 == pwm->chTMR ){
       INT_TIM2CFG = 1 << pwm->chCCR;
       INT_CFGSET = INT_TIM2;	//enable timer2 interrupt
    }
-   
+
    /*
    * Auto Reload enable
    * TMR enable
    */
    //TIM2_CR1 = TIM_ARBE | TIM_CEN;
-   *((volatile int32u *)TIM1_CR1_ADDR + offset * chT) = TIM_ARBE | TIM_CEN;
+   *((volatile int32u *)( TIM1_CR1_ADDR + offset * chT ) ) = TIM_ARBE | TIM_CEN;
 }
 
 /*
@@ -136,7 +141,7 @@ void pwm_init(int32u freq , int32u duty)
    /*
    *
    */
-   TIM2_CR2 = 3 << TIM_MMS_BIT;
+   //TIM2_CR2 = 3 << TIM_MMS_BIT;
 
    /*
    * counter initial
@@ -154,7 +159,7 @@ void pwm_init(int32u freq , int32u duty)
    * CCR2 Generation, PA3.
    * Update Generation .
    */
-   TIM2_EGR = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
+   //TIM2_EGR = ( 1 << TIM_CC2G_BIT ) /*| ( 1 << TIM_UG_BIT )*/;
 
    /*
    * CCR2 output Polarity active low

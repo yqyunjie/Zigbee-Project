@@ -43,7 +43,7 @@ boolean  mfgCmdProcessing(void);
 
 void printNetInfo(EmberNetworkParameters * networkParameters)
 {
-  
+
 }
 
 // *******************************************************************
@@ -53,8 +53,6 @@ void main(void)
 
 {
   EmberStatus status;
-  EmberNodeType nodeType;
-  EmberNetworkParameters parameters;
 
   //Initialize the hal
   halInit();
@@ -90,19 +88,20 @@ void main(void)
     bootloadUtilInit(APP_SERIAL, APP_SERIAL);
   #endif
 
-  // try and rejoin the network this node was previously a part of
-  // if status is not EMBER_SUCCESS then the node didn't rejoin it's old network
-  // sensor nodes need to be routers, so ensure we are a router
-  if (((emberGetNodeType(&nodeType)) == EMBER_SUCCESS) &&
-      (nodeType == EMBER_ROUTER) &&
-      (emberNetworkInit() == EMBER_SUCCESS))
-  {
-    // were able to join the old network
-    emberGetNetworkParameters(&parameters);
-  } 
-
   /** timer initial. */
-  //pwm_init(2000, 10);   //freq = 1000hz duty = 80%
+  {
+	const PWM_TypeDef pwm = {
+		.chTMR = 2,
+        .chCCR = 2,
+		.clkSel = timerPCK12MHZ,
+		.prescale = timerPrescale1,
+        .mod.freq = 800,
+		.mod.duty = 10,
+	};
+    PWM_Init(&pwm);
+	//pwm_init(1000, 50);   //freq = 1000hz duty = 80%
+  }
+
   //twi_init();
 
   // event loop
@@ -150,7 +149,7 @@ void bootloadUtilQueryResponseHandler(boolean bootloaderActive,
                                       int8u phy,
                                       int16u blVersion)
 {
-  
+
 }
 
 // This function is called by the bootloader-util library
@@ -182,12 +181,12 @@ void emberIncomingMessageHandler(EmberIncomingMessageType type,
 
 void emberPollHandler(EmberNodeId childId, boolean transmitExpected)
 {
-  
+
 }
 
 void emberChildJoinHandler(int8u index, boolean joining)
 {
-  
+
 }
 
 // this is called when the stack status changes
@@ -204,7 +203,7 @@ void emberSwitchNetworkKeyHandler(int8u sequenceNumber)
 
 void emberScanErrorHandler(EmberStatus status)
 {
-  
+
 }
 
 void emberJoinableNetworkFoundHandler(EmberZigbeeNetwork *networkFound,
