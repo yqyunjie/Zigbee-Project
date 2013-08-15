@@ -85,11 +85,11 @@ void main(void)
         .mod.freq = 2000,
 		.mod.duty = 90,
 	};
-    PWM_Init(&pwm);
+    //PWM_Init(&pwm);
 	//pwm_init(1000, 50);   //freq = 1000hz duty = 80%
   }
 
-  //twi_init();
+  twi_init();
 
   // event loop
   while(TRUE) {
@@ -97,7 +97,7 @@ void main(void)
     halResetWatchdog();
     emberTick();
     emberFormAndJoinTick();
-
+    twi_wr(0x0d, 01);
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif
