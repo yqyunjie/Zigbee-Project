@@ -97,7 +97,7 @@ void main(void)
     halResetWatchdog();
     emberTick();
     emberFormAndJoinTick();
-    twi_wr(0x0d, 01);
+    twi_wr(LM73_DEVICE_ADDRESS, 01);
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif
