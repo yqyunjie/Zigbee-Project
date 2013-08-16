@@ -7,6 +7,7 @@
 // *******************************************************************
 
 #include <stdio.h>
+#include "app/Driver/common.h"
 #include PLATFORM_HEADER
 #if !defined(MINIMAL_HAL) && defined(BOARD_HEADER)
   // full hal needs the board header to get pulled in
@@ -107,8 +108,8 @@ void twi_rd(int32u addr)
 	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
 	msb = SC2_DATA;
 	SC2_TWICTRL2 = SC_TWIACK;	//ACK
-	i = 100;
-	while(i) i--;
+	//i = 100;
+	//while(i) i--;
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
 	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
@@ -117,6 +118,7 @@ void twi_rd(int32u addr)
 
 	SC2_TWICTRL1 = SC_TWISTOP;   //start stop
 
+    emberSerialPrintf(APP_SERIAL, "msb=0x%X lsb=0x%X\r\n", msb, lsb);
 	i = 100;
 	while(i) i--;
 }
