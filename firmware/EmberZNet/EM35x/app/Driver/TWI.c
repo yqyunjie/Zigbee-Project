@@ -38,7 +38,7 @@ void twi_init(void)
     */
    SC2_RATELIN = 14; //100kbps
    SC2_RATEEXP = 3;
-   
+
    /*
     * SDA and SCL MUST BE open-drain.
     */
@@ -51,29 +51,74 @@ void twi_init(void)
    //SC2_INTMODE = SC_TXIDLELEVEL | SC_TXFREELEVEL | SC_RXVALLEVEL;
    //INT_SC2CFG = INT_SCRXFIN | INT_SCTXFIN | INT_SCCMDFIN | INT_SCNAK;
    //INT_CFGSET = INT_SC2;
-   
+
    /*
-    * Enable TWI mode. 
+    * Enable TWI mode.
     */
    SC2_MODE = SC2_MODE_I2C;
 }
 
+/******************************************************************************\
+ * twi write one byte.
+\******************************************************************************/
 void twi_wr(int32u addr, int8u data)
 {
-   //twi_status = SC2_TWISTAT;
-   SC2_TWICTRL1 = SC_TWISTART;   //start bit
+   int8u i;
 
+   SC2_TWICTRL1 = SC_TWISTART;   //start bit
    while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
 
    SC2_DATA = addr << 1;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
    while( !( SC2_TWISTAT & SC_TWITXFIN ) );
+   i = 100;
+   while(i) i--;
 
-	SC2_DATA = data;
-	SC2_TWICTRL1 = SC_TWISEND;   //start send
+   SC2_DATA = data;
+   SC2_TWICTRL1 = SC_TWISEND;   //start send
    while( !( SC2_TWISTAT & SC_TWITXFIN ) );
 
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+
+   i = 100;
+   while(i) i--;
+}
+
+/******************************************************************************\
+ * twi read action .
+\******************************************************************************/
+void twi_rd(int32u addr)
+{
+  	int8u uaddr;
+  	int8u msb, lsb;
+	int8u i;
+
+	SC2_TWICTRL1 = SC_TWISTART;   //start bit
+	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
+
+	uaddr = ( addr << 1 ) | 0x01;
+	SC2_DATA = uaddr;
+   	SC2_TWICTRL1 = SC_TWISEND;   //start send
+	while( !( SC2_TWISTAT & SC_TWITXFIN ) );
+	i = 100;
+	while(i) i--;
+
+	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
+	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
+	msb = SC2_DATA;
+	SC2_TWICTRL2 = SC_TWIACK;	//ACK
+	i = 100;
+	while(i) i--;
+
+	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
+	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
+	lsb = SC2_DATA;
+	SC2_TWICTRL2 = 0;	//NACK
+
+	SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+
+	i = 100;
+	while(i) i--;
 }
 
 void halSc2Isr(void)

@@ -39,8 +39,9 @@ boolean  mfgCmdProcessing(void);
 // Begin main application loop
 
 void main(void)
-
 {
+  int16u time;
+
   //Initialize the hal
   halInit();
 
@@ -97,7 +98,11 @@ void main(void)
     halResetWatchdog();
     emberTick();
     emberFormAndJoinTick();
-    twi_wr(LM73_DEVICE_ADDRESS, 01);
+	time = halCommonGetInt16uMillisecondTick();
+	if( 0 == ( time % 1000) ) {
+    	twi_wr( LM73_DEVICE_ADDRESS, 3 );
+		twi_rd( LM73_DEVICE_ADDRESS );
+	}
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif
