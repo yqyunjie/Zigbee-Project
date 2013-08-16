@@ -100,8 +100,8 @@ void main(void)
     emberFormAndJoinTick();
 	time = halCommonGetInt16uMillisecondTick();
 	if( 0 == ( time % 1000) ) {
-    	//twi_wr( AD7414_DEVICE_ADDRESS, 0 );
-		twi_rd( AD7414_DEVICE_ADDRESS );
+    	twi_wr( LM73_DEVICE_ADDRESS, 7 );
+		twi_rd( LM73_DEVICE_ADDRESS );
 		//twi_wr( TSL2550_DEVICE_ADDRESS, 0X83 );
 		//twi_rd( TSL2550_DEVICE_ADDRESS );
 	}
