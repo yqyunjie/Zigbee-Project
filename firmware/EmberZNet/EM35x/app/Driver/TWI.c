@@ -81,8 +81,8 @@ void twi_wr(int32u addr, int8u data)
 
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
 
-   i = 100;
-   while(i) i--;
+	i = 50;
+   	while(i) i--;
 }
 
 /******************************************************************************\
@@ -113,8 +113,6 @@ void twi_rd(int32u addr)
 	SC2_TWICTRL1 = SC_TWISTOP;   //start stop
 
     emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
-	//i = 100;
-	//while(i) i--;
 }
 
 void halSc2Isr(void)
