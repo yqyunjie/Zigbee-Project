@@ -101,24 +101,24 @@ void twi_rd(int32u addr)
 	SC2_DATA = uaddr;
    	SC2_TWICTRL1 = SC_TWISEND;   //start send
 	while( !( SC2_TWISTAT & SC_TWITXFIN ) );
-	i = 100;
-	while(i) i--;
-
-	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
-	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
-	msb = SC2_DATA;
-	SC2_TWICTRL2 = SC_TWIACK;	//ACK
 	//i = 100;
 	//while(i) i--;
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
 	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
+	msb = SC2_DATA;
+	//i = 100;
+	//while(i) i--;
+	SC2_TWICTRL2 = SC_TWIACK;	//ACK
+
+	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
+	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
 	lsb = SC2_DATA;
-	SC2_TWICTRL2 = 0;	//NACK
+	//SC2_TWICTRL2 = 0;	//NACK
 
 	SC2_TWICTRL1 = SC_TWISTOP;   //start stop
 
-    emberSerialPrintf(APP_SERIAL, "msb=0x%X lsb=0x%X\r\n", msb, lsb);
+    emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
 	i = 100;
 	while(i) i--;
 }
