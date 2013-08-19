@@ -1119,13 +1119,13 @@
       <name>$PROJ_DIR$\..\main.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\PWM.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\PWM.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\sensor-configuration.h</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Timer.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Timer.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\TWI.c</name>

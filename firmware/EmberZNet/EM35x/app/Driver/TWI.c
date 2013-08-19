@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "app/Driver/common.h"
+#include "app/Driver/TWI.h"
 #include PLATFORM_HEADER
 #if !defined(MINIMAL_HAL) && defined(BOARD_HEADER)
   // full hal needs the board header to get pulled in
@@ -26,10 +27,55 @@
 /*----------------------------------------------------------------------------
  *        Global Variable
  *----------------------------------------------------------------------------*/
+const int16u gpioTWI[2][2] =
+{
+  	{PORTB_PIN(1), PORTB_PIN(2)},
+	{PORTA_PIN(1), PORTA_PIN(2)}
+};
+
+const int8u freqTWI[3][2] = 
+{
+  { 14, 3 },   //100khz
+  { 15, 1 },   //375khz
+  { 14, 3 }
+};
+
 int32u twi_status;
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
+/******************************************************************************\
+ * TWI Initial.
+\******************************************************************************/
+void TWI_BusFreqSet(TWI_SCx_TypeDef ch, TWI_BusFreq_TypeDef speed)
+{
+   int32u offset = ch - SC2_BASE_ADDR;
+
+   *(volatile int32u*)(SC2_RATELIN_ADDR + offset) = freqTWI[speed][0]; 
+   *(volatile int32u*)(SC2_RATEEXP_ADDR + offset) = freqTWI[speed][1]; 
+}
+
+/******************************************************************************\
+ * TWI Initial.
+\******************************************************************************/
+void TWI_Init(TWI_SCx_TypeDef ch)
+{
+   int32u offset = ch - SC2_BASE_ADDR;
+   int8u io = offset / ( SC1_BASE_ADDR - SC2_BASE_ADDR);
+   
+   /* SDA and SCL MUST be open-drain. */
+   halGpioConfig( gpioTWI[io][0], GPIOCFG_OUT_ALT_OD ); 
+   halGpioConfig( gpioTWI[io][1], GPIOCFG_OUT_ALT_OD ); 
+   
+   /* TWI clock setup. */
+   TWI_BusFreqSet(ch, twi100Khzby12Mhz) ;
+   
+   *(volatile int32u*)( SC2_MODE_ADDR + offset ) = SC2_MODE_I2C;
+}
+
+/******************************************************************************\
+ * twi initial..
+\******************************************************************************/
 void twi_init(void)
 {
    /*

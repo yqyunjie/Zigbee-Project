@@ -7,7 +7,7 @@
 #include "app/sensor/common.h"
 #include "app/sensor/lcd.h"
 #include <stdio.h>
-#include "app/Driver/Timer.h"
+#include "app/Driver/PWM.h"
 #include "app/Driver/TWI.h"
 
 // *******************************************************************
