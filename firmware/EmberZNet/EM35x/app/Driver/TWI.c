@@ -134,6 +134,7 @@ void twi_wr(int32u addr, int8u data)
 \******************************************************************************/
 void twi_rd(int32u addr)
 {
+  	int16u i;
   	int8u uaddr;
   	int8u msb, lsb;
 
@@ -153,14 +154,16 @@ void twi_rd(int32u addr)
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
 	while( !( twi_status & SC_TWIRXFIN ) );
-	SC2_TWICTRL2 = 0;	//ACK
 	lsb = SC2_DATA;
 
 	twi_status = 0;
+	SC2_TWICTRL2 = 0;	//ACK
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
-   while( ( SC2_TWICTRL1 & SC_TWISTOP) );  //wait for S/P complete
-
-   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
+	//SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+   //while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
+   i = 300;
+	while(i){i--;}
+   //emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
 }
 
 void halSc2Isr(void)

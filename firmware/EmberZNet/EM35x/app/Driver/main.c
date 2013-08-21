@@ -99,14 +99,14 @@ void main(void)
     emberTick();
     emberFormAndJoinTick();
 	time = halCommonGetInt16uMillisecondTick();
-	if( 0 == ( time % 1000) ) {
+	//if( 0 == ( time % 1000) ) {
 	  	twi_wr( LM73_DEVICE_ADDRESS, 0 );
 		twi_rd( LM73_DEVICE_ADDRESS );
     	twi_wr( LM73_DEVICE_ADDRESS, 7 );
 		twi_rd( LM73_DEVICE_ADDRESS );
 		twi_wr( TSL2550_DEVICE_ADDRESS, 0x83 );
 		twi_rd( TSL2550_DEVICE_ADDRESS );
-	}
+	//}
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif
