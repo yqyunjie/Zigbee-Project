@@ -40,6 +40,9 @@ boolean  mfgCmdProcessing(void);
 
 void main(void)
 {
+  TWI_WRBuf_TypeDef rdBuf;
+  int8u buf[2];
+  
   int16u time;
 
   //Initialize the hal
@@ -99,14 +102,25 @@ void main(void)
     emberTick();
     emberFormAndJoinTick();
 	time = halCommonGetInt16uMillisecondTick();
-	//if( 0 == ( time % 1000) ) {
-	  	twi_wr( LM73_DEVICE_ADDRESS, 0 );
-		twi_rd( LM73_DEVICE_ADDRESS );
+	if( 0 == ( time % 1000) ) {
+	  	//twi_wr( LM73_DEVICE_ADDRESS, 0 );
+		//twi_rd( LM73_DEVICE_ADDRESS );
     	twi_wr( LM73_DEVICE_ADDRESS, 7 );
-		twi_rd( LM73_DEVICE_ADDRESS );
+      rdBuf.addr = LM73_DEVICE_ADDRESS;
+      rdBuf.len = 2;
+      rdBuf.data = buf;
+		TWI_RDx( &rdBuf );
+      twi_wr( TSL2550_DEVICE_ADDRESS, 0x43 );
+      rdBuf.addr = TSL2550_DEVICE_ADDRESS;
+      rdBuf.len = 1;
+      rdBuf.data = buf;
+      TWI_RDx( &rdBuf );
 		twi_wr( TSL2550_DEVICE_ADDRESS, 0x83 );
-		twi_rd( TSL2550_DEVICE_ADDRESS );
-	//}
+      rdBuf.addr = TSL2550_DEVICE_ADDRESS;
+      rdBuf.len = 1;
+      rdBuf.data = buf;
+		TWI_RDx( &rdBuf );
+	}
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
     #endif

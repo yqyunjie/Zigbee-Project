@@ -138,32 +138,59 @@ void twi_rd(int32u addr)
   	int8u uaddr;
   	int8u msb, lsb;
 
-	twi_status = 0;
 	SC2_TWICTRL1 = SC_TWISTART;   //start bit
-	while( !( twi_status & SC_TWICMDFIN) );  //wait for S/P complete
+	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
 
 	uaddr = ( addr << 1 ) | 0x01;
 	SC2_DATA = uaddr;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
-	while( !( twi_status & SC_TWITXFIN ) );
+	while( !( SC2_TWISTAT & SC_TWITXFIN ) );
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
-	while( !( twi_status & SC_TWIRXFIN ) );
+	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
 	msb = SC2_DATA;
 	SC2_TWICTRL2 = SC_TWIACK;	//ACK
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
-	while( !( twi_status & SC_TWIRXFIN ) );
+	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
 	lsb = SC2_DATA;
 
-	twi_status = 0;
-	SC2_TWICTRL2 = 0;	//ACK
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
-	//SC2_TWICTRL1 = SC_TWISTOP;   //start stop
-   //while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
    i = 300;
 	while(i){i--;}
-   //emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
+   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
+}
+
+void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
+{
+   int16u i;
+   int8u len = rdBuf->len;
+  	int8u uaddr = rdBuf->addr;
+  	int8u* ptr = rdBuf->data;
+
+	SC2_TWICTRL1 = SC_TWISTART;   //start bit
+	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
+
+	uaddr = ( uaddr << 1 ) | 0x01;
+	SC2_DATA = uaddr;
+   SC2_TWICTRL1 = SC_TWISEND;   //start send
+	while( !( SC2_TWISTAT & SC_TWITXFIN ) );
+   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X ", (int8u)uaddr);
+   while(len){
+      SC2_TWICTRL1 = SC_TWIRECV;   //start receive
+      while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
+      *ptr = SC2_DATA;
+      emberSerialPrintf(APP_SERIAL, "0x%X ", *ptr);
+      ptr++;
+      len--;
+      if(len > 0)
+         SC2_TWICTRL2 = SC_TWIACK;	//ACK
+   }
+
+   SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+   i = 300;
+	while(i){i--;}
+   emberSerialPrintf(APP_SERIAL, "\r\n");
 }
 
 void halSc2Isr(void)
