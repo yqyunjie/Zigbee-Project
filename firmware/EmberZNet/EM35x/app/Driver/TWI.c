@@ -95,7 +95,7 @@ void twi_init(void)
    /*
     * Enable INT
     */
-   //SC2_INTMODE = SC_TXIDLELEVEL | SC_TXFREELEVEL | SC_RXVALLEVEL;
+   SC2_INTMODE = SC_TXIDLELEVEL | SC_TXFREELEVEL | SC_RXVALLEVEL;
    INT_SC2CFG = INT_SCRXFIN | INT_SCTXFIN | INT_SCCMDFIN | INT_SCNAK;
    INT_CFGSET = INT_SC2;
 
@@ -110,8 +110,6 @@ void twi_init(void)
 \******************************************************************************/
 void twi_wr(int32u addr, int8u data)
 {
-   int8u i;
-
 	twi_status = 0;
    SC2_TWICTRL1 = SC_TWISTART;   //start bit
    while( !( twi_status & SC_TWICMDFIN) );  //wait for S/P complete
@@ -120,18 +118,15 @@ void twi_wr(int32u addr, int8u data)
 	twi_status = 0;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
    while( !( twi_status & SC_TWITXFIN ) );
-   i = 100;
-   while(i) i--;
 
    SC2_DATA = data;
 	twi_status = 0;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
    while( !( twi_status & SC_TWITXFIN ) );
 
+	twi_status = 0;
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
-
-	i = 50;
-   while(i) i--;
+   while( !( twi_status & SC_TWICMDFIN) );  //wait for S/P complete
 }
 
 /******************************************************************************\
@@ -158,9 +153,12 @@ void twi_rd(int32u addr)
 
 	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
 	while( !( twi_status & SC_TWIRXFIN ) );
+	SC2_TWICTRL2 = 0;	//ACK
 	lsb = SC2_DATA;
 
-	SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+	twi_status = 0;
+   SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+   while( ( SC2_TWICTRL1 & SC_TWISTOP) );  //wait for S/P complete
 
    emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
 }
