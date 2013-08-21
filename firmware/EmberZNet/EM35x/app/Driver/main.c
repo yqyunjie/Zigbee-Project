@@ -80,13 +80,13 @@ void main(void)
   {
 	const PWM_TypeDef pwm = {
 		.chTMR = 1,
-        .chCCR = 4,
+      .chCCR = 4,
 		.clkSel = timerPCK12MHZ,
 		.prescale = timerPrescale1,
-        .mod.freq = 2000,
+      .mod.freq = 2000,
 		.mod.duty = 90,
 	};
-    //PWM_Init(&pwm);
+	//PWM_Init(&pwm);
 	//pwm_init(1000, 50);   //freq = 1000hz duty = 80%
   }
 
@@ -104,8 +104,8 @@ void main(void)
 		twi_rd( LM73_DEVICE_ADDRESS );
     	twi_wr( LM73_DEVICE_ADDRESS, 7 );
 		twi_rd( LM73_DEVICE_ADDRESS );
-		//twi_wr( TSL2550_DEVICE_ADDRESS, 0X83 );
-		//twi_rd( TSL2550_DEVICE_ADDRESS );
+		twi_wr( TSL2550_DEVICE_ADDRESS, 0x83 );
+		twi_rd( TSL2550_DEVICE_ADDRESS );
 	}
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial
