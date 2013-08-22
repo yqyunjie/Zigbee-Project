@@ -1,10 +1,12 @@
-// *******************************************************************
-//  TWI.c
-//
-//  TWI Driver.c
-//
-//  Copyright by kaiser. All rights reserved.
-// *******************************************************************
+/***************************************************************************//**
+ * @file
+ * @brief TWI Peripheral API for EM35x from Silicon Labs.
+ * @author kaiser.ren, renkaikaiser@163.com
+ *******************************************************************************
+ * @section License
+ * <b>(C) Copyright by kaiser.ren, All rights reserved.</b>
+ *******************************************************************************
+ ******************************************************************************/
 
 #include <stdio.h>
 #include "app/Driver/common.h"
@@ -19,45 +21,66 @@
 /*----------------------------------------------------------------------------
  *        Macro
  *----------------------------------------------------------------------------*/
-#define TWI_SDA(port, bit) PORT##port##_PIN(bit)
-#define TWI_SCL(port, bit) PORT##port##_PIN(bit)
-#define SC2_PORT_SDA A
-#define SC2_BIT_SDA 1
 
 /*----------------------------------------------------------------------------
  *        Global Variable
  *----------------------------------------------------------------------------*/
+/** TWI peripheral GPIOx for SCx . */
 const int16u gpioTWI[2][2] =
 {
-  	{PORTB_PIN(1), PORTB_PIN(2)},
-	{PORTA_PIN(1), PORTA_PIN(2)}
+	{PORTA_PIN(1), PORTA_PIN(2)}      ,
+	{PORTB_PIN(1), PORTB_PIN(2)}
 };
 
-const int8u freqTWI[3][2] =
+/** TWI peripheral speed definition for SCx . */
+const int32u freqTWI[][3] =
 {
-  { 14, 3 },   //100khz
-  { 15, 1 },   //375khz
-  { 14, 3 }
+  { 11, 10,  7500},   //1000hz
+  { 15, 7 ,  1000},   //6000hz
+  { 15, 6 ,  500},	 //12KHz
+  { 14, 5 ,  250},  	//25KHz
+  { 14, 4, 	 125},		//50KHz
+  { 14, 3, 	 60}, 	//100KHz
+  { 15, 1,   60}, 	//375KHz
+  { 14, 1,   60}		//400KHz
 };
 
-//int32u Sc2_status;
+static int32u twiWaitPeriod;
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
-/******************************************************************************\
- * TWI Initial.
-\******************************************************************************/
+/***************************************************************************//**
+ * @brief
+ *   Set current configured TWI bus frequency.
+ *
+ * @details
+ *   This frequency is only of relevance when acting as master.
+ *
+ * @param[in] twi
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
 void TWI_BusFreqSet(TWI_SCx_TypeDef ch, TWI_BusFreq_TypeDef speed)
 {
    int32u offset = ch - SC2_BASE_ADDR;
 
    *(volatile int32u*)(SC2_RATELIN_ADDR + offset) = freqTWI[speed][0];
    *(volatile int32u*)(SC2_RATEEXP_ADDR + offset) = freqTWI[speed][1];
+	twiWaitPeriod = freqTWI[speed][2];
 }
 
-/******************************************************************************\
- * TWI Initial.
-\******************************************************************************/
+/***************************************************************************//**
+ * @brief
+ *   Initialize TWI.
+ *
+ * @param[in] i2c
+ *   TBD.
+ *
+ * @param[in] init
+ *   NULL
+ ******************************************************************************/
 void TWI_Init(TWI_SCx_TypeDef ch)
 {
    int32u offset = ch - SC2_BASE_ADDR;
@@ -68,7 +91,7 @@ void TWI_Init(TWI_SCx_TypeDef ch)
    halGpioConfig( gpioTWI[io][1], GPIOCFG_OUT_ALT_OD );
 
    /* TWI clock setup. */
-   TWI_BusFreqSet(ch, twi100Khzby12Mhz) ;
+   TWI_BusFreqSet(ch, twiSCLK_100KHZ) ;
 
    *(volatile int32u*)( SC2_MODE_ADDR + offset ) = SC2_MODE_I2C;
 }
@@ -76,6 +99,7 @@ void TWI_Init(TWI_SCx_TypeDef ch)
 /******************************************************************************\
  * twi initial..
 \******************************************************************************/
+#if 0
 void twi_init(void)
 {
    /*
@@ -84,7 +108,7 @@ void twi_init(void)
     * LIN: 14  EXP: 1  400kbps
     */
    SC2_RATELIN = 14; //100kbps
-   SC2_RATEEXP = 3;
+   SC2_RATEEXP = 1;
 
    /*
     * SDA and SCL MUST BE open-drain.
@@ -104,76 +128,94 @@ void twi_init(void)
     */
    SC2_MODE = SC2_MODE_I2C;
 }
+#endif
 
-/******************************************************************************\
- * twi write by mutiple-tyes.
-\******************************************************************************/
-void twi_wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
+/***************************************************************************//**
+ * @brief
+ *  TWI Write (single master mode only).
+ *
+ * @details
+ *
+ * @param[in] TWI
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void TWI_Wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
 {
 	int8u* ptr = data;
 	int32u offset = ch - SC2_BASE_ADDR;
 
-	//Sc2_status = 0;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTART;   						//start bit
 	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) );  	//wait for S/P complete
 
-   *( volatile int32u* )( SC2_DATA_ADDR + offset ) = addr << 1;                   					//load address = addr << 1;
-	//Sc2_status = 0;
+   *( volatile int32u* )( SC2_DATA_ADDR + offset ) = addr << 1;                   			//load address = addr << 1;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   							//start send
    while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );
 
+	//multi-byte loop
 	while(len){
    	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = *ptr;											//load data
-		//Sc2_status = 0;
-   	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   																				//start send
+   	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   							//start send
    	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );		//wait for
 		len--;
 		ptr++;
    }
 
-	//Sc2_status = 0;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTOP;   							//start stop
    while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) ); 	//wait for S/P complete
 
 }
 
-/******************************************************************************\
- * twi read action .
-\******************************************************************************/
-void twi_rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
+/***************************************************************************//**
+ * @brief
+ *  TWI Read (single master mode only).
+ *
+ * @details
+ *
+ * @param[in] TWI
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void TWI_Rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
 {
   	int8u uaddr;
 	int8u* ptr = data;
 	int16u i;
 	int32u offset = ch - SC2_BASE_ADDR;
 
-	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTART;   				//start bit
-	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) );  //wait for S/P complete
+	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTART;   						//start bit
+	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) );  	//wait for S/P complete
 
-	uaddr = ( addr << 1 ) | 0x01;																	//address with RD bit flag
-	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = uaddr;                   	//load address
-   *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   				//start send
+	uaddr = ( addr << 1 ) | 0x01;																				//address with RD bit flag
+	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = uaddr;                   				//load address
+   *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   							//start send
 	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );		//wait for WR finished
    emberSerialPrintf(APP_SERIAL, "0x%X ", (int8u)addr);
 
+	//multi-byte loop
    while(len){
-      *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWIRECV;   //start receive
-      while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWIRXFIN ) );
-      *ptr = *( volatile int32u* )( SC2_DATA_ADDR + offset );
+      *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWIRECV;   						//start receive
+      while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWIRXFIN ) ); //wait for REV finished
+      *ptr = *( volatile int32u* )( SC2_DATA_ADDR + offset );										//read data from TWI bus
       emberSerialPrintf(APP_SERIAL, "0x%X ", *ptr);
       ptr++;
       len--;
       if(len > 0)
-         *( volatile int32u* )( SC2_TWICTRL2_ADDR + offset ) = SC_TWIACK;	//ACK
+         *( volatile int32u* )( SC2_TWICTRL2_ADDR + offset ) = SC_TWIACK;						//ACK
    }
 
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTOP;   //start stop
-   i = 300;
+   i = twiWaitPeriod;
 	while(i){i--;}
    emberSerialPrintf(APP_SERIAL, "\r\n");
 }
 
-void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
+
+/*void TWI_Transfer(TWI_WRBuf_TypeDef* rdBuf)
 {
    int16u i;
   	int8u uaddr = rdBuf->addr;
@@ -182,7 +224,7 @@ void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
 
 	SC2_TWICTRL1 = SC_TWISTART;   				//start bit
 	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
-/*
+
 	uaddr = ( uaddr << 1 ) | 0x01;
 	SC2_DATA = uaddr;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
@@ -202,12 +244,7 @@ void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
    i = 300;
 	while(i){i--;}
-   emberSerialPrintf(APP_SERIAL, "\r\n"); */
-}
+   emberSerialPrintf(APP_SERIAL, "\r\n");
+}*/
 
-//void halSc2Isr(void)
-//{
-//   Sc2_status = SC2_TWISTAT;
-//   INT_SC2FLAG = 0xFFFFFFFF;
-//}
 //eof

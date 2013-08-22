@@ -93,7 +93,8 @@ void main(void)
 	//pwm_init(1000, 50);   //freq = 1000hz duty = 80%
   }
 
-  twi_init();
+  	//twi_init();
+	TWI_Init( twiSC2 );
 
   // event loop
   while(TRUE) {
@@ -102,14 +103,22 @@ void main(void)
    emberTick();
    //emberFormAndJoinTick();
 	time = halCommonGetInt32uMillisecondTick();
-	if( 0 == ( time % 250) ) {
+	if( 0 == ( time % 50) ) {
 	  	buf[0] = 0;
-	  	twi_wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
-		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
+	  	TWI_Wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
+		TWI_Rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
 
 		buf[0] = 7;
-		twi_wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
-		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
+		TWI_Wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
+		TWI_Rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
+
+		buf[0] = 0x43;
+		TWI_Wr( twiSC2, TSL2550_DEVICE_ADDRESS, 1, buf );
+		TWI_Rd( twiSC2, TSL2550_DEVICE_ADDRESS, 1, buf );
+
+		buf[0] = 0x83;
+		TWI_Wr( twiSC2, TSL2550_DEVICE_ADDRESS, 1, buf );
+		TWI_Rd( twiSC2, TSL2550_DEVICE_ADDRESS, 1, buf );
     	/*twi_wr( LM73_DEVICE_ADDRESS, 7 );
       rdBuf.addr = LM73_DEVICE_ADDRESS;
       rdBuf.len = 2;

@@ -1,10 +1,12 @@
-// *******************************************************************
-//  TWI.h
-//
-//  char repository.
-//
-//  Copyright by kaiser. All rights reserved.
-// *******************************************************************
+/***************************************************************************//**
+ * @file
+ * @brief TWI Peripheral API for EM35x from Silicon Labs.
+ * @author kaiser.ren, renkaikaiser@163.com
+ *******************************************************************************
+ * @section License
+ * <b>(C) Copyright by kaiser.ren, All rights reserved.</b>
+ *******************************************************************************
+ ******************************************************************************/
 #ifndef _TWI_H_
 #define _TWI_H_
 
@@ -19,6 +21,9 @@
 // SCx block base address
 #define SC1_BASE_ADDR 0x4000C800u
 #define SC2_BASE_ADDR 0x4000C000u
+
+// SCx REV wait period when 1000Hz TWI speed
+#define SCX_WAIT_WHEN_1KHZ 300000ul
 
 /**
  * @brief
@@ -73,9 +78,14 @@
    TWI bus frequency.
 \**************************************************************/
 typedef enum{
-   twi100Khzby12Mhz = 0,
-   twi375Khzby12Mhz = 1,
-   twi400Khzby12Mhz = 2
+  	twiSCLK_1000HZ = 0,
+	twiSCLK_6000HZ,
+  	twiSCLK_12KHZ,
+	twiSCLK_25KHZ,
+   twiSCLK_50KHZ,
+   twiSCLK_100KHZ,
+   twiSCLK_375KHZ,
+	twiSCLK_400KHZ
 }TWI_BusFreq_TypeDef;
 
 /**************************************************************\
@@ -101,11 +111,59 @@ typedef struct{
 /*----------------------------------------------------------------------------
  *        Prototype
  *----------------------------------------------------------------------------*/
-void twi_init(void);
-void twi_wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data);
-void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf);
-/******************************************************************************\
- * twi read action .
-\******************************************************************************/
-void twi_rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data);
+/***************************************************************************//**
+ * @brief
+ *   Set current configured TWI bus frequency.
+ *
+ * @details
+ *   This frequency is only of relevance when acting as master.
+ *
+ * @param[in] twi
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void TWI_BusFreqSet(TWI_SCx_TypeDef ch, TWI_BusFreq_TypeDef speed);
+
+/***************************************************************************//**
+ * @brief
+ *   Initialize TWI.
+ *
+ * @param[in] i2c
+ *   TBD.
+ *
+ * @param[in] init
+ *   NULL
+ ******************************************************************************/
+void TWI_Init(TWI_SCx_TypeDef ch);
+
+/***************************************************************************//**
+ * @brief
+ *  TWI Write (single master mode only).
+ *
+ * @details
+ *
+ * @param[in] TWI
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void TWI_Wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data);
+
+/***************************************************************************//**
+ * @brief
+ *  TWI Read (single master mode only).
+ *
+ * @details
+ *
+ * @param[in] TWI
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void TWI_Rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data);
+
 #endif /*_TWI_H_*/
