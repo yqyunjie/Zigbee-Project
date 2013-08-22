@@ -42,7 +42,7 @@ void main(void)
 {
   TWI_WRBuf_TypeDef rdBuf;
   int8u buf[2];
-  
+
   int16u time;
 
   //Initialize the hal
@@ -98,14 +98,16 @@ void main(void)
   // event loop
   while(TRUE) {
 
-    halResetWatchdog();
-    emberTick();
-    emberFormAndJoinTick();
+	halResetWatchdog();
+   emberTick();
+   //emberFormAndJoinTick();
 	time = halCommonGetInt16uMillisecondTick();
 	if( 0 == ( time % 1000) ) {
-	  	//twi_wr( LM73_DEVICE_ADDRESS, 0 );
-		//twi_rd( LM73_DEVICE_ADDRESS );
-    	twi_wr( LM73_DEVICE_ADDRESS, 7 );
+	  	twi_wr( LM73_DEVICE_ADDRESS, 0 );
+		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
+		twi_wr( LM73_DEVICE_ADDRESS, 7 );
+		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
+    	/*twi_wr( LM73_DEVICE_ADDRESS, 7 );
       rdBuf.addr = LM73_DEVICE_ADDRESS;
       rdBuf.len = 2;
       rdBuf.data = buf;
@@ -119,7 +121,7 @@ void main(void)
       rdBuf.addr = TSL2550_DEVICE_ADDRESS;
       rdBuf.len = 1;
       rdBuf.data = buf;
-		TWI_RDx( &rdBuf );
+		TWI_RDx( &rdBuf ); */
 	}
     #ifdef DEBUG
       emberSerialBufferTick();   // Needed for debug which uses buffered serial

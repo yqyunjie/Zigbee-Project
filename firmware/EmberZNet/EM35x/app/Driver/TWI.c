@@ -132,45 +132,49 @@ void twi_wr(int32u addr, int8u data)
 /******************************************************************************\
  * twi read action .
 \******************************************************************************/
-void twi_rd(int32u addr)
+void twi_rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
 {
-  	int16u i;
   	int8u uaddr;
-  	int8u msb, lsb;
+	int8u* ptr = data;
+	int16u i;
+	int32u offset = ch - SC2_BASE_ADDR;
 
-	SC2_TWICTRL1 = SC_TWISTART;   //start bit
-	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
+	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTART;   				//start bit
+	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) );  //wait for S/P complete
 
-	uaddr = ( addr << 1 ) | 0x01;
-	SC2_DATA = uaddr;
-   SC2_TWICTRL1 = SC_TWISEND;   //start send
-	while( !( SC2_TWISTAT & SC_TWITXFIN ) );
+	uaddr = ( addr << 1 ) | 0x01;																	//address with RD bit flag
+	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = uaddr;                   	//load address
+   *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   				//start send
+	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );		//wait for WR finished
+   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X ", (int8u)addr);
 
-	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
-	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
-	msb = SC2_DATA;
-	SC2_TWICTRL2 = SC_TWIACK;	//ACK
+   while(len){
+      *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWIRECV;   //start receive
+      while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWIRXFIN ) );
+      *ptr = *( volatile int32u* )( SC2_DATA_ADDR + offset );
+      emberSerialPrintf(APP_SERIAL, "0x%X ", *ptr);
+      ptr++;
+      len--;
+      if(len > 0)
+         *( volatile int32u* )( SC2_TWICTRL2_ADDR + offset ) = SC_TWIACK;	//ACK
+   }
 
-	SC2_TWICTRL1 = SC_TWIRECV;   //start receive
-	while( !( SC2_TWISTAT & SC_TWIRXFIN ) );
-	lsb = SC2_DATA;
-
-   SC2_TWICTRL1 = SC_TWISTOP;   //start stop
+   *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTOP;   //start stop
    i = 300;
 	while(i){i--;}
-   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X msb = 0x%X  lsb = 0x%X\r\n", (int8u)addr, msb, lsb);
+   emberSerialPrintf(APP_SERIAL, "\r\n");
 }
 
 void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
 {
    int16u i;
-   int8u len = rdBuf->len;
   	int8u uaddr = rdBuf->addr;
-  	int8u* ptr = rdBuf->data;
+	int8u len0 = rdBuf->buf[0].len;
+  	int8u* ptr0 = rdBuf->buf[0].data;
 
-	SC2_TWICTRL1 = SC_TWISTART;   //start bit
+	SC2_TWICTRL1 = SC_TWISTART;   				//start bit
 	while( !( SC2_TWISTAT & SC_TWICMDFIN) );  //wait for S/P complete
-
+/*
 	uaddr = ( uaddr << 1 ) | 0x01;
 	SC2_DATA = uaddr;
    SC2_TWICTRL1 = SC_TWISEND;   //start send
@@ -190,7 +194,7 @@ void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
    SC2_TWICTRL1 = SC_TWISTOP;   //start stop
    i = 300;
 	while(i){i--;}
-   emberSerialPrintf(APP_SERIAL, "\r\n");
+   emberSerialPrintf(APP_SERIAL, "\r\n"); */
 }
 
 void halSc2Isr(void)
