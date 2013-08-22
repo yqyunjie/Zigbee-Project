@@ -40,7 +40,7 @@ const int8u freqTWI[3][2] =
   { 14, 3 }
 };
 
-int32u Sc2_status;
+//int32u Sc2_status;
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
@@ -95,9 +95,9 @@ void twi_init(void)
    /*
     * Enable INT
     */
-   SC2_INTMODE = SC_TXIDLELEVEL | SC_TXFREELEVEL | SC_RXVALLEVEL;
-   INT_SC2CFG = INT_SCRXFIN | INT_SCTXFIN | INT_SCCMDFIN | INT_SCNAK;
-   INT_CFGSET = INT_SC2;
+   //SC2_INTMODE = SC_TXIDLELEVEL | SC_TXFREELEVEL | SC_RXVALLEVEL;
+   //INT_SC2CFG = INT_SCRXFIN | INT_SCTXFIN | INT_SCCMDFIN | INT_SCNAK;
+   //INT_CFGSET = INT_SC2;
 
    /*
     * Enable TWI mode.
@@ -111,33 +111,30 @@ void twi_init(void)
 void twi_wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
 {
 	int8u* ptr = data;
-	int8u i;
 	int32u offset = ch - SC2_BASE_ADDR;
 
-	Sc2_status = 0;
+	//Sc2_status = 0;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTART;   						//start bit
-	while( !( Sc2_status & SC_TWICMDFIN) );  	//wait for S/P complete
+	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) );  	//wait for S/P complete
 
    *( volatile int32u* )( SC2_DATA_ADDR + offset ) = addr << 1;                   					//load address = addr << 1;
-	Sc2_status = 0;
+	//Sc2_status = 0;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   							//start send
-   while( !( Sc2_status & SC_TWITXFIN ) );
+   while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );
 
 	while(len){
    	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = *ptr;											//load data
-		Sc2_status = 0;
+		//Sc2_status = 0;
    	*( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   																				//start send
-   	while( !( Sc2_status & SC_TWITXFIN ) );		//wait for
+   	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );		//wait for
 		len--;
 		ptr++;
    }
 
-	Sc2_status = 0;
+	//Sc2_status = 0;
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISTOP;   							//start stop
-   while( !( Sc2_status & SC_TWICMDFIN) ); 	//wait for S/P complete
+   while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWICMDFIN) ); 	//wait for S/P complete
 
-	//i = 100;
-	//while(i){i--;}
 }
 
 /******************************************************************************\
@@ -157,7 +154,7 @@ void twi_rd(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data)
 	*( volatile int32u* )( SC2_DATA_ADDR + offset ) = uaddr;                   	//load address
    *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWISEND;   				//start send
 	while( !( ( *( volatile int32u* )( SC2_TWISTAT_ADDR + offset ) ) & SC_TWITXFIN ) );		//wait for WR finished
-   emberSerialPrintf(APP_SERIAL, "TWI Read addr = 0x%X ", (int8u)addr);
+   emberSerialPrintf(APP_SERIAL, "0x%X ", (int8u)addr);
 
    while(len){
       *( volatile int32u* )( SC2_TWICTRL1_ADDR + offset ) = SC_TWIRECV;   //start receive
@@ -208,9 +205,9 @@ void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf)
    emberSerialPrintf(APP_SERIAL, "\r\n"); */
 }
 
-void halSc2Isr(void)
-{
-   Sc2_status = SC2_TWISTAT;
-   INT_SC2FLAG = 0xFFFFFFFF;
-}
+//void halSc2Isr(void)
+//{
+//   Sc2_status = SC2_TWISTAT;
+//   INT_SC2FLAG = 0xFFFFFFFF;
+//}
 //eof

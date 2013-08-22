@@ -43,7 +43,7 @@ void main(void)
   TWI_WRBuf_TypeDef rdBuf;
   int8u buf[2];
 
-  int16u time;
+  int32u time;
 
   //Initialize the hal
   halInit();
@@ -101,8 +101,8 @@ void main(void)
 	halResetWatchdog();
    emberTick();
    //emberFormAndJoinTick();
-	time = halCommonGetInt16uMillisecondTick();
-	if( 0 == ( time % 1000) ) {
+	time = halCommonGetInt32uMillisecondTick();
+	if( 0 == ( time % 250) ) {
 	  	buf[0] = 0;
 	  	twi_wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
 		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
