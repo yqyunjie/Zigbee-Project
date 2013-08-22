@@ -103,9 +103,12 @@ void main(void)
    //emberFormAndJoinTick();
 	time = halCommonGetInt16uMillisecondTick();
 	if( 0 == ( time % 1000) ) {
-	  	twi_wr( LM73_DEVICE_ADDRESS, 0 );
+	  	buf[0] = 0;
+	  	twi_wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
 		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
-		twi_wr( LM73_DEVICE_ADDRESS, 7 );
+
+		buf[0] = 7;
+		twi_wr( twiSC2, LM73_DEVICE_ADDRESS, 1, buf );
 		twi_rd( twiSC2, LM73_DEVICE_ADDRESS, 2, buf );
     	/*twi_wr( LM73_DEVICE_ADDRESS, 7 );
       rdBuf.addr = LM73_DEVICE_ADDRESS;

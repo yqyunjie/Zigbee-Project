@@ -102,7 +102,7 @@ typedef struct{
  *        Prototype
  *----------------------------------------------------------------------------*/
 void twi_init(void);
-void twi_wr(int32u addr, int8u data);
+void twi_wr(TWI_SCx_TypeDef ch, int8u addr, int8u len, int8u* data);
 void TWI_RDx(TWI_WRBuf_TypeDef* rdBuf);
 /******************************************************************************\
  * twi read action .
