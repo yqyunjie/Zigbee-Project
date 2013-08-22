@@ -21,6 +21,7 @@
 /*----------------------------------------------------------------------------
  *        Global Variable
  *----------------------------------------------------------------------------*/
+/** PWM peripheral GPIOx for TIMER  . */
 const int16u gpioPWM[2][4] =
 {
   	{PORTB_PIN(6), PORTB_PIN(7), PORTA_PIN(6),PORTA_PIN(7)},
@@ -30,6 +31,19 @@ const int16u gpioPWM[2][4] =
 /*----------------------------------------------------------------------------
  *        Function(s)
  *----------------------------------------------------------------------------*/
+/***************************************************************************//**
+ * @brief
+ *   Calculate CNT and ARR for specified dutycycle.
+ *
+ * @details
+ *   dutycycle MUST be lower 100.
+ *
+ * @param[in]
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
 void PWM_Adjust( const PWM_TypeDef* pwm )
 {
    int32u offset = BLOCK_TIM2_BASE - BLOCK_TIM1_BASE;
@@ -46,6 +60,16 @@ void PWM_Adjust( const PWM_TypeDef* pwm )
    *((volatile int32u *) ( ( TIM1_CCR1_ADDR + chC*4) + offset * chT ) ) = 120000ul * pwm->mod.duty /pwm->mod.freq;
 }
 
+/***************************************************************************//**
+ * @brief
+ *   PWM Initialization for TIMERx.
+ *
+ * @param[in]
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
 void PWM_Init(const PWM_TypeDef* pwm)
 {
    int32u offset = BLOCK_TIM2_BASE - BLOCK_TIM1_BASE;
@@ -168,6 +192,10 @@ void pwm_init(int32u freq , int32u duty)
    TIM2_CR1 = TIM_ARBE | TIM_CEN;
 }
 
+/***************************************************************************//**
+ * @brief
+ *   TIMER1 interrupt service routine(ISR).
+ ******************************************************************************/
 void halTimer1Isr(void)
 {
 
@@ -176,6 +204,10 @@ void halTimer1Isr(void)
   INT_TIM1FLAG = 0xFFFFFFFF;
 }
 
+/***************************************************************************//**
+ * @brief
+ *   TIMER2 interrupt service routine(ISR).
+ ******************************************************************************/
 void halTimer2Isr(void)
 {
 

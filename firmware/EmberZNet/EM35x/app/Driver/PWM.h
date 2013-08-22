@@ -68,7 +68,31 @@ typedef struct{
 /*----------------------------------------------------------------------------
  *        Prototype
  *----------------------------------------------------------------------------*/
-void PWM_Init(const PWM_TypeDef* pwm);
+/***************************************************************************//**
+ * @brief
+ *   Calculate CNT and ARR for specified dutycycle.
+ *
+ * @details
+ *   dutycycle MUST be lower 100.
+ *
+ * @param[in]
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
 void PWM_Adjust( const PWM_TypeDef* pwm );
-void pwm_init(int32u freq , int32u duty);
+
+/***************************************************************************//**
+ * @brief
+ *   PWM Initialization for TIMERx.
+ *
+ * @param[in]
+ *   TBD
+ *
+ * @return
+ *   NULL
+ ******************************************************************************/
+void PWM_Init(const PWM_TypeDef* pwm);
+
 #endif /*_LANGUAGE_H_*/
